@@ -11,18 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('puzzles', function (Blueprint $table) {
+        Schema::create('puzzle_pieces', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('puzzle_id')->constrained('puzzles')->onDelete('cascade');
+            $table->string('piece_data');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('puzzles');
+        Schema::dropIfExists('puzzle_pieces');
     }
 };
