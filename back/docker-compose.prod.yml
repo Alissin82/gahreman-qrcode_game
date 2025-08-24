@@ -1,0 +1,92 @@
+x-logging: &default-logging
+  driver: 'json-file'
+  options:
+    max-size: '50m'
+    max-file: 6
+
+x-base: &base
+  profiles: [ app ]
+  depends_on:
+    pgsql:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+  build:
+    context: .
+    dockerfile: app.dockerfile
+    args:
+      APP_ENV: 'production' # to load .env.production
+      # APP_HOST: '${APP_HOST}'
+      WWWUSER: ${HOST_UID:-1000}
+      WWWGROUP: ${HOST_GID:-1000}
+  image: laravel/app
+  user: '${HOST_UID:-1000}:${HOST_GID:-1000}'
+  ulimits:
+    nofile:
+      soft: 20000
+      hard: 40000
+  security_opt:
+    - no-new-privileges:true
+  volumes:
+    - './storage/app/public:/var/www/html/storage/app/public'
+  logging: *default-logging
+  restart: unless-stopped
+
+services:
+  pgsql:
+    profiles: [ app ]
+    image: 'postgres:17-bookworm'
+    restart: unless-stopped
+    ulimits:
+      nofile:
+        soft: 20000
+        hard: 40000
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - pgsql-data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5437:5432"
+    environment:
+      POSTGRES_DB: '${DB_DATABASE}'
+      POSTGRES_USER: '${DB_USERNAME}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD}'
+      PGPASSWORD: '${DB_PASSWORD}'
+    logging: *default-logging
+    healthcheck:
+      test: [ 'CMD', 'pg_isready', '-q', '-d', '${DB_DATABASE}', '-U', '${DB_USERNAME}' ]
+      interval: 15s
+      retries: 12
+      timeout: 20s
+  redis:
+    profiles: [ app ]
+    image: redis:alpine
+    restart: unless-stopped
+    command: [ 'redis-server', '--maxmemory', '2gb' ]
+    ulimits:
+      nofile:
+        soft: 20000
+        hard: 40000
+    security_opt:
+      - no-new-privileges:true
+    logging: *default-logging
+    volumes:
+      - redis-data:/data
+    ports:
+      - '127.0.0.1:6379:6379'
+    healthcheck:
+      test: [ 'CMD', 'redis-cli', 'ping' ]
+      retries: 3
+      timeout: 5s
+  app:
+    <<: *base
+    environment:
+      CONTAINER_MODE: http
+      WITH_SCHEDULER: true
+    ports:
+      - '127.0.0.1:8000:8000'
+
+volumes:
+  storage:
+  pgsql-data:
+  redis-data:
