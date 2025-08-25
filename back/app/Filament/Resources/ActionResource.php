@@ -34,6 +34,7 @@ class ActionResource extends Resource
                 ->required()
                 ->reactive(),
 
+
             Forms\Components\TextInput::make('score')
                 ->label('امتیاز')
                 ->numeric()
@@ -110,6 +111,13 @@ class ActionResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->label('نام عملیات')
+                    ->required(),
+
+                Forms\Components\DateTimePicker::make('release')
+                    ->default(now())
+                    ->jalali()
+                    ->seconds(false)
+                    ->label('تارخ انتشار')
                     ->required(),
 
                 Forms\Components\Select::make('region_id')
