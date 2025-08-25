@@ -30,6 +30,12 @@ class TeamResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')->label('نام')
                     ->required(),
+                Forms\Components\TextInput::make('bio')->label('شعار')
+                    ->required(),
+                Forms\Components\FileUpload::make('content')
+                    ->avatar()
+                    ->directory('profiles'),
+
                 Forms\Components\ColorPicker::make('color')->label('رنگ'),
                 Forms\Components\TextInput::make('score')->label('امتیاز')
                     ->required()

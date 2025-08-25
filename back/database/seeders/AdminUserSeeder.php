@@ -20,7 +20,7 @@ class AdminUserSeeder extends Seeder
                 'email' => 'super@iraniom.ir',
             ],
             [
-                'name' => 'Super Admin',
+                'name' => 'مدیریت',
                 'phone' => '09120000000',
                 'password' => Hash::make('password'),
             ]
@@ -31,7 +31,7 @@ class AdminUserSeeder extends Seeder
                 'email' => 'admin@iraniom.ir',
             ],
             [
-                'name' => 'Admin',
+                'name' => 'داور',
                 'phone' => '09130000000',
                 'password' => Hash::make('password'),
             ]
@@ -39,8 +39,12 @@ class AdminUserSeeder extends Seeder
         $superRole = Role::firstOrCreate(['name' => 'super_admin']);
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
 
-        $extraPermissions = Permission::where('name', 'like', '%extra%')->pluck('name')->toArray();
+        $extraPermissions = [
+            ...Permission::where('name', 'like', '%extra%')->pluck('name')->toArray(),
+            ...Permission::where('name', 'like', '%review%')->pluck('name')->toArray(),
+        ];
         $adminRole->syncPermissions($extraPermissions);
+
 
         $admin->assignRole('admin');
         $super->assignRole('super_admin');

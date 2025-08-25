@@ -18,6 +18,7 @@ class Task extends Model
         'sort',
         'score',
         'duration',
+        'need_review'
     ];
 
 

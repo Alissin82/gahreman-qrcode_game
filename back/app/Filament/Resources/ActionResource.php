@@ -84,6 +84,11 @@ class ActionResource extends Resource
             Forms\Components\Textarea::make('text')
                 ->label('متن محتوا')
                 ->visible(fn(Forms\Get $get) => $get('type') === 'message'),
+
+            Forms\Components\Toggle::make('need_review')
+                ->label('نیاز به بازبینی')
+                ->default(false)
+
         ];
 
         $missions = [

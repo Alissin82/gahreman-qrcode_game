@@ -26,6 +26,7 @@ return new class extends Migration
             $table->integer('answer')->nullable();
             $table->string('content')->nullable();
             $table->text('text')->nullable();
+            $table->boolean('need_review')->default(false);
             $table->timestamps();
         });
     }
