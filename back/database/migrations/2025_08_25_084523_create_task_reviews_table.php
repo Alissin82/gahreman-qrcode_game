@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('task_reviews', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('task_id')->nullable();
             $table->foreignId('team_id')->nullable();
             $table->string('attachment')->nullable();
             $table->integer('score');
