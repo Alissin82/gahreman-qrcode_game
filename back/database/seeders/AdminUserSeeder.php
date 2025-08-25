@@ -3,9 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class AdminUserSeeder extends Seeder
 {
@@ -14,21 +15,34 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::updateOrCreate(
+        $super = User::updateOrCreate(
             [
-                'email' => 'admin@example.com',
-                'phone' => '09120000000',
+                'email' => 'super@iraniom.ir',
             ],
             [
-                'name' => 'Admin',
+                'name' => 'Super Admin',
+                'phone' => '09120000000',
                 'password' => Hash::make('password'),
             ]
         );
 
-        if (!\Spatie\Permission\Models\Role::where('name', 'super_admin')->exists()) {
-            \Spatie\Permission\Models\Role::create(['name' => 'super_admin']);
-        }
+        $admin = User::updateOrCreate(
+            [
+                'email' => 'admin@iraniom.ir',
+            ],
+            [
+                'name' => 'Admin',
+                'phone' => '09130000000',
+                'password' => Hash::make('password'),
+            ]
+        );
+        $superRole = Role::firstOrCreate(['name' => 'super_admin']);
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
 
-        $user->assignRole('super_admin');
+        $extraPermissions = Permission::where('name', 'like', '%extra%')->pluck('name')->toArray();
+        $adminRole->syncPermissions($extraPermissions);
+
+        $admin->assignRole('admin');
+        $super->assignRole('super_admin');
     }
 }
