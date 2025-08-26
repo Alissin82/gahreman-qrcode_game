@@ -16,6 +16,7 @@ class Team extends Model
         'bio',
         'profile',
         'score',
+        'coin'
     ];
 
 
@@ -27,8 +28,8 @@ class Team extends Model
     public function getTotalMissionScoreAttribute(): float|int
     {
         return $this->scores()
-            ->with('mission') // رابطه mission
-            ->get() // میگیریم همه scoreها
+            ->with('mission')
+            ->get()
             ->sum(fn($score) => $score->mission ? $score->mission->score : 0);
     }
 }
