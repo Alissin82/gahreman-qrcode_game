@@ -26,10 +26,14 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('/')
             ->login()
             ->colors([
-                'primary' => Color::Zinc,
+                'primary' => Color::hex("#00b48d"),
+                'danger' => Color::hex('#ef4770'),
+                'success' => Color::hex('#100b48'),
+                'info' => Color::hex('#074f9A'),
+                'warning' => Color::hex('#cfb917'),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
