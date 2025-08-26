@@ -25,6 +25,7 @@ class NotifyResource extends Resource
     protected static ?string $pluralLabel = 'اعلان‌ها';
     protected static ?string $modelLabel = 'اعلان';
 
+    protected static ?string $navigationGroup = 'عمومی';
     public static function form(Form $form): Form
     {
         return $form

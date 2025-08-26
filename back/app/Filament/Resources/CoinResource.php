@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ScoreCardResource\Pages;
-use App\Filament\Resources\ScoreCardResource\RelationManagers;
-use App\Models\ScoreCard;
+use App\Filament\Resources\CoinResource\Pages;
+use App\Filament\Resources\CoinResource\RelationManagers;
+use App\Models\Coin;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,17 +13,17 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ScoreCardResource extends Resource
+class CoinResource extends Resource
 {
-    protected static ?string $model = ScoreCard::class;
+    protected static ?string $model = Coin::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-gift-top';
-    protected static ?string $navigationLabel = '  امتیاز‌ها';
-    protected static ?string $pluralLabel = ' امتیاز‌ها';
-    protected static ?string $modelLabel = ' امتیاز';
+    protected static ?string $navigationIcon = 'heroicon-o-banknotes';
+
+    protected static ?string $navigationLabel = ' سکه‌ها';
+    protected static ?string $pluralLabel = 'سکه‌ها';
+    protected static ?string $modelLabel = 'سکه';
 
     protected static ?string $navigationGroup = 'کارت ها';
-
     public static function form(Form $form): Form
     {
         return $form
@@ -31,10 +31,10 @@ class ScoreCardResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->label('نام')
                     ->required(),
-                Forms\Components\TextInput::make('score')
-                    ->label('امتیاز')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\TextInput::make('coin')
+                    ->label('مقدار سکه')
+                    ->numeric()
+                    ->required(),
             ]);
     }
 
@@ -44,9 +44,8 @@ class ScoreCardResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('score')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('coin')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -70,11 +69,11 @@ class ScoreCardResource extends Resource
                     ->modalCancelAction(false)
                     ->color('gray')
                     ->modalWidth('sm')
-                    ->modalContent(function (\App\Models\ScoreCard $record) {
+                    ->modalContent(function (\App\Models\Coin $record) {
                         $items = [];
 
                         $ActionPayload = [
-                            'type' => 'score',
+                            'type' => 'coin',
                             'id' => $record->id,
                         ];
 
@@ -110,9 +109,9 @@ class ScoreCardResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListScoreCards::route('/'),
-            'create' => Pages\CreateScoreCard::route('/create'),
-            'edit' => Pages\EditScoreCard::route('/{record}/edit'),
+            'index' => Pages\ListCoins::route('/'),
+            'create' => Pages\CreateCoin::route('/create'),
+            'edit' => Pages\EditCoin::route('/{record}/edit'),
         ];
     }
 }

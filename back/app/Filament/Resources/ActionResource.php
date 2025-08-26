@@ -19,6 +19,7 @@ class ActionResource extends Resource
     protected static ?string $pluralLabel = 'عملیات‌ها';
     protected static ?string $modelLabel = 'عملیات';
 
+    protected static ?string $navigationGroup = 'عمومی';
     public static function form(Form $form): Form
     {
         $tasks = [
@@ -133,6 +134,22 @@ class ActionResource extends Resource
                     ->reorderable()
                     ->orderColumn('order')
                     ->minItems(1),
+
+                Forms\Components\Repeater::make('dependency')
+                    ->label('پیشنیاز ها')
+                    ->relationship('dependency')
+                    ->schema([
+                        Forms\Components\Select::make('team_id')
+                            ->required()
+                            ->label('شناسه تیم')
+                            ->relationship('team', 'name')
+                            ->preload()
+                            ->disableOptionsWhenSelectedInSiblingRepeaterItems()
+                            ->searchable(),
+                    ])
+                    ->reorderable()
+                    ->minItems(1),
+
             ])->columns(1);
     }
 
@@ -156,13 +173,15 @@ class ActionResource extends Resource
                     ->modalHeading('QR Code ها')
                     ->modalSubmitAction(false)
                     ->modalCancelAction(false)
+                    ->color('gray')
                     ->modalWidth('sm')
                     ->modalContent(function (\App\Models\Action $record) {
                         $items = [];
 
                         // QR کلی: فقط action_id و لیست missions
                         $ActionPayload = [
-                            'action_id' => $record->id,
+                            'type' => 'action',
+                            'id' => $record->id,
                             'missions' => $record->missions->pluck('id')->values()->all(),
                         ];
 
@@ -181,8 +200,9 @@ class ActionResource extends Resource
                         // QR جدا برای هر mission
                         foreach ($record->missions as $mission) {
                             $payload = [
+                                'type' => 'mission',
+                                'id' => $mission->id,
                                 'action_id' => $record->id,
-                                'mission_id' => $mission->id,
                             ];
 
                             $json = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);

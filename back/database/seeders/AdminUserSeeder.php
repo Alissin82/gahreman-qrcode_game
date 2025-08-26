@@ -17,7 +17,7 @@ class AdminUserSeeder extends Seeder
     {
         $super = User::updateOrCreate(
             [
-                'email' => 'super@iraniom.ir',
+                'email' => 'super@iraniom-isf.ir',
             ],
             [
                 'name' => 'مدیریت',
@@ -28,7 +28,7 @@ class AdminUserSeeder extends Seeder
 
         $admin = User::updateOrCreate(
             [
-                'email' => 'admin@iraniom.ir',
+                'email' => 'admin@iraniom-isf.ir',
             ],
             [
                 'name' => 'داور',

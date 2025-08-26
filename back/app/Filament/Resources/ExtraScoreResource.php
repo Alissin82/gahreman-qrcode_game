@@ -23,7 +23,7 @@ class ExtraScoreResource extends Resource
     protected static ?string $pluralLabel = 'امتیاز‌ها';
     protected static ?string $modelLabel = 'امتیاز';
 
-    protected $listeners = ['handleQrScan' => 'setTeamId'];
+    protected static ?string $navigationGroup = 'عمومی';
 
     public static function form(Form $form): Form
     {

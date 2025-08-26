@@ -24,6 +24,7 @@ class TeamResource extends Resource
     protected static ?string $pluralLabel = 'تیم‌ها';
     protected static ?string $modelLabel = 'تیم';
 
+    protected static ?string $navigationGroup = 'عمومی';
     public static function form(Form $form): Form
     {
         return $form
@@ -36,7 +37,19 @@ class TeamResource extends Resource
                 Forms\Components\TextInput::make('bio')->label('شعار')
                     ->required(),
                 Forms\Components\ColorPicker::make('color')->label('رنگ'),
+                Forms\Components\Select::make('gender')
+                    ->label('جنسیت')
+                    ->options([
+                        1 => 'پسر',
+                        0 => 'دختر',
+                    ])
+                    ->required(),
+
                 Forms\Components\TextInput::make('score')->label('امتیاز')
+                    ->required()
+                    ->numeric()
+                    ->default(0),
+                Forms\Components\TextInput::make('coin')->label('سکه')
                     ->required()
                     ->numeric()
                     ->default(0),

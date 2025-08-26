@@ -22,6 +22,7 @@ class PuzzleResource extends Resource
     protected static ?string $pluralLabel = 'پازل‌ها';
     protected static ?string $modelLabel = 'پازل';
 
+    protected static ?string $navigationGroup = 'عمومی';
     public static function form(Form $form): Form
     {
         return $form

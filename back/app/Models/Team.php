@@ -19,7 +19,9 @@ class Team extends Model
         'coin'
     ];
 
-
+    protected $casts = [
+        'gender' => 'boolean',
+    ];
     public function scores()
     {
         return $this->hasMany(ScoreMission::class, 'team_id');

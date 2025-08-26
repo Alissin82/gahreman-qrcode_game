@@ -22,6 +22,7 @@ class TaskReviewResource extends Resource
     protected static ?string $pluralLabel = 'بازبینی ‌ها';
     protected static ?string $modelLabel = 'بازبینی ';
 
+    protected static ?string $navigationGroup = 'عمومی';
     public static function canCreate(): bool
     {
         return false;

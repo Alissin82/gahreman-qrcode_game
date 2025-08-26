@@ -16,6 +16,11 @@ class Action extends Model
         return $this->hasMany(Mission::class);
     }
 
+    public function dependency()
+    {
+        return $this->hasMany(Mission::class);
+    }
+
     public function region()
     {
         return $this->belongsTo(\App\Models\Region::class, 'region_id');

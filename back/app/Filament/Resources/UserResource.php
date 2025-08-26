@@ -23,6 +23,7 @@ class UserResource extends Resource
     protected static ?string $pluralLabel = 'کاربر‌ها';
     protected static ?string $modelLabel = 'کاربر';
 
+    protected static ?string $navigationGroup = 'سیستم';
     public static function form(Form $form): Form
     {
         return $form
@@ -32,7 +33,16 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('email')->label('ایمیل')->email(),
                 Forms\Components\DateTimePicker::make('email_verified_at')->label('تاریخ تایید ایمیل')->default(now())->visible(false),
                 Forms\Components\TextInput::make('age')->label('سن')->required()->numeric()->default(12),
-                Forms\Components\Toggle::make('gender')->label('جنسیت')->required(),
+                Forms\Components\Select::make('gender')
+                    ->label('جنسیت')
+                    ->options([
+                        1 => 'پسر',
+                        0 => 'دختر',
+                    ])
+                    ->required(),
+                Forms\Components\Select::make('gender')
+                    ->label('جنسیت')
+                    ->required(),
                 Forms\Components\Select::make('team_id')->label('تیم')->relationship('team', 'name')->preload()->searchable(),
             ]);
     }

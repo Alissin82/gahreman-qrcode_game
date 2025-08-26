@@ -23,6 +23,7 @@ class RegionResource extends Resource
     protected static ?string $pluralLabel = 'منطقه‌ها';
     protected static ?string $modelLabel = 'منطقه';
 
+    protected static ?string $navigationGroup = 'عمومی';
     public static function form(Form $form): Form
     {
         return $form
