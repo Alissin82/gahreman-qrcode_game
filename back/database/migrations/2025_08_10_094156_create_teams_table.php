@@ -16,7 +16,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('color')->nullable();
+            $table->string('content')->nullable();
+            $table->string('bio')->nullable();
             $table->integer('score')->default(0);
+            $table->integer('coin')->default(0);
             $table->string('hash')->default(Str::random(16));
             $table->boolean('gender')->default(true); // true male
             $table->timestamps();
