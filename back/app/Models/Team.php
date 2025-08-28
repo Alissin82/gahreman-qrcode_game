@@ -14,7 +14,7 @@ class Team extends Model
         'name',
         'color',
         'bio',
-        'profile',
+        'content',
         'score',
         'coin'
     ];
