@@ -69,6 +69,9 @@ class TeamResource extends Resource
                 Tables\Columns\TextColumn::make('score')->label('امتیاز')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('coin')->label('سکه')
+                    ->numeric()
+                    ->sortable(),
                 ViewColumn::make('hash_qr')
                     ->label('QR Code')
                     ->view('filament.tables.columns.qr-code'),

@@ -40,9 +40,6 @@ class UserResource extends Resource
                         0 => 'دختر',
                     ])
                     ->required(),
-                Forms\Components\Select::make('gender')
-                    ->label('جنسیت')
-                    ->required(),
                 Forms\Components\Select::make('team_id')->label('تیم')->relationship('team', 'name')->preload()->searchable(),
             ]);
     }
