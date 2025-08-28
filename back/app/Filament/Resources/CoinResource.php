@@ -67,7 +67,6 @@ class CoinResource extends Resource
                     ->modalHeading('QR Code ها')
                     ->modalSubmitAction(false)
                     ->modalCancelAction(false)
-                    ->color('gray')
                     ->modalWidth('sm')
                     ->modalContent(function (\App\Models\Coin $record) {
                         $items = [];

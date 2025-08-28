@@ -68,7 +68,6 @@ class ScoreCardResource extends Resource
                     ->modalHeading('QR Code ها')
                     ->modalSubmitAction(false)
                     ->modalCancelAction(false)
-                    ->color('gray')
                     ->modalWidth('sm')
                     ->modalContent(function (\App\Models\ScoreCard $record) {
                         $items = [];

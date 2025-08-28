@@ -6,5 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class CoinTeam extends Model
 {
-    //
+    protected $fillable = [
+        ''
 }
