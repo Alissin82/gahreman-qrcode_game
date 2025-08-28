@@ -18,7 +18,7 @@ class Action extends Model
 
     public function dependency()
     {
-        return $this->hasMany(ActionDependency::class,'action_id');
+        return $this->hasMany(ActionDependency::class);
     }
 
     public function region()

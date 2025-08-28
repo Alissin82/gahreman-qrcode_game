@@ -36,7 +36,8 @@ class TeamResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('bio')->label('شعار')
                     ->required(),
-                Forms\Components\ColorPicker::make('color')->label('رنگ'),
+                Forms\Components\ColorPicker::make('color')->label('رنگ')->default('#ff0000'),
+
                 Forms\Components\Select::make('gender')
                     ->label('جنسیت')
                     ->options([
