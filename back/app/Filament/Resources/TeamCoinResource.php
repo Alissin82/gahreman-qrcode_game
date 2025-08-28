@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ExtraScoreResource\Pages;
-use App\Filament\Resources\ExtraScoreResource\RelationManagers;
-use App\Models\ExtraScore;
+use App\Filament\Resources\TeamCoinResource\Pages;
+use App\Filament\Resources\TeamCoinResource\RelationManagers;
+use App\Models\TeamCoin;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,15 +13,17 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ExtraScoreResource extends Resource
+class TeamCoinResource extends Resource
 {
-    protected static ?string $model = ExtraScore::class;
+    protected static ?string $model = TeamCoin::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'تغییرات امتیاز‌ها';
-    protected static ?string $pluralLabel = 'تغییرات امتیاز‌ها';
-    protected static ?string $modelLabel = 'تغییرات امتیاز';
+
+
+    protected static ?string $navigationLabel = 'تغییرات سکه‌ها ';
+    protected static ?string $pluralLabel = 'تغییرات سکه‌ها';
+    protected static ?string $modelLabel = 'تغییرات سکه';
 
     protected static ?string $navigationGroup = 'عمومی';
 
@@ -38,14 +40,13 @@ class ExtraScoreResource extends Resource
                 Forms\Components\Field::make('team_qr')
                     ->label('شناسه تیم')
                     ->view('livewire.team-qr-scanner'),
-                Forms\Components\TextInput::make('score')
-                    ->label('امتیاز اضافی')
+                Forms\Components\TextInput::make('coin')
                     ->required()
+                    ->label('سکه اضافی')
                     ->numeric(),
-                Forms\Components\TextInput::make('reason')
-                    ->label('دلیل امتیاز اضافی')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\TextInput::make('comment')
+                    ->label('دلیل سکه اضافی')
+                    ->required(),
             ]);
     }
 
@@ -53,16 +54,13 @@ class ExtraScoreResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('team_id')
+                Tables\Columns\TextColumn::make('team.name')
                     ->numeric()
-                    ->label('شناسه تیم')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('score')
+                Tables\Columns\TextColumn::make('coin')
                     ->numeric()
-                    ->label('امتیاز اضافی')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('reason')
-                    ->label('دلیل امتیاز اضافی')
+                Tables\Columns\TextColumn::make('comment')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -86,14 +84,19 @@ class ExtraScoreResource extends Resource
             ]);
     }
 
-
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListExtraScores::route('/'),
-            'create' => Pages\CreateExtraScore::route('/create'),
-            'edit' => Pages\EditExtraScore::route('/{record}/edit'),
+            'index' => Pages\ListTeamCoins::route('/'),
+            'create' => Pages\CreateTeamCoin::route('/create'),
+            'edit' => Pages\EditTeamCoin::route('/{record}/edit'),
         ];
     }
 }
