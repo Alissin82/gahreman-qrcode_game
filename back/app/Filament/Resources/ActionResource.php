@@ -137,7 +137,7 @@ class ActionResource extends Resource
 
                 Forms\Components\Repeater::make('dependency')
                     ->label('پیشنیاز ها')
-                    ->relationship('dependency')
+                    ->relationship('action_dependencys')
                     ->schema([
                         Forms\Components\Select::make('team_id')
                             ->required()
@@ -148,8 +148,6 @@ class ActionResource extends Resource
                             ->searchable(),
                     ])
                     ->reorderable()
-                    ->minItems(1),
-
             ])->columns(1);
     }
 

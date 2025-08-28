@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Action extends Model
 {
-    protected $fillable = ['name','release', 'region_id'];
+    protected $fillable = ['name', 'release', 'region_id'];
     protected $casts = [
         'release' => 'datetime',
     ];
@@ -18,7 +18,7 @@ class Action extends Model
 
     public function dependency()
     {
-        return $this->hasMany(Mission::class);
+        return $this->hasMany(ActionDependency::class,'action_id');
     }
 
     public function region()
