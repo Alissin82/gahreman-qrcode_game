@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('action_dependencies', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('action_id')->constrained('actions')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('action_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('depends_on_action_id');
             $table->foreign('depends_on_action_id')->references('id')->on('actions')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

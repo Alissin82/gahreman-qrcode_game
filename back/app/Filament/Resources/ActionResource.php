@@ -137,12 +137,12 @@ class ActionResource extends Resource
 
                 Forms\Components\Repeater::make('dependency')
                     ->label('پیشنیاز ها')
-                    ->relationship('action_dependencys')
+                    ->relationship('dependency')
                     ->schema([
-                        Forms\Components\Select::make('team_id')
+                        Forms\Components\Select::make('depends_on_action_id')
                             ->required()
                             ->label('شناسه تیم')
-                            ->relationship('team', 'name')
+                            ->relationship('action', 'name')
                             ->preload()
                             ->disableOptionsWhenSelectedInSiblingRepeaterItems()
                             ->searchable(),
