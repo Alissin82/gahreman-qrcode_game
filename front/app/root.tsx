@@ -26,6 +26,9 @@ export const links: Route.LinksFunction = () => [
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
   },
 ];
+declare global {
+  interface Window { teams: any; mine: any }
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -36,7 +39,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="bg-main overflow-hidden">
         <ThemeProvider>{children}</ThemeProvider>
         <ScrollRestoration />
         <Scripts />
@@ -45,8 +48,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+enum ColorTypes {
+  Girl = 'girl',
+  Boy = 'boy'
+}
+const colors: Record<ColorTypes, string[]> = {
+  [ColorTypes.Girl]: ['#EF4770', '#C73A5C'],
+  [ColorTypes.Boy]: ['#074F9A', '#07357B']
+};
+
 export default function App() {
   initI18n();
+
+  const gender: ColorTypes = localStorage.getItem('gender') ?? ColorTypes.Boy;
+  document.documentElement.style.setProperty('--color-main', colors[gender][0]);
+  document.documentElement.style.setProperty('--color-deep', colors[gender][1]);
   return <Outlet />;
 }
 

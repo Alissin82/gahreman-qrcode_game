@@ -1,4 +1,4 @@
-import type { Config } from "@react-router/dev/config";
+:mport type { Config } from "@react-router/dev/config";
 
 export default {
   // Config options...

@@ -3,9 +3,16 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: lale;
+  src: url('/assets/font/font.ttf');
+}
+
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
+  --font-sans: lale, "Inter", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --color-main: #f0f0f0;
+  --color-deep: #ffffff;
 }
 
 @theme inline {

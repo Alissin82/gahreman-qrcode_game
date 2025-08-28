@@ -1,28 +1,35 @@
 import axios from 'axios'
-
+const baseURL = import.meta.env.DEV
+  ? "http://localhost:8000/"
+  : "https://iraniom.silitonix.ir/";
 const gate = axios.create({
-  baseURL: import.meta.env.SERVER_URI + "/api/",
-  withCredentials: true,
+  baseURL: baseURL,
+  withCredentials: false,
 })
+
+async function get(path: string) {
+  const req = await gate.get(path);
+  return req.data;
+}
 
 async function post(path: string, data: any) {
   const req = await gate.post(path, data);
   return req.data;
 }
 
-const api = {
-  login(data: {
-    email: string,
-    password: string
-  }) { return post("login", data) },
 
-  register(data: {
-    name: string,
-    email: string,
-    password: string,
-    gender: boolean,
-    age: number,
-  }) { return post("register", data) },
+const api = {
+  base: baseURL,
+  teams: {
+    index: () => get('/api/teams'),
+    show: (id: number) => get(`/api/teams/${id}`),
+    put: (data: any, id: number) => post(`/api/teams/${id}`, data),
+  },
+  actions: {
+    index: () => get('/api/actions'),
+    show: (id: number) => get(`/api/teams/${id}`),
+    put: (data: any, id: number) => post(`/api/teams/${id}`, data),
+  }
 }
 
 export default api;

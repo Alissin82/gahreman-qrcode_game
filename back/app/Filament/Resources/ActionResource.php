@@ -146,7 +146,7 @@ class ActionResource extends Resource
                             ->preload()
                             ->disableOptionsWhenSelectedInSiblingRepeaterItems()
                             ->searchable(),
-                    ])
+                    ])->default([])
                     ->reorderable()
             ])->columns(1);
     }

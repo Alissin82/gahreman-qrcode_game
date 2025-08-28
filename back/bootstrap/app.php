@@ -13,6 +13,6 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->group('api', [JwtFromCookie::class]);
+        $middleware->group('api', [JwtFromCookie::class, \App\Http\Middleware\Cors::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {})->create();
