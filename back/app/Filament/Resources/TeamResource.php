@@ -30,7 +30,7 @@ class TeamResource extends Resource
         return $form
             ->schema([
                 Forms\Components\FileUpload::make('content')
-                ->lable('عکس پروفایل')
+                    ->label('عکس پروفایل')
                     ->avatar()
                     ->directory('profiles'),
                 Forms\Components\TextInput::make('name')->label('نام')
