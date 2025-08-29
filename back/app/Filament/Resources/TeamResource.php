@@ -6,6 +6,8 @@ use App\Filament\Resources\TeamResource\Pages;
 use App\Filament\Resources\TeamResource\RelationManagers;
 use App\Models\Team;
 use Filament\Forms;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -24,7 +26,7 @@ class TeamResource extends Resource
     protected static ?string $pluralLabel = 'تیم‌ها';
     protected static ?string $modelLabel = 'تیم';
 
-    protected static ?string $navigationGroup = 'عمومی';
+    protected static ?string $navigationGroup = 'تیم';
     public static function form(Form $form): Form
     {
         return $form
@@ -62,7 +64,7 @@ class TeamResource extends Resource
                     ->required()
                     ->numeric()
                     ->default(0),
-            ]);
+            ])->columns(1);
     }
 
     public static function table(Table $table): Table

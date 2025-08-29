@@ -25,6 +25,16 @@ class Team extends Model
         'gender' => 'boolean',
         'start' => 'datetime'
     ];
+
+    public function admin()
+    {
+        return $this->belongsTo(TeamAdmins::class, 'team_id');
+    }
+    public function users()
+    {
+        return $this->hasMany(TeamUsers::class, 'team_id');
+    }
+
     public function scores()
     {
         return $this->hasMany(ScoreMission::class, 'team_id');
