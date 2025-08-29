@@ -178,7 +178,7 @@ class ActionResource extends Resource
 
                         // QR کلی: فقط action_id و لیست missions
                         $ActionPayload = [
-                            'type' => 'action',
+                            'type' => 'action_start',
                             'id' => $record->id,
                             'missions' => $record->missions->pluck('id')->values()->all(),
                         ];
@@ -191,14 +191,14 @@ class ActionResource extends Resource
                             ->generate($json);
 
                         $items[] = [
-                            'label' => "عملیات شماره [ {$record->id} ]",
+                            'label' => "شروع عملیات شماره [ {$record->id} ]",
                             'src'   => 'data:image/png;base64,' . base64_encode($png),
                         ];
 
                         // QR جدا برای هر mission
                         foreach ($record->missions as $mission) {
                             $payload = [
-                                'type' => 'mission',
+                                'type' => 'mission_start',
                                 'id' => $mission->id,
                                 'action_id' => $record->id,
                             ];
@@ -211,11 +211,30 @@ class ActionResource extends Resource
                                 ->generate($json);
 
                             $items[] = [
-                                'label' => $mission->title ?: "Mission #{$mission->id}",
+                                'label' => $mission->title ?: "پایان ماموریت #{$mission->id}",
                                 'src'   => 'data:image/png;base64,' . base64_encode($png),
                             ];
                         }
 
+                        foreach ($record->missions as $mission) {
+                            $payload = [
+                                'type' => 'mission_end',
+                                'id' => $mission->id,
+                                'action_id' => $record->id,
+                            ];
+
+                            $json = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                            $png = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
+                                ->encoding('UTF-8')
+                                ->size(100)
+                                ->margin(2)
+                                ->generate($json);
+
+                            $items[] = [
+                                'label' => $mission->title ?: "پایان ماموریت #{$mission->id}",
+                                'src'   => 'data:image/png;base64,' . base64_encode($png),
+                            ];
+                        }
                         return view('filament.actions.qr-grid', ['items' => $items]);
                     }),
             ])
