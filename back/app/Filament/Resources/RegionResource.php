@@ -32,6 +32,9 @@ class RegionResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->label('نام')
                     ->required(),
+                Forms\Components\Toggle::make('lockable')
+                    ->label('قفل شونده')
+                    ->default(false),
                 Forms\Components\Grid::make(2)
                     ->schema([
                         Forms\Components\TextInput::make('x')

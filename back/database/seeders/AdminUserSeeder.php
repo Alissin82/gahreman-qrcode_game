@@ -42,6 +42,7 @@ class AdminUserSeeder extends Seeder
         $extraPermissions = [
             ...Permission::where('name', 'like', '%extra%')->pluck('name')->toArray(),
             ...Permission::where('name', 'like', '%review%')->pluck('name')->toArray(),
+            ...Permission::where('name', 'like', '%team_coin%')->pluck('name')->toArray(),
         ];
         $adminRole->syncPermissions($extraPermissions);
 

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('region_id')->nullable();
-            $table->boolean('using')->default(false);
             $table->timestamp('release')->default(now());
             $table->timestamps();
         });

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('x')->default(0);
             $table->integer('y')->default(0);
             $table->integer('order')->default(0);
+            $table->boolean('lockable')->default(false);
             $table->timestamps();
         });
     }
