@@ -6,6 +6,7 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -56,5 +57,10 @@ class Team extends Model implements AuthenticatableContract
             ->with('mission')
             ->get()
             ->sum(fn($score) => $score->mission ? $score->mission->score : 0);
+    }
+
+    public function actions(): BelongsToMany
+    {
+        return $this->belongsToMany(Action::class, 'action_team');
     }
 }

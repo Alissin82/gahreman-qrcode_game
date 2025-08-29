@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Team;
+
 return [
 
     /*
@@ -40,9 +42,9 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'api' => [
-            'driver' => 'jwt',
-            'provider' => 'users',
+        'team' => [
+            'driver' => 'session',
+            'provider' => 'teams',
         ],
     ],
 
@@ -67,6 +69,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+
+        'teams' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_MODEL', Team::class),
         ],
 
         // 'users' => [
