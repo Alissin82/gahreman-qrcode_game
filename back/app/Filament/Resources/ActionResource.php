@@ -141,7 +141,7 @@ class ActionResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('depends_on_action_id')
                             ->required()
-                            ->label('شناسه تیم')
+                            ->label('شناسه عملیات')
                             ->relationship('action', 'name')
                             ->preload()
                             ->disableOptionsWhenSelectedInSiblingRepeaterItems()
