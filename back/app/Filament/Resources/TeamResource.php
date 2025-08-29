@@ -47,6 +47,13 @@ class TeamResource extends Resource
                     ])
                     ->required(),
 
+                Forms\Components\DateTimePicker::make('start')
+                    ->default(now())
+                    ->jalali()
+                    ->seconds(false)
+                    ->label('تارخ شروع')
+                    ->required(),
+                Forms\Components\TextInput::make('phone')->label('شماره تلفن')->tel()->required(),
                 Forms\Components\TextInput::make('score')->label('امتیاز')
                     ->required()
                     ->numeric()

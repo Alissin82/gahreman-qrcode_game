@@ -16,11 +16,14 @@ class Team extends Model
         'bio',
         'content',
         'score',
-        'coin'
+        'coin',
+        'phone',
+        'start'
     ];
 
     protected $casts = [
         'gender' => 'boolean',
+        'start' => 'datetime'
     ];
     public function scores()
     {
