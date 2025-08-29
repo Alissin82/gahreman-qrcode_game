@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Action extends Model
 {
-    protected $fillable = ['name', 'release', 'region_id','using'];
+    protected $fillable = [
+        'name',
+        'release',
+        'region_id'
+    ];
     protected $casts = [
         'release' => 'datetime',
     ];
