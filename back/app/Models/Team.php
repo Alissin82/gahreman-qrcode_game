@@ -63,4 +63,9 @@ class Team extends Model implements AuthenticatableContract
     {
         return $this->belongsToMany(Action::class, 'action_team');
     }
+
+    public function missions(): BelongsToMany
+    {
+        return $this->belongsToMany(Mission::class, 'mission_team');
+    }
 }

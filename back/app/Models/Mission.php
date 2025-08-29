@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Mission extends Model
 {
@@ -14,7 +15,7 @@ class Mission extends Model
         'score',
     ];
 
-    public function tasks()
+    public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);
     }
@@ -22,5 +23,10 @@ class Mission extends Model
     public function action(): BelongsTo
     {
         return $this->belongsTo(Action::class, 'action_id');
+    }
+
+    public function teams(): BelongsToMany
+    {
+        return $this->belongsToMany(Team::class, 'mission_team');
     }
 }
