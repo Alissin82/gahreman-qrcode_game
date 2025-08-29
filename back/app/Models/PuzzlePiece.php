@@ -8,6 +8,6 @@ class PuzzlePiece extends Model
 {
     //
     protected $fillable = [
-        'puzzle_data'
+        'piece_data'
     ];
 }
