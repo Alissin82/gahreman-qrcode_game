@@ -37,9 +37,10 @@ class TeamCoinResource extends Resource
                     ->relationship('team', 'name')
                     ->preload()
                     ->searchable(),
-                Forms\Components\Field::make('team_qr')
+
+                Forms\Components\Placeholder::make('team_qr')
                     ->label('شناسه تیم')
-                    ->view('livewire.team-qr-scanner'),
+                    ->content(fn() => view('livewire.team-qr-scanner')),
                 Forms\Components\TextInput::make('coin')
                     ->required()
                     ->label('سکه اضافی')
