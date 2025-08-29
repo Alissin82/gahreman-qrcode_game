@@ -75,6 +75,7 @@ class ScoreCardResource extends Resource
                         $ActionPayload = [
                             'type' => 'score',
                             'id' => $record->id,
+                            'amount' => $record->score,
                         ];
 
                         $json = json_encode($ActionPayload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);

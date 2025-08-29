@@ -7,49 +7,59 @@ use Illuminate\Http\Request;
 
 class ActionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // لیست همه اکشن‌ها با تمام روابط
     public function index()
     {
-        return response()->json(Action::all());
+        $actions = Action::with([
+            'missions' => function ($query) {
+                $query->with([
+                    'tasks' => function ($taskQuery) {
+                        $taskQuery->with([
+                            // اینجا هر رابطه‌ای که Task داره اضافه کن
+                            'options',
+                            'answers'
+                        ]);
+                    }
+                ]);
+            },
+            'dependency', // پیشنیازها
+            'region' // منطقه
+        ])->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $actions
+        ], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // نمایش اکشن خاص با تمام روابط
+    public function show($id)
     {
-        //
-    }
+        $action = Action::with([
+            'missions' => function ($query) {
+                $query->with([
+                    'tasks' => function ($taskQuery) {
+                        $taskQuery->with([
+                            'options',
+                            'answers'
+                        ]);
+                    }
+                ]);
+            },
+            'dependency',
+            'region'
+        ])->find($id);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $team = Action::find($id);
-
-        if (!$team) {
-            return response()->json(['message' => 'Team not found'], 404);
+        if (!$action) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Action not found'
+            ], 404);
         }
 
-        return response()->json($team);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json([
+            'status' => true,
+            'data' => $action
+        ], 200);
     }
 }

@@ -74,6 +74,7 @@ class CoinResource extends Resource
                         $ActionPayload = [
                             'type' => 'coin',
                             'id' => $record->id,
+                            'amount' => $record->coin,
                         ];
 
                         $json = json_encode($ActionPayload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);

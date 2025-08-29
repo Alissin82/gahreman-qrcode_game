@@ -12,9 +12,6 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/actions', [ActionController::class, 'index']);
 Route::get('/actions/{id}', [ActionController::class, 'show']);
-Route::post('/actions', [ActionController::class, 'store']);
-Route::put('/actions/{id}', [ActionController::class, 'update']);
-Route::delete('/actions/{id}', [ActionController::class, 'destroy']);
 
 Route::get('/teams', [TeamController::class, 'index']);
 Route::get('/teams/{id}', [TeamController::class, 'show']);

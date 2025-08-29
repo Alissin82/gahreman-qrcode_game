@@ -176,7 +176,6 @@ class ActionResource extends Resource
                     ->modalContent(function (\App\Models\Action $record) {
                         $items = [];
 
-                        // QR کلی: فقط action_id و لیست missions
                         $ActionPayload = [
                             'type' => 'action_start',
                             'id' => $record->id,
@@ -192,6 +191,24 @@ class ActionResource extends Resource
 
                         $items[] = [
                             'label' => "شروع عملیات شماره [ {$record->id} ]",
+                            'src'   => 'data:image/png;base64,' . base64_encode($png),
+                        ];
+                        // QR کلی: فقط action_id و لیست missions
+                        $ActionPayload = [
+                            'type' => 'action_end',
+                            'id' => $record->id,
+                            'missions' => $record->missions->pluck('id')->values()->all(),
+                        ];
+
+                        $json = json_encode($ActionPayload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                        $png = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
+                            ->encoding('UTF-8')
+                            ->size(100)
+                            ->margin(2)
+                            ->generate($json);
+
+                        $items[] = [
+                            'label' => "پایان عملیات شماره [ {$record->id} ]",
                             'src'   => 'data:image/png;base64,' . base64_encode($png),
                         ];
 
