@@ -17,6 +17,7 @@ class ActionController extends Controller
         return ApiResponse::success(ActionResource::collection($data));
     }
 
+    /** @noinspection PhpUnusedParameterInspection */
     public function start(Request $request, Action $action)
     {
         $team = \Auth::guard('team')->user();

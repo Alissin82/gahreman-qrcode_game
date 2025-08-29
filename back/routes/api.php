@@ -17,6 +17,10 @@ Route::middleware('auth:team')->group(function () {
         Route::get('/actions', 'index');
         Route::post('/actions/{action}', 'start');
     });
+    Route::controller(App\Http\Controllers\Api\MissionController::class)->prefix('missions')->name('missions.')->group(function () {
+        Route::get('/', 'index');
+        Route::post('/{mission}', 'complete');
+    });
 });
 
 Route::get('/actions', [ActionController::class, 'index']);
