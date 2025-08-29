@@ -1,1 +1,4 @@
 node_modules
+/front/.idea
+back/composer.lock
+back/package-lock.json
