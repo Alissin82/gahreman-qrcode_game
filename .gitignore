@@ -4,4 +4,4 @@ back/composer.lock
 back/package-lock.json
 front/package-lock.json
 back/.env
-back/.env.example
+back/.env.production
