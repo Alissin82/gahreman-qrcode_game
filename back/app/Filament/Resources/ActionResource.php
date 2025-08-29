@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ActionResource extends Resource
 {
@@ -35,7 +36,6 @@ class ActionResource extends Resource
                 ->required()
                 ->reactive(),
 
-
             Forms\Components\TextInput::make('score')
                 ->label('امتیاز')
                 ->numeric()
@@ -54,7 +54,6 @@ class ActionResource extends Resource
             Forms\Components\Grid::make(4)
                 ->schema([
                     Forms\Components\TextInput::make('option1')
-
                         ->required()
                         ->label('گزینه یک'),
                     Forms\Components\TextInput::make('option2')
@@ -90,14 +89,12 @@ class ActionResource extends Resource
             Forms\Components\Toggle::make('need_review')
                 ->label('نیاز به بازبینی')
                 ->default(false)
-
         ];
 
         $missions = [
             Forms\Components\TextInput::make('title')
                 ->label('عنوان')
                 ->required(),
-
 
             Forms\Components\Repeater::make('tasks')
                 ->label('وظیفه‌ها')
@@ -173,7 +170,7 @@ class ActionResource extends Resource
                     ->modalCancelAction(false)
                     ->color('gray')
                     ->modalWidth('sm')
-                    ->modalContent(function (\App\Models\Action $record) {
+                    ->modalContent(function (Action $record) {
                         $items = [];
 
                         $ActionPayload = [
@@ -183,17 +180,17 @@ class ActionResource extends Resource
                         ];
 
                         $json = json_encode($ActionPayload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                        $png = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
+                        $png = QrCode::format('png')
                             ->encoding('UTF-8')
                             ->size(100)
                             ->margin(2)
                             ->generate($json);
 
                         $items[] = [
-                            'label' => "شروع عملیات شماره [ {$record->id} ]",
+                            'label' => "شروع عملیات - " . $record->name,
                             'src'   => 'data:image/png;base64,' . base64_encode($png),
                         ];
-                        // QR کلی: فقط action_id و لیست missions
+
                         $ActionPayload = [
                             'type' => 'action_end',
                             'id' => $record->id,
@@ -201,14 +198,14 @@ class ActionResource extends Resource
                         ];
 
                         $json = json_encode($ActionPayload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                        $png = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
+                        $png = QrCode::format('png')
                             ->encoding('UTF-8')
                             ->size(100)
                             ->margin(2)
                             ->generate($json);
 
                         $items[] = [
-                            'label' => "پایان عملیات شماره [ {$record->id} ]",
+                            'label' => "پایان عملیات - " . $record->name,
                             'src'   => 'data:image/png;base64,' . base64_encode($png),
                         ];
 
@@ -221,14 +218,14 @@ class ActionResource extends Resource
                             ];
 
                             $json = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                            $png = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
+                            $png = QrCode::format('png')
                                 ->encoding('UTF-8')
                                 ->size(100)
                                 ->margin(2)
                                 ->generate($json);
 
                             $items[] = [
-                                'label' => $mission->title ?: "پایان ماموریت #{$mission->id}",
+                                'label' => "شروع ماموریت - " . $mission->title,
                                 'src'   => 'data:image/png;base64,' . base64_encode($png),
                             ];
                         }
@@ -241,14 +238,14 @@ class ActionResource extends Resource
                             ];
 
                             $json = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                            $png = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
+                            $png = QrCode::format('png')
                                 ->encoding('UTF-8')
                                 ->size(100)
                                 ->margin(2)
                                 ->generate($json);
 
                             $items[] = [
-                                'label' => $mission->title ?: "پایان ماموریت #{$mission->id}",
+                                'label' => "پایان ماموریت - " . $mission->title,
                                 'src'   => 'data:image/png;base64,' . base64_encode($png),
                             ];
                         }
