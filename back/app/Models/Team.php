@@ -2,14 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Sanctum\HasApiTokens;
 
-class Team extends Model
+class Team extends Model implements AuthenticatableContract
 {
-    use HasFactory;
+    use Authenticatable, HasApiTokens;
 
-    protected $appends = ['total_mission_score'];
+    protected $appends = [
+        'total_mission_score'
+    ];
+
     protected $fillable = [
         'name',
         'color',
@@ -26,20 +33,23 @@ class Team extends Model
         'start' => 'datetime'
     ];
 
-    public function admin()
+    public function admin(): BelongsTo
     {
         return $this->belongsTo(TeamAdmins::class, 'team_id');
     }
-    public function users()
+    public function users(): HasMany
     {
         return $this->hasMany(TeamUsers::class, 'team_id');
     }
 
-    public function scores()
+    public function scores(): HasMany
     {
         return $this->hasMany(ScoreMission::class, 'team_id');
     }
 
+    /** @noinspection PhpUnused
+     * @noinspection PhpParamsInspection
+     */
     public function getTotalMissionScoreAttribute(): float|int
     {
         return $this->scores()

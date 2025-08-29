@@ -1,16 +1,19 @@
 @php
+
 $content = [
-'title' => $getRecord()->name,
-'hash' => $getRecord()->hash,
+    'hash' => $getRecord()->hash
 ];
+
 $qr = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
-->encoding('UTF-8')
-->size(200)
-->generate(json_encode($content));
+    ->encoding('UTF-8')
+    ->size(200)
+    ->generate(json_encode($content));
 
 $base64 = 'data:image/png;base64,' . base64_encode($qr);
+
 @endphp
 
+<!--suppress JSDeprecatedSymbols -->
 <div class="flex justify-center">
     <img src="{{ $base64 }}" alt="QR Code"
         class="qr-thumbnail cursor-pointer rounded shadow"
