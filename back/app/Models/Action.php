@@ -14,6 +14,7 @@ class Action extends Model
         'release',
         'region_id'
     ];
+
     protected $casts = [
         'release' => 'datetime',
     ];

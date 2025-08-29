@@ -49,7 +49,6 @@ class Team extends Model implements AuthenticatableContract
     }
 
     /** @noinspection PhpUnused
-     * @noinspection PhpParamsInspection
      */
     public function getTotalMissionScoreAttribute(): float|int
     {
@@ -61,7 +60,7 @@ class Team extends Model implements AuthenticatableContract
 
     public function actions(): BelongsToMany
     {
-        return $this->belongsToMany(Action::class, 'action_team');
+        return $this->belongsToMany(Action::class, 'action_team')->using(ActionTeam::class);
     }
 
     public function missions(): BelongsToMany
