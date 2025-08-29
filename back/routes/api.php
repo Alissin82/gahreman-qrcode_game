@@ -5,9 +5,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\TeamController;
 
-Route::prefix('team')->name('team.')->group(function () {
+Route::prefix('teams')->name('teams.')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:team-api');
+    Route::middleware('auth:team-api')->group(function () {
+        Route::post('/me', [AuthController::class, 'me']);
+        Route::post('/logout', [AuthController::class, 'logout']);
+    });
 });
 
 Route::get('/actions', [ActionController::class, 'index']);
