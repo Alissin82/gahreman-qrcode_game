@@ -26,21 +26,7 @@ class ActionController extends Controller
                 if ($team)
                     $builder->whereTeamId($team->id);
             }
-        ])->get()->map(function (Action $action) use ($team) {
-            $actionMissionIds = $action->missions()->pluck('missions.id')->toArray();
-
-            $teamMissionIds = $team ? $team->missions()->pluck('missions.id')->toArray() : [];
-
-            $completedCount = count(array_intersect($actionMissionIds, $teamMissionIds));
-
-            /** @noinspection PhpUndefinedFieldInspection */
-            $action->meta = [
-                'total' => count($actionMissionIds),
-                'completed' => $completedCount
-            ];
-
-            return $action;
-        });
+        ])->get();
 
         return ApiResponse::success([
             'actions' => ActionResource::collection($data),

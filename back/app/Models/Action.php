@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -26,6 +27,8 @@ class Action extends Model implements HasMedia
         'release' => 'datetime',
     ];
 
+    protected $appends = ['meta'];
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('attachment')->singleFile();
@@ -38,6 +41,28 @@ class Action extends Model implements HasMedia
     {
         return $this->morphOne(Media::class, 'model')
             ->where('collection_name', 'attachment');
+    }
+
+    public function getMetaAttribute(): array
+    {
+        $team = Auth::guard('team')->user();
+
+        if ($team) {
+            $actionMissionIds = $this->missions()->pluck('missions.id')->toArray();
+            $teamMissionIds = $team->missions()->pluck('missions.id')->toArray();
+
+            $completedCount = count(array_intersect($actionMissionIds, $teamMissionIds));
+
+            return [
+                'total' => count($actionMissionIds),
+                'completed' => $completedCount,
+            ];
+        } else {
+            return [
+                'total' => 0,
+                'completed' => 0,
+            ];
+        }
     }
 
     public function missions(): HasMany
