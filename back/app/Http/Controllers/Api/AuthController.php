@@ -30,14 +30,14 @@ class AuthController extends Controller
     public function me(Request $request): JsonResponse
     {
         return response()->json([
-            'message' => 'Logged out successfully.',
-            'team' => $request->user('team-api'),
+            'message' => 'Team has been fetched successfully.',
+            'team' => $request->user('team'),
         ]);
     }
 
     public function logout(Request $request): JsonResponse
     {
-        $team = $request->user('team-api');
+        $team = $request->user('team');
 
         $team->tokens()->delete();
 

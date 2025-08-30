@@ -43,7 +43,7 @@ return [
             'provider' => 'users',
         ],
         'team' => [
-            'driver' => 'session',
+            'driver' => 'sanctum',
             'provider' => 'teams',
         ],
     ],
