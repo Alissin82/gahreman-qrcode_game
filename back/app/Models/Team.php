@@ -62,6 +62,7 @@ class Team extends Model implements AuthenticatableContract
 
     /**
      * @noinspection PhpUnused
+     * @noinspection PhpParamsInspection
      */
     public function getTotalMissionScoreAttribute(): float|int
     {

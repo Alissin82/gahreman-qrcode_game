@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ScoreMission extends Model
 {
@@ -10,12 +11,13 @@ class ScoreMission extends Model
         'team_id',
         'mission_id',
     ];
-    public function team()
+
+    public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class, 'team_id');
     }
 
-    public function mission()
+    public function mission(): BelongsTo
     {
         return $this->belongsTo(Mission::class, 'mission_id');
     }
