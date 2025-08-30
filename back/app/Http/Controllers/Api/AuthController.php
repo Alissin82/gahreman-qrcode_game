@@ -22,8 +22,6 @@ class AuthController extends Controller
 
         $team->tokens()->delete();
 
-        Auth::login($team);
-
         $token = $team->createToken('api-token')->plainTextToken;
 
         return response()->json([

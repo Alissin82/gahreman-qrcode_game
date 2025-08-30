@@ -101,7 +101,6 @@ class ActionResource extends Resource
                 ->relationship('tasks')
                 ->schema($tasks)
                 ->reorderable()
-                ->orderColumn('order')
                 ->minItems(1),
         ];
 
@@ -129,7 +128,6 @@ class ActionResource extends Resource
                     ->relationship('missions')
                     ->schema($missions)
                     ->reorderable()
-                    ->orderColumn('order')
                     ->minItems(1),
 
                 Forms\Components\Repeater::make('dependency')

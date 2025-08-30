@@ -30,7 +30,7 @@ class ActionController extends Controller
     {
         $team = Auth::guard('team')->user();
 
-        $action = Action::find($action_id);
+        $action = Action::findOrFail($action_id);
 
         $team->actions()->attach($action, [
             'status' => ActionStatus::Pending->value
@@ -44,7 +44,7 @@ class ActionController extends Controller
     {
         $team = Auth::guard('team')->user();
 
-        $action = Action::find($action_id);
+        $action = Action::findOrFail($action_id);
 
         $team->actions()->updateExistingPivot($action->id, [
             'status' => ActionStatus::Completed->value
@@ -61,10 +61,9 @@ class ActionController extends Controller
         $teamCompletedMissions = $team?->missions()?->whereHas('action', function ($query) use ($action) {
             $query->where('action_id', $action->id);
         })->count();
-        return ApiResponse::success([
-            ...$action->toArray(),
+        return ApiResponse::success(array_merge([
             'completed_mission_count' => $teamCompletedMissions,
-        ]);
+        ], $action->toArray()));
 
     }
 }
