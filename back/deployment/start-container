@@ -12,7 +12,6 @@ initialStuff() {
     php artisan optimize; \
     php artisan filament:cache-components; \
     php artisan icons:cache; \
-    php artisan data:cache-structures; \
     php artisan migrate --force;
 }
 
