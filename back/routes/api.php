@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 Route::prefix('teams')->name('teams.')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::middleware('auth:team')->group(function () {
-        Route::post('/me', [AuthController::class, 'me']);
+        Route::get('/me', [AuthController::class, 'me']);
         Route::post('/logout', [AuthController::class, 'logout']);
     });
 });
@@ -16,6 +16,7 @@ Route::prefix('teams')->name('teams.')->group(function () {
         Route::get('/actions', 'index');
         Route::post('/actions/{action}/start', 'start');
         Route::post('/actions/{action}/end', 'end');
+        Route::get('/actions/{action}', 'show');
 
     });
 
@@ -28,7 +29,7 @@ Route::prefix('teams')->name('teams.')->group(function () {
         Route::post('/{scoreCard}', 'exchange');
     });
     Route::controller(App\Http\Controllers\Api\MissionController::class)->prefix('missions')->name('missions.')->group(function () {
-        Route::get('/', 'index');
+        Route::get('/{mission}', 'show');
         Route::post('/{mission}', 'complete');
     });
 //});
