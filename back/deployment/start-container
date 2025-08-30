@@ -9,7 +9,6 @@ initialStuff() {
 
     php artisan storage:link; \
     php artisan optimize:clear; \
-    php artisan responsecache:clear; \
     php artisan optimize; \
     php artisan filament:cache-components; \
     php artisan icons:cache; \
