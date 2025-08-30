@@ -26,4 +26,14 @@ class MissionController extends Controller
             return ApiResponse::success(new MissionResource($mission), 'JOINED', 'ماموریت با موفقیت تکمیل شد');
         }
     }
+
+    public function show($mission)
+    {
+        $mission = Mission::findOrFail($mission);
+        $mission->load(['tasks']);
+        return ApiResponse::success([
+            ...$mission,
+
+        ]);
+    }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ActionResource;
 use App\Http\Support\ApiResponse;
 use App\Models\Action;
+use App\Models\ActionTeam;
 use Auth;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
@@ -50,5 +51,20 @@ class ActionController extends Controller
         ]);
 
         return ApiResponse::success(new ActionResource($action), 'JOINED', 'عملیات با موفقیت تکمیل شد');
+    }
+
+    public function show($action_id)
+    {
+        $team = Auth::guard('team')->user();
+        $action = Action::findOrFail($action_id);
+        $action->load(['region', 'missions', 'missions.tasks']);
+        $teamCompletedMissions = $team?->missions()?->whereHas('action', function ($query) use ($action) {
+            $query->where('action_id', $action->id);
+        })->count();
+        return ApiResponse::success([
+            ...$action->toArray(),
+            'completed_mission_count' => $teamCompletedMissions,
+        ]);
+
     }
 }

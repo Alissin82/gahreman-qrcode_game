@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Middleware\JwtFromCookie;
+use App\Http\Support\ApiResponse;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -13,6 +15,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->group('api', [JwtFromCookie::class, \App\Http\Middleware\Cors::class])->trustProxies(at: '*');
+        $middleware->statefulApi();
+        $middleware->redirectGuestsTo(function () {
+            throw new \Symfony\Component\HttpKernel\Exception\HttpException(403);
+        });
     })
-    ->withExceptions(function (Exceptions $exceptions): void {})->create();
+    ->withExceptions(function (Exceptions $exceptions): void {
+        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\HttpException $e, $request) {
+            if (request()->expectsJson() or str_contains(request()->path(), 'api')) {
+                return ApiResponse::fail($e->getMessage(), status: $e->getStatusCode(), code: $e->getCode());
+            }
+        });
+    })->create();
