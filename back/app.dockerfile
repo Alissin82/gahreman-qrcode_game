@@ -129,7 +129,7 @@ USER ${USER}
 COPY --link --chown=${WWWUSER}:${WWWUSER} composer.json composer.lock ./
 
 RUN composer install \
-    --no-dev \
+    #--no-dev \
     --no-interaction \
     --no-autoloader \
     --no-ansi \
@@ -152,12 +152,12 @@ WORKDIR ${ROOT}
 
 COPY --link package.json bun.lock* ./
 
-RUN bun install --frozen-lockfile
+#RUN bun install --frozen-lockfile
 
 COPY --link . .
 COPY --link --from=common ${ROOT}/vendor vendor
 
-RUN bun run build:fast
+#RUN bun run build:fast
 
 ###########################################
 
@@ -185,7 +185,7 @@ RUN composer install \
     --classmap-authoritative \
     --no-interaction \
     --no-ansi \
-    --no-dev \
+    #--no-dev \
     && composer clear-cache
 
 EXPOSE 8000
