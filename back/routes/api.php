@@ -11,14 +11,12 @@ Route::prefix('teams')->name('teams.')->group(function () {
     });
 });
 
-//Route::middleware('auth:team')->group(function () {
+Route::middleware('auth:team')->group(function () {
     Route::controller(App\Http\Controllers\Api\ActionController::class)->group(function () {
         Route::get('/actions', 'index');
         Route::post('/actions/{action}/start', 'start');
         Route::post('/actions/{action}/end', 'end');
-
     });
-
     Route::controller(App\Http\Controllers\Api\CoinController::class)->prefix('coins')->name('coins.')->group(function () {
         Route::get('/', 'index');
         Route::post('/{coin}', 'exchange');
@@ -28,7 +26,6 @@ Route::prefix('teams')->name('teams.')->group(function () {
         Route::post('/{scoreCard}', 'exchange');
     });
     Route::controller(App\Http\Controllers\Api\MissionController::class)->prefix('missions')->name('missions.')->group(function () {
-        Route::get('/', 'index');
-        Route::post('/{mission}', 'complete');
+        Route::post('/{mission}', 'toggleComplete');
     });
-//});
+});
