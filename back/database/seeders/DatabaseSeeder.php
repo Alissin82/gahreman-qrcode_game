@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Action;
+use App\Models\Coin;
 use App\Models\Mission;
 use App\Models\Region;
+use App\Models\ScoreCard;
 use App\Models\Team;
 use App\Models\TeamAdmins;
 use App\Models\TeamUsers;
@@ -61,6 +63,16 @@ class DatabaseSeeder extends Seeder
                 'action_id' => $action->id,
                 'title' => fake()->word(),
                 'score' => 0,
+            ]);
+
+            Coin::create([
+                'name' => "کارت 100 سکه ای",
+                'coin' => 100,
+            ]);
+
+            ScoreCard::create([
+                'name' => "کارت 200 امتیازی",
+                'score' => 200,
             ]);
         }
     }
