@@ -2,3 +2,4 @@ node_modules
 /front/.idea
 back/.env
 back/.env.production
+back/public/script.php
