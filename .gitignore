@@ -1,7 +1,4 @@
 node_modules
 /front/.idea
-back/composer.lock
-back/package-lock.json
-front/package-lock.json
 back/.env
 back/.env.production
