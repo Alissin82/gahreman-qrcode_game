@@ -3,15 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ScoreCardResource\Pages;
-use App\Filament\Resources\ScoreCardResource\RelationManagers;
 use App\Models\ScoreCard;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ScoreCardResource extends Resource
 {
@@ -69,7 +67,7 @@ class ScoreCardResource extends Resource
                     ->modalSubmitAction(false)
                     ->modalCancelAction(false)
                     ->modalWidth('sm')
-                    ->modalContent(function (\App\Models\ScoreCard $record) {
+                    ->modalContent(function (ScoreCard $record) {
                         $items = [];
 
                         $ActionPayload = [
@@ -79,14 +77,14 @@ class ScoreCardResource extends Resource
                         ];
 
                         $json = json_encode($ActionPayload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                        $png = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
+                        $png = QrCode::format('png')
                             ->encoding('UTF-8')
                             ->size(100)
                             ->margin(2)
                             ->generate($json);
 
                         $items[] = [
-                            'label' => "[ {$record->id} ]",
+                            'label' => $record->name,
                             'src'   => 'data:image/png;base64,' . base64_encode($png),
                         ];
 

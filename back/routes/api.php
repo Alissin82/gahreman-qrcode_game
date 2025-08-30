@@ -17,6 +17,14 @@ Route::middleware('auth:team')->group(function () {
         Route::get('/actions', 'index');
         Route::post('/actions/{action}', 'start');
     });
+    Route::controller(App\Http\Controllers\Api\CoinController::class)->prefix('coins')->name('coins.')->group(function () {
+        Route::get('/', 'index');
+        Route::post('/{coin}', 'exchange');
+    });
+    Route::controller(App\Http\Controllers\Api\ScoreCardController::class)->prefix('score-cards')->name('score-cards.')->group(function () {
+        Route::get('/', 'index');
+        Route::post('/{scoreCard}', 'exchange');
+    });
     Route::controller(App\Http\Controllers\Api\MissionController::class)->prefix('missions')->name('missions.')->group(function () {
         Route::get('/', 'index');
         Route::post('/{mission}', 'complete');

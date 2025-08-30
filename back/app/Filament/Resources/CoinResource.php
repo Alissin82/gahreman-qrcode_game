@@ -3,15 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CoinResource\Pages;
-use App\Filament\Resources\CoinResource\RelationManagers;
 use App\Models\Coin;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class CoinResource extends Resource
 {
@@ -68,7 +66,7 @@ class CoinResource extends Resource
                     ->modalSubmitAction(false)
                     ->modalCancelAction(false)
                     ->modalWidth('sm')
-                    ->modalContent(function (\App\Models\Coin $record) {
+                    ->modalContent(function (Coin $record) {
                         $items = [];
 
                         $ActionPayload = [
@@ -78,14 +76,14 @@ class CoinResource extends Resource
                         ];
 
                         $json = json_encode($ActionPayload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                        $png = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
+                        $png = QrCode::format('png')
                             ->encoding('UTF-8')
                             ->size(100)
                             ->margin(2)
                             ->generate($json);
 
                         $items[] = [
-                            'label' => "[ {$record->id} ]",
+                            'label' => $record->name,
                             'src'   => 'data:image/png;base64,' . base64_encode($png),
                         ];
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\MissionResource;
+use App\Http\Resources\CoinResource;
 use App\Http\Support\ApiResponse;
 use App\Models\Mission;
 use Auth;
@@ -14,7 +14,7 @@ class MissionController extends Controller
     public function index()
     {
         $data = Mission::with(['tasks','action'])->get();
-        return ApiResponse::success(MissionResource::collection($data));
+        return ApiResponse::success(CoinResource::collection($data));
     }
 
     /** @noinspection PhpUnusedParameterInspection */
@@ -24,6 +24,6 @@ class MissionController extends Controller
 
         $team->missions()->attach($mission);
 
-        return ApiResponse::success(new MissionResource($mission), 'JOINED', 'ماموریت با موفقیت تکمیل شد');
+        return ApiResponse::success(new CoinResource($mission), 'JOINED', 'ماموریت با موفقیت تکمیل شد');
     }
 }
