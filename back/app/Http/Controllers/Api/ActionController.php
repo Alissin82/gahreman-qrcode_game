@@ -8,6 +8,7 @@ use App\Http\Resources\ActionResource;
 use App\Http\Support\ApiResponse;
 use App\Models\Action;
 use App\Models\ActionTeam;
+use App\Models\Region;
 use Auth;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
@@ -18,11 +19,44 @@ class ActionController extends Controller
     {
         $team = Auth::guard('team')->user();
 
-        $data = Action::with(['missions', 'region', 'actionTeams' => function (HasMany $builder) use ($team) {
-            if ($team)
-                $builder->whereTeamId($team->id);
-        }])->get();
-        return ApiResponse::success(ActionResource::collection($data));
+        $data = Action::with([
+            'missions',
+            'region',
+            'actionTeams' => function (HasMany $builder) use ($team) {
+                if ($team)
+                    $builder->whereTeamId($team->id);
+            }
+        ])->get()->map(function (Action $action) use ($team) {
+            $actionMissionIds = $action->missions()->pluck('missions.id')->toArray();
+
+            $teamMissionIds = $team ? $team->missions()->pluck('missions.id')->toArray() : [];
+
+            $completedCount = count(array_intersect($actionMissionIds, $teamMissionIds));
+
+            /** @noinspection PhpUndefinedFieldInspection */
+            $action->meta = [
+                'total' => count($actionMissionIds),
+                'completed' => $completedCount
+            ];
+
+            return $action;
+        });
+
+        return ApiResponse::success([
+            'actions' => ActionResource::collection($data),
+            'meta' => [
+                'actions' => [
+                    'total' => Action::count(),
+                    'completed' => ActionTeam::whereTeamId($team->id)
+                        ->where('status', ActionStatus::Completed->value)
+                        ->count(),
+                ],
+                'regions' => [
+                    'total' => Region::count(),
+                    'completed' => 0, // TODO
+                ],
+            ],
+        ]);
     }
 
     /** @noinspection PhpUnusedParameterInspection */

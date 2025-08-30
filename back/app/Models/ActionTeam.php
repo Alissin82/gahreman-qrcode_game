@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ActionStatus;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class ActionTeam extends Pivot
@@ -18,5 +19,15 @@ class ActionTeam extends Pivot
         return [
             'status' => ActionStatus::class
         ];
+    }
+
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
+    }
+
+    public function action(): BelongsTo
+    {
+        return $this->belongsTo(Action::class);
     }
 }

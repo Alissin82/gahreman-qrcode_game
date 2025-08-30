@@ -26,6 +26,7 @@ class ActionResource extends JsonResource
             'region' => new RegionResource($this->whenLoaded('region')),
             'started_by_team' => count($this->whenLoaded('actionTeams')) > 0,
             'created_at' => $this->created_at,
+            'meta' => $this->meta ?? null,
         ];
     }
 }
