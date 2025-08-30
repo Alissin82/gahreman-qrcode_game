@@ -8,4 +8,5 @@ class CoinTeam extends Model
 {
     protected $fillable = [
         ''
+    ];
 }
