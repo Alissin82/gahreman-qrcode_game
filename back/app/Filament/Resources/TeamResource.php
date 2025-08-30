@@ -3,18 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TeamResource\Pages;
-use App\Filament\Resources\TeamResource\RelationManagers;
 use App\Models\Team;
 use Filament\Forms;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TeamResource extends Resource
 {
@@ -53,7 +48,7 @@ class TeamResource extends Resource
                     ->default(now())
                     ->jalali()
                     ->seconds(false)
-                    ->label('تارخ شروع')
+                    ->label('تاریخ شروع')
                     ->required(),
                 Forms\Components\TextInput::make('phone')->label('شماره تلفن')->tel()->required(),
                 Forms\Components\TextInput::make('score')->label('امتیاز')
