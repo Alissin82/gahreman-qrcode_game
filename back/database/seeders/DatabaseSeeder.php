@@ -80,12 +80,12 @@ class DatabaseSeeder extends Seeder
 
         $excels = [];
         $excels[] = [
-            'path' => Storage::disk('local')->path('old-data/boys.xlsx'),
+            'path' => Storage::disk()->path('old-data/boys.xlsx'),
             'gender' => true, // for male
             'admin' => $boysTeamAdmin,
         ];
         $excels[] = [
-            'path' => Storage::disk('local')->path('old-data/girls.xlsx'),
+            'path' => Storage::disk()->path('old-data/girls.xlsx'),
             'gender' => false, // for females
             'admin' => $girlsTeamAdmin,
         ];
