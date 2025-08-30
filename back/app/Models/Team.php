@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Sanctum\HasApiTokens;
+use Str;
 
 class Team extends Model implements AuthenticatableContract
 {
@@ -34,6 +35,17 @@ class Team extends Model implements AuthenticatableContract
         'start' => 'datetime'
     ];
 
+    protected static function booted(): void
+    {
+        static::creating(function ($team) {
+            do {
+                $hash = Str::random();
+            } while (Team::where('hash', $hash)->exists());
+
+            $team->hash = $hash;
+        });
+    }
+
     public function admin(): BelongsTo
     {
         return $this->belongsTo(TeamAdmins::class, 'team_id');
@@ -48,8 +60,8 @@ class Team extends Model implements AuthenticatableContract
         return $this->hasMany(ScoreMission::class, 'team_id');
     }
 
-    /** @noinspection PhpUnused
-     * @noinspection PhpParamsInspection
+    /**
+     * @noinspection PhpUnused
      */
     public function getTotalMissionScoreAttribute(): float|int
     {

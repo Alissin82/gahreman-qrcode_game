@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('bio')->nullable();
             $table->integer('score')->default(0);
             $table->integer('coin')->default(0);
-            $table->string('hash')->default(Str::random(16));
+            $table->string('hash')->unique();
             $table->boolean('gender')->default(true); // true male
-            $table->timestamp('start')->default(now());
+            $table->timestamp('start')->useCurrent();
             $table->timestamps();
         });
     }
