@@ -11,6 +11,8 @@ x-base: &base
       condition: service_healthy
     redis:
       condition: service_healthy
+    minio:
+      condition: service_healthy
   build:
     context: .
     dockerfile: app.dockerfile
@@ -78,6 +80,28 @@ services:
       test: [ 'CMD', 'redis-cli', 'ping' ]
       retries: 3
       timeout: 5s
+  minio:
+    profiles: [ app ]
+    image: 'minio/minio:RELEASE.2025-04-22T22-12-26Z'
+    ports:
+      - '127.0.0.1:9006:9000'
+      - '127.0.0.1:8906:8900'
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      MINIO_ROOT_USER: '${AWS_ACCESS_KEY_ID}'
+      MINIO_ROOT_PASSWORD: '${AWS_SECRET_ACCESS_KEY}'
+    volumes:
+      - 'minio-data:/data/minio'
+    networks:
+      - wclub
+    command: 'minio server /data/minio --console-address ":8900"'
+    restart: always
+    logging: *default-logging
+    healthcheck:
+      test: [ 'CMD', 'mc', 'ready', 'local' ]
+      retries: 3
+      timeout: 5s
   app:
     <<: *base
     environment:
@@ -90,3 +114,4 @@ volumes:
   storage:
   pgsql-data:
   redis-data:
+  minio-data:
