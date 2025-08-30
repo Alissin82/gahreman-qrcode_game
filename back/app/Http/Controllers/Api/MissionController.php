@@ -31,9 +31,6 @@ class MissionController extends Controller
     {
         $mission = Mission::findOrFail($mission);
         $mission->load(['tasks']);
-        return ApiResponse::success([
-            ...$mission,
-
-        ]);
+        return ApiResponse::success($mission);
     }
 }

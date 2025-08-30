@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Support\ApiResponse;
 use App\Models\Team;
+use Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -20,6 +21,9 @@ class AuthController extends Controller
         }
 
         $team->tokens()->delete();
+
+        Auth::login($team);
+
         $token = $team->createToken('api-token')->plainTextToken;
 
         return response()->json([
