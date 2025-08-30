@@ -25,9 +25,11 @@ class ActionController extends Controller
     }
 
     /** @noinspection PhpUnusedParameterInspection */
-    public function start(Request $request, Action $action)
+    public function start(Request $request, $action_id)
     {
         $team = Auth::guard('team')->user();
+
+        $action = Action::find($action_id);
 
         $team->actions()->attach($action, [
             'status' => ActionStatus::Pending->value
@@ -36,14 +38,17 @@ class ActionController extends Controller
         return ApiResponse::success(new ActionResource($action), 'JOINED', 'عملیات با موفقیت شروع شد');
     }
 
-    public function end(Request $request, Action $action)
+    /** @noinspection PhpUnusedParameterInspection */
+    public function end(Request $request, $action_id)
     {
         $team = Auth::guard('team')->user();
+
+        $action = Action::find($action_id);
 
         $team->actions()->updateExistingPivot($action->id, [
             'status' => ActionStatus::Completed->value
         ]);
 
-        return ApiResponse::success(new ActionResource($action), 'JOINED', 'عملیات با موفقیت شروع شد');
+        return ApiResponse::success(new ActionResource($action), 'JOINED', 'عملیات با موفقیت تکمیل شد');
     }
 }
