@@ -7,13 +7,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ActionResource;
 use App\Http\Support\ApiResponse;
 use App\Models\Action;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 
 class ActionController extends Controller
 {
     public function index()
     {
-        $data = Action::with(['missions', 'region'])->get();
+        $team = \Auth::guard('team')->user();
+
+        $data = Action::with(['missions', 'region', 'actionTeams' => function (HasMany $builder) use ($team) {
+            if ($team)
+                $builder->whereTeamId($team->id);
+        }])->get();
         return ApiResponse::success(ActionResource::collection($data));
     }
 

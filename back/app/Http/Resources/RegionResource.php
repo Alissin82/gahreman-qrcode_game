@@ -2,14 +2,14 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Action;
+use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin Action
+ * @mixin Region
  */
-class ActionResource extends JsonResource
+class RegionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,11 +21,12 @@ class ActionResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'region_id' => $this->region_id,
-            'missions' => MissionResource::collection($this->whenLoaded('missions')),
-            'region' => new RegionResource($this->whenLoaded('region')),
-            'started_by_team' => $this->whenLoaded('actionTeams'),
+            'x' => $this->x,
+            'y' => $this->y,
+            'order' => $this->order,
+            'lockable' => $this->lockable,
             'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

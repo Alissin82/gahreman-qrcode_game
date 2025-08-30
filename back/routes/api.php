@@ -22,6 +22,3 @@ Route::middleware('auth:team')->group(function () {
         Route::post('/{mission}', 'complete');
     });
 });
-
-Route::get('/actions', [ActionController::class, 'index']);
-Route::get('/actions/{id}', [ActionController::class, 'show']);

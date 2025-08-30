@@ -38,4 +38,9 @@ class Action extends Model
     {
         return $this->belongsToMany(Team::class, 'action_team');
     }
+
+    public function actionTeams(): HasMany
+    {
+        return $this->hasMany(ActionTeam::class);
+    }
 }
