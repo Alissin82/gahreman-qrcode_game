@@ -17,7 +17,6 @@ Route::middleware('auth:team')->group(function () {
         Route::post('/actions/{action}/start', 'start');
         Route::post('/actions/{action}/end', 'end');
         Route::get('/actions/{action}', 'show');
-
     });
 
     Route::controller(App\Http\Controllers\Api\CoinController::class)->prefix('coins')->name('coins.')->group(function () {
