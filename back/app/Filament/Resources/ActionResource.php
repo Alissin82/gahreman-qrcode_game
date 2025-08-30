@@ -10,6 +10,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Filament\Custom\FileInput;
 
 class ActionResource extends Resource
 {
@@ -88,7 +89,9 @@ class ActionResource extends Resource
 
             Forms\Components\Toggle::make('need_review')
                 ->label('نیاز به بازبینی')
-                ->default(false)
+                ->default(false),
+
+            FileInput::make($form, 'attachment'),
         ];
 
         $missions = [
