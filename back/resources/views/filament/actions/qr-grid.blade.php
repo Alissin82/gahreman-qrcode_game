@@ -2,25 +2,35 @@
     <div
         id="page"
         style="
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            height: 50vh;
+            display: {{ count($items) === 1 ? 'flex' : 'grid' }};
+            {{ count($items) === 1
+                ? 'align-items:center; justify-content:center; min-height:200px;'
+                : 'grid-template-columns: repeat(2, 1fr); gap:1rem; height:50vh; overflow-y:auto;'
+            }}
             margin-left: auto;
             margin-right: auto;
-            overflow-y: auto;
             padding: 1rem;
             box-sizing: border-box;
         "
     >
         @foreach ($items as $item)
-            <div style="position:relative; border:#0a0a0a 1px solid; padding:1rem; border-radius:0.5rem; overflow:hidden;">
+            <div
+                style="
+                    position:relative;
+                    border:#0a0a0a 1px solid;
+                    padding:1rem;
+                    border-radius:0.5rem;
+                    overflow:hidden;
+                    {{ count($items) === 1 ? 'width:100%; max-width:400px; height:auto;' : '' }}
+                "
+            >
                 <img
                     src="{{ $item['src'] }}"
                     alt="QR: {{ $item['label'] }}"
-                    style="width:100%; display:block;"
+                    style="width:100%; height:auto; display:block;"
                 >
                 <div style="text-align:center; margin-top:0.5rem;">{{ $item['label'] }}</div>
+
                 <div
                     style="
                         position:absolute;
@@ -35,8 +45,8 @@
                         opacity:0;
                         transition:opacity 0.3s;
                     "
-                    onmouseover="this.style.opacity=1"
-                    onmouseout="this.style.opacity=0"
+                        onmouseover="this.style.opacity=1"
+                        onmouseout="this.style.opacity=0"
                 >
                     <a
                         href="{{ $item['src'] }}"
