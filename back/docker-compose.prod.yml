@@ -93,8 +93,6 @@ services:
       MINIO_ROOT_PASSWORD: '${AWS_SECRET_ACCESS_KEY}'
     volumes:
       - 'minio-data:/data/minio'
-    networks:
-      - wclub
     command: 'minio server /data/minio --console-address ":8900"'
     restart: always
     logging: *default-logging
