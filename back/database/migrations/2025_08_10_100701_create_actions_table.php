@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('actions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('region_id')->nullable();
+            $table->foreignId('region_id')->nullable()->constrained();
             $table->timestamp('release')->default(now());
             $table->timestamps();
         });
