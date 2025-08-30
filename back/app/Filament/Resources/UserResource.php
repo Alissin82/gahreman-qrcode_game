@@ -40,7 +40,6 @@ class UserResource extends Resource
                         0 => 'دختر',
                     ])
                     ->required(),
-                Forms\Components\Select::make('team_id')->label('تیم')->relationship('team', 'name')->preload()->searchable(),
             ]);
     }
 
@@ -62,12 +61,6 @@ class UserResource extends Resource
                     ->sortable(),
                 Tables\Columns\IconColumn::make('gender')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('teams_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('otp')
-                    ->dateTime()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

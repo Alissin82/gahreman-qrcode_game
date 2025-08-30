@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('task_reviews', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('task_id')->nullable();
-            $table->foreignId('team_id')->nullable();
+            $table->foreignId('task_id')->nullable()->constrained('tasks')->cascadeOnDelete();
+            $table->foreignId('team_id')->nullable()->constrained('teams')->cascadeOnDelete();;
             $table->string('attachment')->nullable();
             $table->integer('score');
             $table->text('comment')->nullable();

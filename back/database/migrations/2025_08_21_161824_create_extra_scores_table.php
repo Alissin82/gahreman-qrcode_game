@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('extra_scores', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('team_id')->constrained();
+            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->integer('score');
             $table->string('reason')->nullable();
             $table->timestamps();

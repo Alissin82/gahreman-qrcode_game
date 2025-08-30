@@ -20,8 +20,6 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->integer('age')->default(12);
             $table->boolean('gender')->default(true); // true male
-            $table->foreignId('team_id')->nullable();
-            $table->timestamp('otp')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

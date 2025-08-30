@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('puzzle_pieces', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('puzzle_id')->constrained('puzzles')->onDelete('cascade');
+            $table->foreignId('puzzle_id')->constrained('puzzles')->cascadeOnDelete();
             $table->string('piece_data');
             $table->timestamps();
         });

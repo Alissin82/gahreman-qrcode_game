@@ -36,7 +36,7 @@ class AdminUserSeeder extends Seeder
                 'password' => Hash::make('password'),
             ]
         );
-        $superRole = Role::firstOrCreate(['name' => 'super_admin']);
+        Role::firstOrCreate(['name' => 'super_admin']);
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
 
         $extraPermissions = [

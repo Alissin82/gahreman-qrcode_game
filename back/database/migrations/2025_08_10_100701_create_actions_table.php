@@ -15,8 +15,8 @@ return new class extends Migration
         Schema::create('actions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('region_id')->nullable()->constrained();
-            $table->timestamp('release')->default(now());
+            $table->foreignId('region_id')->nullable()->constrained('regions')->nullOnDelete();
+            $table->timestamp('release')->useCurrent();
             $table->timestamps();
         });
     }

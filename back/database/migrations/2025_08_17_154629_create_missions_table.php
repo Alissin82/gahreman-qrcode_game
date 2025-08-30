@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('missions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('action_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('action_id')->constrained('actions')->cascadeOnDelete();
             $table->string('title');
             $table->integer('score')->default(0);
             $table->timestamps();

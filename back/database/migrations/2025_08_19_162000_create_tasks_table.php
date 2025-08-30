@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mission_id');
+            $table->foreignId('mission_id')->constrained('missions')->cascadeOnDelete();
             $table->string('type');
             $table->integer('duration')->nullable();
             $table->integer('score')->default(0);
