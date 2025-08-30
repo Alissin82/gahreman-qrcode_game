@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('team_admins', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('team_id')->cascadeOnDelete();
+            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->string('name');
             $table->string('family');
             $table->boolean('gender')->default(true)->nullable();
