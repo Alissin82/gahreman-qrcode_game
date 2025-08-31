@@ -19,17 +19,17 @@ class DatabaseSeeder extends Seeder
             '--panel' => 'admin',
         ]);
 
-//        $sheets = Excel::toCollection(new OldDataImport(), public_path('excel/data.xlsx'));
-//        RegionSeeder::$regions = $sheets[0]->toArray();
-//        ActionSeeder::$actions = $sheets[1]->toArray();
-//        TasksSeeder::$tasks = $sheets[2]->toArray();
+        //        $sheets = Excel::toCollection(new OldDataImport(), public_path('excel/data.xlsx'));
+        //        RegionSeeder::$regions = $sheets[0]->toArray();
+        //        ActionSeeder::$actions = $sheets[1]->toArray();
+        //        TasksSeeder::$tasks = $sheets[2]->toArray();
 
         $this->call([
             AdminUserSeeder::class,
-//            TeamsSeeder::class,
-//            RegionSeeder::class,
-//            ActionSeeder::class,
-//            TasksSeeder::class,
+            TeamsSeeder::class,
+            RegionSeeder::class,
+            ActionSeeder::class,
+            TasksSeeder::class,
         ]);
     }
 }

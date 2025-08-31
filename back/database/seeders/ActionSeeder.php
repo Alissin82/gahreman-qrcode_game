@@ -9,7 +9,20 @@ use Illuminate\Database\Seeder;
 
 class ActionSeeder extends Seeder
 {
-    static array $actions = [];
+    static array $actions = [
+        [
+            'name' => 'Action 1',
+            'score' => 10,
+        ],
+        [
+            'name' => 'Action 2',
+            'score' => 20,
+        ],
+        [
+            'name' => 'Action 3',
+            'score' => 30,
+        ],
+    ];
 
     public function run(): void
     {
@@ -17,45 +30,29 @@ class ActionSeeder extends Seeder
         array_shift(self::$actions);
 
         $header = [
-            'id',
             'name',
-            'region_id',
-            'lock',
-            'requirement_action_id',
-            'end_scan_score',
-            'qr_coin_10',
-            'qr_coin_20',
-            'qr_coin_30',
-            'qr_coin_40',
-            'qr_coin_50',
-            'qr_score_10',
-            'qr_score_20',
-            'qr_score_30',
-            'qr_score_40',
-            'qr_score_50',
-            'multi_question',
-            'review'
+            'score',
         ];
 
         foreach (self::$actions as $action) {
             $action = array_combine($header, $action);
-            if ($action['lock']) {
-                Region::find($action['region_id'])->update([
-                    'lockable' => true,
-                ]);
-            }
 
-            Action::create([
-                'id' => $action['id'],
+            // if ($action['lock']) {
+            //     Region::find($action['region_id'])->update([
+            //         'lockable' => true,
+            //     ]);
+            // }
+
+            $action = Action::create([
                 'name' => $action['name'],
-                'region_id' => $action['region_id'],
+                'score' => $action['score'],
+                // 'region_id' => $action['region_id'],
             ]);
 
             Mission::create([
-                'id' => $action['id'],
                 'title' => $action['name'],
-                'score' => $action['end_scan_score'],
-                'action_id' => $action['id'],
+                'score' => $action['score'],
+                'action_id' => $action->id,
             ]);
         }
     }
