@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('region_id')->nullable()->constrained('regions')->nullOnDelete();
+            $table->unsignedInteger('score');
             $table->timestamp('release')->useCurrent();
             $table->timestamps();
         });
