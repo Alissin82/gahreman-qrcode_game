@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Support\ApiResponse;
 use App\Models\Team;
-use Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Response\ApiResponse;
 
 class AuthController extends Controller
 {

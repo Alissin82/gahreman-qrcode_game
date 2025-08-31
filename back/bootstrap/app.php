@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Support\ApiResponse;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Response\ApiResponse;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(

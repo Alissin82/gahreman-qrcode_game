@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ScoreCardResource;
-use App\Http\Support\ApiResponse;
 use App\Models\ScoreCard;
 use Auth;
 use Illuminate\Http\Request;
+use Response\ApiResponse;
 
 class ScoreCardController extends Controller
 {
