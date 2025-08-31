@@ -41,4 +41,9 @@ class Task extends Model
     {
         return $this->morphTo();
     }
+
+    public function score(): MorphM
+    {
+
+    }
 }

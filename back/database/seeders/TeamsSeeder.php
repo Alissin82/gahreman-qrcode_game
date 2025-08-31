@@ -39,12 +39,12 @@ class TeamsSeeder extends Seeder
 
         $excels = [];
         $excels[] = [
-            'path' => Storage::disk()->path('old-data/boys.xlsx'),
+            'path' => public_path('excel/boys.xlsx'),
             'gender' => true, // for male
             'admin' => $boysTeamAdmin,
         ];
         $excels[] = [
-            'path' => Storage::disk()->path('old-data/girls.xlsx'),
+            'path' => public_path('excel/girls.xlsx'),
             'gender' => false, // for females
             'admin' => $girlsTeamAdmin,
         ];

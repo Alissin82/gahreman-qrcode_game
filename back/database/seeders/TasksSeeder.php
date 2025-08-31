@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Modules\Task\Enum\TaskType;
 use Modules\Task\Models\Task;
 
 class TasksSeeder extends Seeder
@@ -34,15 +35,11 @@ class TasksSeeder extends Seeder
             $task = array_combine($header, $task);
             Task::create([
                 'id' => $task['id'],
-                'type' => 'question',
+                'type' => TaskType::MCQ->value,
                 'question' => $task['question'],
-                'option1' => $task['o1'],
-                'option2' => $task['o2'],
-                'option3' => $task['o3'],
-                'option4' => $task['o4'],
                 'answer' => $task['answer'],
                 'score' => $task['score'],
-                'mission_id' => $task['action_id'],
+                'action_id' => $task['action_id'],
                 'duration' => 1
             ]);
         }
