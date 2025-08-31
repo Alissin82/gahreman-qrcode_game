@@ -24,7 +24,7 @@ class ActionResource extends JsonResource
             'region_id' => $this->region_id,
             'missions' => MissionResource::collection($this->whenLoaded('missions')),
             'region' => new RegionResource($this->whenLoaded('region')),
-            'started_by_team' => count($this->whenLoaded('actionTeams')) > 0,
+            'started_by_team' => $this->relationLoaded('actionTeams') && $this->actionTeams->count() > 0,
             'created_at' => $this->created_at,
             'meta' => $this->meta ?? null,
         ];
