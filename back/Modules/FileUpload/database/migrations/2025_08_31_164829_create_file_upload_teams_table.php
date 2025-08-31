@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('file_upload_teams', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('file_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('file_upload_id')->constrained()->cascadeOnDelete();
             $table->foreignId('team_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

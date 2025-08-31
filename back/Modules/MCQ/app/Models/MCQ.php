@@ -8,6 +8,8 @@ use Modules\Task\Models\Task;
 
 class MCQ extends Model
 {
+    protected $table = 'm_c_qs';
+
     protected $fillable = ['question', 'answer', 'options'];
 
     protected function casts(): array
