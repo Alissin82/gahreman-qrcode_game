@@ -30,7 +30,7 @@ class FileInput
                     ->first()
                     ?->delete();
             })
-            ->disk('s3')
+            ->disk(config('app.env') === 'production' ? 's3' : 'public')
             ->visibility($visibility)
             ->multiple($isMultiple)
             ->reorderable($isMultiple)
