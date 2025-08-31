@@ -13,6 +13,9 @@ use Filament\Tables\Table;
 use Modules\Task\Enum\TaskType;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Filament\Custom\FileInput;
+use Filament\Forms\Components\MorphToSelect;
+use Modules\MCQ\Models\MCQ;
+use Modules\FileUpload\Models\FileUpload;
 
 class ActionResource extends Resource
 {
@@ -32,6 +35,19 @@ class ActionResource extends Resource
                 ->options(TaskType::class)
                 ->required()
                 ->reactive(),
+
+            MorphToSelect::make('taskable')
+                ->types([
+                    MorphToSelect\Type::make(MCQ::class)
+                        ->label('سوال چند گزینه ای')
+                        ->getOptionLabelFromRecordUsing(fn(MCQ $record): string => "{$record->question}"),
+                    MorphToSelect\Type::make(FileUpload::class)
+                        ->label('آپلود فایل')
+                        ->titleAttribute('description'),
+                ])
+                ->label('نوع وظیفه')
+                ->columnSpanFull()
+                ->required(),
 
             Forms\Components\TextInput::make('score')
                 ->label('امتیاز')
