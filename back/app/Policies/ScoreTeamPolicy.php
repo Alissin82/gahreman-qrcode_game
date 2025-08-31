@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\MCQ\Policies;
+namespace App\Policies;
 
 use App\Models\User;
-use Modules\MCQ\Models\MCQ;
+use App\Models\ScoreTeam;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class MCQPolicy
+class ScoreTeamPolicy
 {
     use HandlesAuthorization;
 
@@ -15,15 +15,15 @@ class MCQPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_m::c::q');
+        return $user->can('view_any_score::team');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, MCQ $mCQ): bool
+    public function view(User $user, ScoreTeam $scoreTeam): bool
     {
-        return $user->can('view_m::c::q');
+        return $user->can('view_score::team');
     }
 
     /**
@@ -31,23 +31,23 @@ class MCQPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_m::c::q');
+        return $user->can('create_score::team');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, MCQ $mCQ): bool
+    public function update(User $user, ScoreTeam $scoreTeam): bool
     {
-        return $user->can('update_m::c::q');
+        return $user->can('update_score::team');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, MCQ $mCQ): bool
+    public function delete(User $user, ScoreTeam $scoreTeam): bool
     {
-        return $user->can('delete_m::c::q');
+        return $user->can('delete_score::team');
     }
 
     /**
@@ -55,15 +55,15 @@ class MCQPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_m::c::q');
+        return $user->can('delete_any_score::team');
     }
 
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, MCQ $mCQ): bool
+    public function forceDelete(User $user, ScoreTeam $scoreTeam): bool
     {
-        return $user->can('force_delete_m::c::q');
+        return $user->can('force_delete_score::team');
     }
 
     /**
@@ -71,15 +71,15 @@ class MCQPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_m::c::q');
+        return $user->can('force_delete_any_score::team');
     }
 
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, MCQ $mCQ): bool
+    public function restore(User $user, ScoreTeam $scoreTeam): bool
     {
-        return $user->can('restore_m::c::q');
+        return $user->can('restore_score::team');
     }
 
     /**
@@ -87,15 +87,15 @@ class MCQPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_m::c::q');
+        return $user->can('restore_any_score::team');
     }
 
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, MCQ $mCQ): bool
+    public function replicate(User $user, ScoreTeam $scoreTeam): bool
     {
-        return $user->can('replicate_m::c::q');
+        return $user->can('replicate_score::team');
     }
 
     /**
@@ -103,6 +103,6 @@ class MCQPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_m::c::q');
+        return $user->can('reorder_score::team');
     }
 }

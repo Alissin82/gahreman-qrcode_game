@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Sanctum\HasApiTokens;
+use Modules\FileUpload\Models\FileUpload;
+use Modules\MCQ\Models\MCQ;
+use Modules\MCQ\Models\MCQTeam;
+use Modules\Task\Models\Task;
 use Str;
 
 class Team extends Model implements AuthenticatableContract
@@ -90,5 +94,21 @@ class Team extends Model implements AuthenticatableContract
     public function scoreCards(): BelongsToMany
     {
         return $this->belongsToMany(ScoreCard::class, 'score_card_team');
+    }
+
+    public function MCQs(): BelongsToMany
+    {
+        return $this->belongsToMany(Mcq::class, 'm_c_q_team')
+            ->using(McqTeam::class);
+    }
+
+    public function fileUploads(): BelongsToMany
+    {
+        return $this->belongsToMany(FileUpload::class, 'file_upload_team');
+    }
+
+    public function tasks(): BelongsToMany
+    {
+        return $this->belongsToMany(Task::class, 'task_team');
     }
 }

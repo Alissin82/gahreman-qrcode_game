@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use App\Models\Mission;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\Task\Transformers\TaskResource;
+use Modules\Task\Resources\TaskResource;
 
 /**
  * @mixin Mission

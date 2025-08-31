@@ -70,6 +70,12 @@ class ActionResource extends Resource
                     ->label('نام عملیات')
                     ->required(),
 
+                Forms\Components\TextInput::make('score')
+                    ->label('امتیاز')
+                    ->numeric()
+                    ->default(0)
+                    ->required(),
+
                 Forms\Components\DateTimePicker::make('release')
                     ->default(now())
                     ->jalali()
@@ -114,6 +120,7 @@ class ActionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')->label('ID')->sortable(),
+                Tables\Columns\TextColumn::make('score')->label('امتیاز')->sortable(),
                 Tables\Columns\TextColumn::make('name')->label('نام عملیات')->searchable(),
                 Tables\Columns\TextColumn::make('missions_count')
                     ->counts('missions')

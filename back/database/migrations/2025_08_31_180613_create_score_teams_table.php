@@ -9,15 +9,13 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-
     public function up(): void
     {
-        Schema::create('actions', function (Blueprint $table) {
+        Schema::create('score_teams', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignId('region_id')->nullable()->constrained('regions')->nullOnDelete();
-            $table->unsignedInteger('score');
-            $table->timestamp('release')->useCurrent();
+            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
+            $table->nullableMorphs('scorable');
+            $table->integer('score')->defualt(0);
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('actions');
+        Schema::dropIfExists('score_teams');
     }
 };

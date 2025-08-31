@@ -20,6 +20,7 @@ class Action extends Model implements HasMedia
         'name',
         'release',
         'region_id',
+        'score'
     ];
 
     protected $casts = [
