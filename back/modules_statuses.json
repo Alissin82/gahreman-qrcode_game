@@ -1,5 +1,6 @@
 {
     "Support": true,
     "Task": true,
-    "MCQ": true
+    "MCQ": true,
+    "FileUpload": true
 }

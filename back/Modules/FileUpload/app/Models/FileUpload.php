@@ -1,14 +1,18 @@
 <?php
 
-namespace Modules\MCQ\Models;
+namespace Modules\FileUpload\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Modules\Task\Models\Task;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class MCQ extends Model
+class FileUpload extends Model implements HasMedia
 {
-    protected $fillable = ['question', 'answer', 'options'];
+    use InteractsWithMedia;
+
+    protected $fillable = ['description'];
 
     public function tasks(): MorphMany
     {

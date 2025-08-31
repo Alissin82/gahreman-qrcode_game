@@ -11,7 +11,7 @@ use App\Models\Region;
 use Auth;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
-use Response\ApiResponse;
+use Modules\Support\Responses\ApiResponse;
 
 class ActionController extends Controller
 {

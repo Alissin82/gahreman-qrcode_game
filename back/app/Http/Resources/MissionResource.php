@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Models\Mission;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Task\Transformers\TaskResource;
 
 /**
  * @mixin Mission
@@ -24,7 +25,7 @@ class MissionResource extends JsonResource
             'score' => $this->score,
             'action_id' => $this->action_id,
             'action' => $this->whenLoaded('action'),
-            'tasks' => $this->whenLoaded('tasks'),
+            'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
             'created_at' => $this->created_at,
         ];
     }
