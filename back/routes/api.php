@@ -12,6 +12,11 @@ Route::prefix('teams')->name('teams.')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::controller(App\Http\Controllers\Api\ActionTeamController::class)->group(function () {
+        Route::post('/actions/{action}/upload', 'upload');
+    });
+
     Route::controller(App\Http\Controllers\Api\ActionController::class)->group(function () {
         Route::get('/actions', 'index');
         Route::post('/actions/{action}/start', 'start');
