@@ -57,9 +57,6 @@ class RegionSeeder extends Seeder
 
     public function run(): void
     {
-        // skip header
-        array_shift(self::$regions);
-
         $header = [
             'id',
             'name',
