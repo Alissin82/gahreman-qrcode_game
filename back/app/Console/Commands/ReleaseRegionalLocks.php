@@ -36,11 +36,12 @@ class ReleaseRegionalLocks extends Command
                 if ($hasPending->isEmpty()) {
                     $region->lockable = false;
                     $region->save();
+                    return;
                 }
 
                 $hasPending->each(function (ActionTeam $actionTeam) use ($region) {
                     if (now()->gt($actionTeam->created_at->addMinutes($actionTeam->action->duration))) {
-                        $actionTeam->status = ActionStatus::Completed;
+                        $actionTeam->status = ActionStatus::Timeout;
                         $actionTeam->save();
 
                         $region->lockable = false;
