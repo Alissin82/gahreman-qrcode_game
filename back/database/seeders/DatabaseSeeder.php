@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Imports\OldDataImport;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DatabaseSeeder extends Seeder
@@ -19,7 +20,8 @@ class DatabaseSeeder extends Seeder
             '--panel' => 'admin',
         ]);
 
-        $sheets = Excel::toCollection(new OldDataImport(), storage_path("app/private/old-data/data.xlsx"));
+        $excel = Storage::disk()->path('old-data/data.xlsx');
+        $sheets = Excel::toCollection(new OldDataImport(), $excel);
 
         RegionSeeder::$regions = $sheets[0]->toArray();
         ActionSeeder::$actions = $sheets[1]->toArray();
