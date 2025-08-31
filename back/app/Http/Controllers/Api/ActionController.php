@@ -9,7 +9,8 @@ use App\Models\Action;
 use App\Models\ActionTeam;
 use App\Models\Mission;
 use App\Models\Region;
-use Auth;
+use App\Models\ScoreTeam;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use Modules\Support\Responses\ApiResponse;
@@ -93,20 +94,29 @@ class ActionController extends Controller
         /** @noinspection PhpPossiblePolymorphicInvocationInspection */
         $actionTeam = ActionTeam::where('team_id', $team->id)->where('action_id', $action->id)->first();
 
-        if ($actionTeam) {
-            if ($actionTeam->status == ActionStatus::Completed) {
-                return ApiResponse::fail('عملیات قبلا به پایان رسیده است.');
-            } else {
-                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-                $team->actions()->updateExistingPivot($action->id, [
-                    'status' => ActionStatus::Completed
-                ]);
-                $team->missions()->sync(Mission::where('action_id', $action_id)->pluck('id'));
-                return ApiResponse::success(new ActionResource($action), 'JOINED', 'عملیات با موفقیت تکمیل شد');
-            }
-        } else {
+        if (!$actionTeam) {
             return ApiResponse::fail('عملیات هنوز شروع نشده است.');
         }
+
+
+        if ($actionTeam->status == ActionStatus::Completed) {
+            return ApiResponse::fail('عملیات قبلا به پایان رسیده است.');
+        }
+
+        ScoreTeam::create([
+            'team_id' => $team->id,
+            'score' => $action->score,
+            'scorable_id' => $action->id,
+            'scorable_type' => Action::class,
+        ]);
+
+        /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+        $team->actions()->updateExistingPivot($action->id, [
+            'status' => ActionStatus::Completed
+        ]);
+
+        $team->missions()->sync(Mission::where('action_id', $action_id)->pluck('id'));
+        return ApiResponse::success(new ActionResource($action), 'JOINED', 'عملیات با موفقیت تکمیل شد');
     }
 
     public function show($action_id)
