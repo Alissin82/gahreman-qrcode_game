@@ -15,7 +15,7 @@ class MCQPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_m::c::q::resoruce');
+        return $user->can('view_any_m::c::q');
     }
 
     /**
@@ -23,7 +23,7 @@ class MCQPolicy
      */
     public function view(User $user, MCQ $mCQ): bool
     {
-        return $user->can('view_m::c::q::resoruce');
+        return $user->can('view_m::c::q');
     }
 
     /**
@@ -31,7 +31,7 @@ class MCQPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_m::c::q::resoruce');
+        return $user->can('create_m::c::q');
     }
 
     /**
@@ -39,7 +39,7 @@ class MCQPolicy
      */
     public function update(User $user, MCQ $mCQ): bool
     {
-        return $user->can('update_m::c::q::resoruce');
+        return $user->can('update_m::c::q');
     }
 
     /**
@@ -47,7 +47,7 @@ class MCQPolicy
      */
     public function delete(User $user, MCQ $mCQ): bool
     {
-        return $user->can('delete_m::c::q::resoruce');
+        return $user->can('delete_m::c::q');
     }
 
     /**
@@ -55,7 +55,7 @@ class MCQPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_m::c::q::resoruce');
+        return $user->can('delete_any_m::c::q');
     }
 
     /**
@@ -63,7 +63,7 @@ class MCQPolicy
      */
     public function forceDelete(User $user, MCQ $mCQ): bool
     {
-        return $user->can('force_delete_m::c::q::resoruce');
+        return $user->can('force_delete_m::c::q');
     }
 
     /**
@@ -71,7 +71,7 @@ class MCQPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_m::c::q::resoruce');
+        return $user->can('force_delete_any_m::c::q');
     }
 
     /**
@@ -79,7 +79,7 @@ class MCQPolicy
      */
     public function restore(User $user, MCQ $mCQ): bool
     {
-        return $user->can('restore_m::c::q::resoruce');
+        return $user->can('restore_m::c::q');
     }
 
     /**
@@ -87,7 +87,7 @@ class MCQPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_m::c::q::resoruce');
+        return $user->can('restore_any_m::c::q');
     }
 
     /**
@@ -95,7 +95,7 @@ class MCQPolicy
      */
     public function replicate(User $user, MCQ $mCQ): bool
     {
-        return $user->can('replicate_m::c::q::resoruce');
+        return $user->can('replicate_m::c::q');
     }
 
     /**
@@ -103,6 +103,6 @@ class MCQPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_m::c::q::resoruce');
+        return $user->can('reorder_m::c::q');
     }
 }
