@@ -39,7 +39,7 @@ class ReleaseRegionalLocks extends Command
                 }
 
                 $hasPending->each(function (ActionTeam $actionTeam) use ($region) {
-                    if (now() > $actionTeam->created_at->addMinutes($actionTeam->action->duration)) {
+                    if (now()->gt($actionTeam->created_at->addMinutes($actionTeam->action->duration))) {
                         $actionTeam->status = ActionStatus::Completed;
                         $actionTeam->save();
 
