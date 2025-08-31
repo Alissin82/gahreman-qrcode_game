@@ -115,10 +115,11 @@ class ActionResource extends Resource
                     ->default(now())
                     ->jalali()
                     ->seconds(false)
-                    ->label('تارخ انتشار')
+                    ->label('تاریخ انتشار')
                     ->required(),
 
                 Forms\Components\Select::make('region_id')
+                    ->required()
                     ->label('منطقه')
                     ->relationship('region', 'name')
                     ->searchable()
@@ -145,7 +146,7 @@ class ActionResource extends Resource
                     ])->default([])
                     ->reorderable(),
 
-                FileInput::make($form, 'attachment'),
+                FileInput::make($form, 'attachment')->required(),
             ])->columns(1);
     }
 
