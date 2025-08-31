@@ -2,7 +2,8 @@
 
 namespace App\Enums;
 
-use App\Traits\CleanEnum;
+
+use Modules\Support\Traits\CleanEnum;
 
 enum ActionStatus:string
 {

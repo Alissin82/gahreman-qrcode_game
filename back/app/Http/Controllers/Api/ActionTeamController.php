@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\ActionStatus;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ActionTeam\TaskCheckAnswerRequest;
+use App\Http\Requests\Task\TaskCheckAnswerRequest;
 use App\Models\Action;
 use App\Models\ActionTeam;
 use Illuminate\Support\Facades\Log;
-use Response\ApiResponse;
+use Modules\Support\Responses\ApiResponse;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 

@@ -7,7 +7,7 @@ use App\Http\Resources\MissionResource;
 use App\Models\Mission;
 use Auth;
 use Illuminate\Http\Request;
-use Response\ApiResponse;
+use Modules\Support\Responses\ApiResponse;
 
 class MissionController extends Controller
 {

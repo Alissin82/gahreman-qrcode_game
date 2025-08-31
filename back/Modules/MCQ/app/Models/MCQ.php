@@ -10,6 +10,13 @@ class MCQ extends Model
 {
     protected $fillable = ['question', 'answer', 'options'];
 
+    protected function casts(): array
+    {
+        return [
+            'options' => 'array'
+        ];
+    }
+
     public function tasks(): MorphMany
     {
         return $this->morphMany(Task::class, 'taskable');
