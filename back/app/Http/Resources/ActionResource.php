@@ -43,6 +43,7 @@ class ActionResource extends JsonResource
             'attachments' => $attachments,
             'created_at' => $this->created_at,
             'meta' => $this->meta ?? null,
+            'estimated_time' => $this->estimated_time ?? 0,
         ];
     }
 }

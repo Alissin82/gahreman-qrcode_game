@@ -26,7 +26,10 @@ class Action extends Model implements HasMedia
         'release' => 'datetime',
     ];
 
-    protected $appends = ['meta'];
+    protected $appends = [
+        'meta',
+        'estimated_time'
+    ];
 
     public function registerMediaCollections(): void
     {
@@ -62,6 +65,11 @@ class Action extends Model implements HasMedia
                 'completed' => 0,
             ];
         }
+    }
+
+    public function getEstimatedTimeAttribute(): int
+    {
+        return $this->missions()->withSum('tasks', 'duration')->get()->sum('tasks_sum_duration') ?? 0;
     }
 
     public function missions(): HasMany
