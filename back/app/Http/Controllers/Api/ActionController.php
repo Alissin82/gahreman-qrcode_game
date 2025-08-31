@@ -134,7 +134,7 @@ class ActionController extends Controller
     public function show($action_id)
     {
         $team = Auth::guard('team')->user();
-        $action = Action::with(['region', 'missions', 'missions.tasks', 'media'])->findOrFail($action_id);
+        $action = Action::with(['region', 'missions', 'missions.tasks', 'icon', 'attachment'])->findOrFail($action_id);
         $teamCompletedMissions = $team?->missions()?->whereHas('action', function ($query) use ($action) {
             $query->where('action_id', $action->id);
         })->count();
@@ -142,28 +142,6 @@ class ActionController extends Controller
         return ApiResponse::success([
             'completed_mission_count' => $teamCompletedMissions,
             ...(new ActionResource($action))->toArray(request())
-        ]);
-    }
-
-    /** @noinspection PhpUnusedParameterInspection */
-    public function downloadAttachment(Request $request, $action_id, $uuid)
-    {
-        $action = Action::findOrFail($action_id);
-        /** @noinspection PhpUndefinedMethodInspection */
-        $media = $action->getMedia('attachment')->where('uuid', $uuid)->firstOrFail();
-
-        $disk = $media->disk;
-
-        if ($disk === 's3') {
-            // Temporary URL for React
-            return response()->json([
-                'url' => $media->getTemporaryUrl(now()->addMinutes(5))
-            ]);
-        }
-
-        // Local/public disk: stream file
-        return response()->download($media->getPath(), $media->file_name, [
-            'Content-Type' => $media->mime_type,
         ]);
     }
 }

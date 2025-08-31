@@ -16,12 +16,14 @@ class MCQService
 
         $team->tasks()->attach($task->id);
 
-        ScoreTeam::create([
-            'team_id' => $team->id,
-            'score' => $task->score,
-            'scorable_id' => $task->id,
-            'scorable_type' => Task::class,
-        ]);
+        if ($answer == $MCQ->answer) {
+            ScoreTeam::create([
+                'team_id' => $team->id,
+                'score' => $task->score,
+                'scorable_id' => $task->id,
+                'scorable_type' => Task::class,
+            ]);
+        }
 
         return MCQTeam::create([
             'team_id' => $team->id,

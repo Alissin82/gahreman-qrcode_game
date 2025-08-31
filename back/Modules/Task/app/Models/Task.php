@@ -3,8 +3,10 @@
 namespace Modules\Task\Models;
 
 use App\Models\Mission;
+use App\Models\ScoreTeam;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\Task\Enum\TaskType;
 
@@ -37,5 +39,10 @@ class Task extends Model
     public function taskable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function score(): MorphMany
+    {
+        return $this->morphMany(ScoreTeam::class, 'scorable');
     }
 }

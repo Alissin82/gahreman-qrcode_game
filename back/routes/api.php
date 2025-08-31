@@ -22,8 +22,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/actions/{action}/start', 'start');
         Route::post('/actions/{action}/end', 'end');
         Route::get('/actions/{action}', 'show');
-        Route::get('/actions/{action}/attachment/{uuid}/download',  'downloadAttachment')
-            ->name("api.actions.download_attachment");
     });
 
     Route::controller(App\Http\Controllers\Api\CoinController::class)->prefix('coins')->name('coins.')->group(function () {

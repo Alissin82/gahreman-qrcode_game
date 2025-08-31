@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('score_teams', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
+            $table->foreignId('team_id')->constrained()->cascadeOnDelete();
             $table->nullableMorphs('scorable');
-            $table->integer('score')->defualt(0);
+            $table->integer('score')->default(0);
             $table->timestamps();
         });
     }

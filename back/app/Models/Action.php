@@ -35,6 +35,8 @@ class Action extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('attachment')->singleFile();
+        $this->addMediaCollection('icon')->singleFile();
+
     }
 
     /**
@@ -44,6 +46,12 @@ class Action extends Model implements HasMedia
     {
         return $this->morphOne(Media::class, 'model')
             ->where('collection_name', 'attachment');
+    }
+
+    public function icon(): MorphOne
+    {
+        return $this->morphOne(Media::class, 'model')
+            ->where('collection_name', 'icon');
     }
 
     public function getMetaAttribute(): array
