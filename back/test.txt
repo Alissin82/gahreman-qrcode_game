@@ -1,0 +1,6 @@
+ const { unityProvider, isLoaded, addEventListener, removeEventListener } = useUnityContext({
+    loaderUrl: `${base_game_url}/${game.name}/Build/${game.name}.loader.js`,
+    dataUrl: `${base_game_url}/${game.name}/Build/${game.name}.data`,
+    frameworkUrl: `${base_game_url}/${game.name}/Build/${game.name}.framework.js`,
+    codeUrl: `${base_game_url}/${game.name}/Build/${game.name}.wasm`,
+  });
