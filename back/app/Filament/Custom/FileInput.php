@@ -7,7 +7,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class FileInput
 {
-    public static function make(Forms\Form $form, string $name, bool $isMultiple = false, string $visibility = 'public'): Forms\Components\SpatieMediaLibraryFileUpload
+    public static function make(Forms\Form $form, string $name, bool $isMultiple = false, string $visibility = 'private'): Forms\Components\SpatieMediaLibraryFileUpload
     {
         return Forms\Components\SpatieMediaLibraryFileUpload::make($name)
             ->collection($name)
