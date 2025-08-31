@@ -70,18 +70,25 @@ class ActionController extends Controller
 
         /** @noinspection PhpPossiblePolymorphicInvocationInspection */
         $actionTeam = ActionTeam::where('team_id', $team->id)->where('action_id', $action->id)->first();
-        if ($actionTeam) {
-            if ($actionTeam->status == ActionStatus::Pending) {
-                return ApiResponse::fail('عملیات قبلا برای تیم شما شروع شده است.');
-            } else {
-                return ApiResponse::fail('عملیات به پایان رسیده را نمی‌توان شروع کرد.');
-            }
-        } else {
+
+        if (!$actionTeam) {
             $team->actions()->attach($action, [
                 'status' => ActionStatus::Pending
             ]);
+
+            if ($action->region->lockable) {
+                $action->region->locked = true;
+                $action->region->save();
+            }
+
             return ApiResponse::success(new ActionResource($action), 'JOINED', 'عملیات با موفقیت شروع شد');
         }
+
+        if ($actionTeam->status == ActionStatus::Pending) {
+            return ApiResponse::fail('عملیات قبلا برای تیم شما شروع شده است.');
+        }
+
+        return ApiResponse::fail('عملیات به پایان رسیده را نمی‌توان شروع کرد.');
     }
 
     /** @noinspection PhpUnusedParameterInspection */
@@ -109,6 +116,11 @@ class ActionController extends Controller
             'scorable_id' => $action->id,
             'scorable_type' => Action::class,
         ]);
+
+        if ($action->region->locked) {
+            $action->region->locked = false;
+            $action->region->save();
+        }
 
         /** @noinspection PhpPossiblePolymorphicInvocationInspection */
         $team->actions()->updateExistingPivot($action->id, [
