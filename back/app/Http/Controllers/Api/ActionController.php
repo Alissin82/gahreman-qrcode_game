@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ActionResource;
 use App\Models\Action;
 use App\Models\ActionTeam;
+use App\Models\Mission;
 use App\Models\Region;
 use Auth;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -38,8 +39,22 @@ class ActionController extends Controller
                         ->count(),
                 ],
                 'regions' => [
-                    'total' => Region::count() + fake()->numberBetween(100,200), // TODO
-                    'completed' => fake()->numberBetween(50,100), // TODO
+                    'total' => Region::count(),
+                    'completed' => Region::with('actions')
+                        ->withCount('actions')
+                        ->having('actions_count', '>', 0)
+                        ->get()
+                        ->filter(function (Region $region) {
+                            return $region->actions->every(function (Action $action) {
+                                $meta = $action->meta;
+                                return $meta['total'] === $meta['completed'];
+                            });
+                        })->values()
+                        ->map(function (Region $region) {
+                            /** @noinspection PhpUndefinedFieldInspection */
+                            $region->completed = true;
+                            return $region;
+                        })->count(),
                 ],
             ],
         ]);
@@ -52,6 +67,7 @@ class ActionController extends Controller
 
         $action = Action::findOrFail($action_id);
 
+        /** @noinspection PhpPossiblePolymorphicInvocationInspection */
         $actionTeam = ActionTeam::where('team_id', $team->id)->where('action_id', $action->id)->first();
         if ($actionTeam) {
             if ($actionTeam->status == ActionStatus::Pending) {
@@ -74,15 +90,18 @@ class ActionController extends Controller
 
         $action = Action::findOrFail($action_id);
 
+        /** @noinspection PhpPossiblePolymorphicInvocationInspection */
         $actionTeam = ActionTeam::where('team_id', $team->id)->where('action_id', $action->id)->first();
 
         if ($actionTeam) {
             if ($actionTeam->status == ActionStatus::Completed) {
                 return ApiResponse::fail('عملیات قبلا به پایان رسیده است.');
             } else {
+                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
                 $team->actions()->updateExistingPivot($action->id, [
                     'status' => ActionStatus::Completed
                 ]);
+                $team->missions()->sync(Mission::where('action_id', $action_id)->pluck('id'));
                 return ApiResponse::success(new ActionResource($action), 'JOINED', 'عملیات با موفقیت تکمیل شد');
             }
         } else {
@@ -104,9 +123,11 @@ class ActionController extends Controller
         ]);
     }
 
+    /** @noinspection PhpUnusedParameterInspection */
     public function downloadAttachment(Request $request, $action_id, $uuid)
     {
         $action = Action::findOrFail($action_id);
+        /** @noinspection PhpUndefinedMethodInspection */
         $media = $action->getMedia('attachment')->where('uuid', $uuid)->firstOrFail();
 
         $disk = $media->disk;
