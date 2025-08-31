@@ -3,8 +3,8 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\TaskReview;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Modules\Task\Task\TaskReview;
 
 class TaskReviewPolicy
 {

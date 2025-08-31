@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Enums\ActionStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ActionResource;
-use App\Http\Support\ApiResponse;
 use App\Models\Action;
 use App\Models\ActionTeam;
 use App\Models\Mission;
@@ -13,6 +12,7 @@ use App\Models\Region;
 use Auth;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
+use Modules\Support\Responses\ApiResponse;
 
 class ActionController extends Controller
 {
@@ -117,9 +117,10 @@ class ActionController extends Controller
             $query->where('action_id', $action->id);
         })->count();
 
-        return ApiResponse::success(array_merge([
+        return ApiResponse::success([
             'completed_mission_count' => $teamCompletedMissions,
-        ], (new ActionResource($action))->toArray(request())));
+            ...(new ActionResource($action))->toArray(request())
+        ]);
     }
 
     /** @noinspection PhpUnusedParameterInspection */

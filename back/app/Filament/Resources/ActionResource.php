@@ -5,10 +5,12 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ActionResource\Pages;
 use App\Models\Action;
 use Filament\Forms;
+
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Modules\Task\Enum\TaskType;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Filament\Custom\FileInput;
 
@@ -27,13 +29,7 @@ class ActionResource extends Resource
         $tasks = [
             Forms\Components\Select::make('type')
                 ->label('نوع')
-                ->options([
-                    'scan' => 'پایان ماموریت',
-                    'question' => 'سوال چهارگزینه‌ای',
-                    'content' => 'نمایش محتوا (تصویر/فیلم)',
-                    'message' => 'نمایش پیام',
-                    'intrupt' => 'توقف'
-                ])
+                ->options(TaskType::class)
                 ->required()
                 ->reactive(),
 
@@ -48,44 +44,7 @@ class ActionResource extends Resource
                 ->numeric()
                 ->default(0)
                 ->required(),
-            Forms\Components\TextInput::make('question')
-                ->label('متن سوال')
-                ->visible(fn(Forms\Get $get) => $get('type') === 'question'),
 
-            Forms\Components\Grid::make(4)
-                ->schema([
-                    Forms\Components\TextInput::make('option1')
-                        ->required()
-                        ->label('گزینه یک'),
-                    Forms\Components\TextInput::make('option2')
-                        ->label('گزینه دو'),
-                    Forms\Components\TextInput::make('option3')
-                        ->label('گزینه سه'),
-                    Forms\Components\TextInput::make('option4')
-                        ->label('گزینه چهار')
-                ])
-                ->visible(fn(Forms\Get $get) => $get('type') === 'question'),
-
-            Forms\Components\Select::make('answer')
-                ->label('پاسخ صحیح')
-                ->options([
-                    1 => 'گزینه ۱',
-                    2 => 'گزینه ۲',
-                    3 => 'گزینه ۳',
-                    4 => 'گزینه ۴',
-                ])
-                ->default(1)
-                ->required()
-                ->visible(fn(Forms\Get $get) => $get('type') === 'question'),
-
-            Forms\Components\FileUpload::make('content')
-                ->label('فایل محتوا')
-                ->directory('contents')
-                ->visible(fn(Forms\Get $get) => $get('type') === 'content'),
-
-            Forms\Components\Textarea::make('text')
-                ->label('متن محتوا')
-                ->visible(fn(Forms\Get $get) => $get('type') === 'message'),
 
             Forms\Components\Toggle::make('need_review')
                 ->label('نیاز به بازبینی')

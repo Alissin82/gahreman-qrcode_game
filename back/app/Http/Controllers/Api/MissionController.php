@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MissionResource;
-use App\Http\Support\ApiResponse;
 use App\Models\Mission;
 use Auth;
 use Illuminate\Http\Request;
+use Response\ApiResponse;
 
 class MissionController extends Controller
 {

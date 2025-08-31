@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CoinResource;
-use App\Http\Support\ApiResponse;
 use App\Models\Coin;
 use Auth;
 use Illuminate\Http\Request;
+use Response\ApiResponse;
 
 class CoinController extends Controller
 {
