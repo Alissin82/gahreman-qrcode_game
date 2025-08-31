@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use Filament\Http\Middleware\Authenticate;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -29,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('/')
             ->login()
             ->profile()
+            ->font('Vazirmatn', provider: GoogleFontProvider::class)
             ->colors([
                 'primary' => Color::hex("#00b48d"),
                 'danger' => Color::hex('#ef4770'),
