@@ -52,11 +52,19 @@ class ActionController extends Controller
 
         $action = Action::findOrFail($action_id);
 
-        $team->actions()->attach($action, [
-            'status' => ActionStatus::Pending->value
-        ]);
-
-        return ApiResponse::success(new ActionResource($action), 'JOINED', 'عملیات با موفقیت شروع شد');
+        $actionTeam = ActionTeam::where('team_id', $team->id)->where('action_id', $action->id)->first();
+        if ($actionTeam) {
+            if ($actionTeam->status == ActionStatus::Pending) {
+                return ApiResponse::fail('عملیات قبلا برای تیم شما شروع شده است.');
+            } else {
+                return ApiResponse::fail('عملیات به پایان رسیده را نمی‌توان شروع کرد.');
+            }
+        } else {
+            $team->actions()->attach($action, [
+                'status' => ActionStatus::Pending
+            ]);
+            return ApiResponse::success(new ActionResource($action), 'JOINED', 'عملیات با موفقیت شروع شد');
+        }
     }
 
     /** @noinspection PhpUnusedParameterInspection */
@@ -66,11 +74,20 @@ class ActionController extends Controller
 
         $action = Action::findOrFail($action_id);
 
-        $team->actions()->updateExistingPivot($action->id, [
-            'status' => ActionStatus::Completed->value
-        ]);
+        $actionTeam = ActionTeam::where('team_id', $team->id)->where('action_id', $action->id)->first();
 
-        return ApiResponse::success(new ActionResource($action), 'JOINED', 'عملیات با موفقیت تکمیل شد');
+        if ($actionTeam) {
+            if ($actionTeam->status == ActionStatus::Completed) {
+                return ApiResponse::fail('عملیات قبلا به پایان رسیده است.');
+            } else {
+                $team->actions()->updateExistingPivot($action->id, [
+                    'status' => ActionStatus::Completed
+                ]);
+                return ApiResponse::success(new ActionResource($action), 'JOINED', 'عملیات با موفقیت تکمیل شد');
+            }
+        } else {
+            return ApiResponse::fail('عملیات هنوز شروع نشده است.');
+        }
     }
 
     public function show($action_id)
