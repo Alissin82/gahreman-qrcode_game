@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.2",
         "bezhansalleh/filament-shield": "^3.3",
+        "dedoc/scramble": "^0.12.31",
         "filament/filament": "^3.3",
         "filament/spatie-laravel-media-library-plugin": "^3.3",
         "laravel/framework": "^12.0",

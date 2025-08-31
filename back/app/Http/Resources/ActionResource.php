@@ -20,19 +20,6 @@ class ActionResource extends JsonResource
 
     public function toArray(Request $request): array
     {
-        $attachments = $this->getMedia('attachment')->map(function (Media $media) {
-            return [
-                'id' => $media->id,
-                'uuid' => $media->uuid,
-                'file_name' => $media->file_name,
-                'mime_type' => $media->mime_type,
-                'download_api' => route('api.actions.download_attachment', [
-                    $this->id,
-                    $media->uuid
-                ]),
-            ];
-        });
-
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -40,7 +27,8 @@ class ActionResource extends JsonResource
             'missions' => MissionResource::collection($this->whenLoaded('missions')),
             'region' => new RegionResource($this->whenLoaded('region')),
             'started_by_team' => $this->relationLoaded('actionTeams') && $this->actionTeams->count() > 0,
-            'attachments' => $attachments,
+            'icon' => new MediaResource($this->whenLoaded('icon')),
+            'attachment' => new MediaResource($this->whenLoaded('attachment')),
             'created_at' => $this->created_at,
             'meta' => $this->meta ?? null,
             'estimated_time' => $this->estimated_time ?? 0,

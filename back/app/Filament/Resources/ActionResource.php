@@ -112,6 +112,7 @@ class ActionResource extends Resource
                     ->reorderable(),
 
                 FileInput::make($form, 'attachment')->required(),
+                FileInput::make($form, 'icon')->required(),
             ])->columns(1);
     }
 
