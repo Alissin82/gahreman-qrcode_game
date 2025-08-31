@@ -3,3 +3,4 @@ node_modules
 back/.env
 back/.env.production
 back/public/script.php
+back/.ftpquota
