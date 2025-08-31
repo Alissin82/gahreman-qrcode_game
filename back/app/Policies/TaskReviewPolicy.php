@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Modules\Task\Task\TaskReview;
+use Modules\Task\Models\TaskReview;
 
 class TaskReviewPolicy
 {

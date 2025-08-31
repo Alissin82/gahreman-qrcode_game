@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Task\Task\Task;
+use Modules\Task\Models\Task;
 
 class TasksSeeder extends Seeder
 {
