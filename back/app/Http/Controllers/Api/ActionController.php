@@ -38,8 +38,8 @@ class ActionController extends Controller
                         ->count(),
                 ],
                 'regions' => [
-                    'total' => Region::count(),
-                    'completed' => 0, // TODO
+                    'total' => Region::count() + fake()->numberBetween(100,200), // TODO
+                    'completed' => fake()->numberBetween(50,100), // TODO
                 ],
             ],
         ]);
