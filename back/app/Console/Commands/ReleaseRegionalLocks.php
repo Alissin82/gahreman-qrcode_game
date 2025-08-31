@@ -29,21 +29,22 @@ class ReleaseRegionalLocks extends Command
      */
     public function handle()
     {
-        Region::where('lockable', true)->chunkById(100, function ($regions) {
+        Region::where('locked', true)->chunkById(100, function ($regions) {
             $regions->each(function ($region) {
                 $hasPending = ActionTeam::with('action')->where('region_id', $region->id)->where('status', ActionStatus::Pending)->get();
 
                 if ($hasPending->isEmpty()) {
-                    $region->lockable = false;
+                    $region->locked = false;
                     $region->save();
+                    return;
                 }
 
                 $hasPending->each(function (ActionTeam $actionTeam) use ($region) {
                     if (now()->gt($actionTeam->created_at->addMinutes($actionTeam->action->duration))) {
-                        $actionTeam->status = ActionStatus::Completed;
+                        $actionTeam->status = ActionStatus::Timeout;
                         $actionTeam->save();
 
-                        $region->lockable = false;
+                        $region->locked = false;
                         $region->save();
                     }
                 });

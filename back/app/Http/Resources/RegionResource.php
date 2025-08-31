@@ -25,6 +25,7 @@ class RegionResource extends JsonResource
             'y' => $this->y,
             'order' => $this->order,
             'lockable' => $this->lockable,
+            'locked' => $this->locked,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

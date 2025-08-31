@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Region extends Model
 {
-    protected $fillable = ['name','x','y','lockable'];
+    protected $fillable = ['name', 'x', 'y', 'lockable', 'locked'];
 
     public function actions(): HasMany
     {
