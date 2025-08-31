@@ -38,4 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{mission}', 'show');
         Route::post('/{mission}', 'toggleComplete');
     });
+    Route::controller(App\Http\Controllers\Api\TaskController::class)->prefix('tasks')->name('tasks.')->group(function () {
+        Route::get('/{task}', 'show');
+    });
 });
