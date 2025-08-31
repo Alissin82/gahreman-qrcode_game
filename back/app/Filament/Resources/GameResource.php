@@ -29,11 +29,12 @@ class GameResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('نام')
+                    ->label('نام انگلیسی')
                     ->columnSpanFull()
                     ->required(),
                 Forms\Components\TextInput::make('title')
                     ->label('عنوان')
+                    ->columnSpanFull()
                     ->required(),
             ]);
     }
@@ -43,7 +44,7 @@ class GameResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('نام'),
+                    ->label('نام انگلیسی'),
                 Tables\Columns\TextColumn::make('title')
                     ->label('عنوان'),
             ])

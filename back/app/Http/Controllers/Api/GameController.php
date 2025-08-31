@@ -15,7 +15,11 @@ class GameController extends Controller
 {
     public function index()
     {
-        $data = Game::get();
+        $team = Auth::guard('team')->user();
+
+        $data = Game::whereDoesntHave('teams', function ($query) use ($team) {
+            $query->where('team_id', $team->id);
+        })->get();
 
         return ApiResponse::success(GameResource::collection($data));
     }
