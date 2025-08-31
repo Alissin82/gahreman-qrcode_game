@@ -20,7 +20,6 @@ class Action extends Model implements HasMedia
         'name',
         'release',
         'region_id',
-        'attachment'
     ];
 
     protected $casts = [
@@ -47,7 +46,7 @@ class Action extends Model implements HasMedia
     {
         $team = Auth::guard('team')->user();
 
-        if ($team) {
+        if ($team instanceof Team) {
             $actionMissionIds = $this->missions()->pluck('missions.id')->toArray();
             $teamMissionIds = $team->missions()->pluck('missions.id')->toArray();
 
