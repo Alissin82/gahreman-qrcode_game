@@ -40,5 +40,6 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::controller(App\Http\Controllers\Api\TaskController::class)->prefix('tasks')->name('tasks.')->group(function () {
         Route::get('/{task}', 'show');
+        Route::post('/{task}', 'checkAnswer');
     });
 });

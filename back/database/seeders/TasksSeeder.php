@@ -43,6 +43,7 @@ class TasksSeeder extends Seeder
                 'answer' => $task['answer'],
                 'score' => $task['score'],
                 'mission_id' => $task['action_id'],
+                'duration' => 1
             ]);
         }
     }

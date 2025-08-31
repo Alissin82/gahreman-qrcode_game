@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\ActionStatus;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ActionTeam\ActionTeamUploadRequest;
+use App\Http\Requests\ActionTeam\TaskCheckAnswerRequest;
 use App\Http\Support\ApiResponse;
 use App\Models\Action;
 use App\Models\ActionTeam;
@@ -14,7 +14,7 @@ use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class ActionTeamController extends Controller
 {
-    public function upload(ActionTeamUploadRequest $request, Action $action)
+    public function upload(TaskCheckAnswerRequest $request, Action $action)
     {
         $action->load('actionTeams');
 
