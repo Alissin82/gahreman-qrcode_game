@@ -90,8 +90,6 @@ class ActionResource extends Resource
             Forms\Components\Toggle::make('need_review')
                 ->label('نیاز به بازبینی')
                 ->default(false),
-
-            FileInput::make($form, 'attachment'),
         ];
 
         $missions = [
@@ -145,7 +143,9 @@ class ActionResource extends Resource
                             ->disableOptionsWhenSelectedInSiblingRepeaterItems()
                             ->searchable(),
                     ])->default([])
-                    ->reorderable()
+                    ->reorderable(),
+
+                FileInput::make($form, 'attachment'),
             ])->columns(1);
     }
 
