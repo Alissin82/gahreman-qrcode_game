@@ -4,14 +4,23 @@ namespace Modules\Task\Models;
 
 use App\Models\Mission;
 use App\Models\ScoreTeam;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Modules\Task\Database\Factories\TaskFactory;
 use Modules\Task\Enum\TaskType;
 
 class Task extends Model
 {
+    use HasFactory;
+
+    protected static function newFactory(): TaskFactory
+    {
+        return TaskFactory::new();
+    }
+
     protected $fillable = [
         'mission_id',
         'taskable_type',
