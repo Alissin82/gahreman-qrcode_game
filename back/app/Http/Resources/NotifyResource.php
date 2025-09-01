@@ -2,9 +2,13 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Notify;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin Notify
+ */
 class NotifyResource extends JsonResource
 {
     /**
@@ -14,6 +18,12 @@ class NotifyResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'content' => $this->content,
+            'release' => $this->release,
+            'created_at' => $this->created_at,
+        ];
     }
 }

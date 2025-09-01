@@ -23,8 +23,11 @@ class ScoreCardController extends Controller
     {
         $team = Auth::guard('team')->user();
 
-        if ($team->scoreCards()->where('id', $scoreCard->id)->exists()) {
-            return ApiResponse::fail('کارت امتیاز قبلا برای تیم شما استفاده شده است.');
+        if (ScoreTeam::whereTeamId($team->id)
+            ->whereScorableId($scoreCard->id)
+            ->whereScorableType(ScoreCard::class)
+            ->exists()) {
+            return ApiResponse::fail('کارت امتیاز قبلا برای تیم شما استفاده شده است.', code: 'ALREADY_SCANNED');
         }
 
         ScoreTeam::create([
@@ -33,7 +36,7 @@ class ScoreCardController extends Controller
             'scorable_type' => ScoreCard::class,
             'score' => $scoreCard->score,
         ]);
-        $team->scoreCards()->attach($scoreCard);
-        return ApiResponse::success(new ScoreCardResource($scoreCard), 'JOINED', 'امتیاز ها با موفقیت اضافه شدند شد');
+
+        return ApiResponse::created(new ScoreCardResource($scoreCard), 'امتیاز ها با موفقیت اضافه شدند شد');
     }
 }

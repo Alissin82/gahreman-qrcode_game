@@ -2,15 +2,19 @@
 
 namespace App\Models;
 
+use App\Observers\TeamCoinObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[ObservedBy(TeamCoinObserver::class)]
 class TeamCoin extends Model
 {
     protected $fillable = [
         'team_id',
         'coin',
-        'comment'
+        'comment',
+        'coin_id'
     ];
 
 

@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Modules\Task\Enum\TaskType;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Filament\Custom\FileInput;
@@ -27,6 +28,7 @@ class ActionResource extends Resource
     protected static ?string $modelLabel = 'عملیات';
 
     protected static ?string $navigationGroup = 'عمومی';
+
     public static function form(Form $form): Form
     {
         $tasks = [
@@ -36,9 +38,12 @@ class ActionResource extends Resource
                     MorphToSelect\Type::make(MCQ::class)
                         ->label('سوال چند گزینه ای')
                         ->getOptionLabelFromRecordUsing(fn(MCQ $record): string => "{$record->question}"),
+//                        ->modifyOptionsQueryUsing(fn(Builder  $query) => $query->whereDoesntHave('task')),
+
                     MorphToSelect\Type::make(FileUpload::class)
                         ->label('آپلود فایل')
-                        ->titleAttribute('description'),
+                        ->titleAttribute('description')
+//                        ->modifyOptionsQueryUsing(fn(Builder $query) => $query->whereDoesntHave('task')),
                 ])
                 ->label('نوع وظیفه')
                 ->columnSpanFull()
@@ -161,7 +166,7 @@ class ActionResource extends Resource
 
                         $items[] = [
                             'label' => "شروع عملیات - " . $record->name,
-                            'src'   => 'data:image/png;base64,' . base64_encode($png),
+                            'src' => 'data:image/png;base64,' . base64_encode($png),
                         ];
 
                         $ActionPayload = [
@@ -177,7 +182,7 @@ class ActionResource extends Resource
 
                         $items[] = [
                             'label' => "پایان عملیات - " . $record->name,
-                            'src'   => 'data:image/png;base64,' . base64_encode($png),
+                            'src' => 'data:image/png;base64,' . base64_encode($png),
                         ];
                         return view('filament.actions.qr-grid', ['items' => $items]);
                     }),

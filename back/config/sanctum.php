@@ -17,7 +17,7 @@ return [
 
     'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', sprintf(
         '%s%s',
-        'localhost,localhost:3000,127.0.0.1,game.silitonix.ir,iraniom.silitonix.ir,127.0.0.1:8000,::1',
+        'localhost,localhost:3000,127.0.0.1,game.silitonix.ir,185.105.239.235,iraniom.silitonix.ir,127.0.0.1:8000,::1',
         Sanctum::currentApplicationUrlWithPort(),
         // Sanctum::currentRequestHost(),
     ))),

@@ -10,9 +10,7 @@ class NotifyController extends Controller
     public function teamNotifications()
     {
         $team = \Auth::guard('team')->user();
-
         $notifs = $team->notifies;
-
         return ApiResponse::success(NotifyResource::collection($notifs));
     }
 }

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('team_coins', function (Blueprint $table) {
             $table->id();
             $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
+            $table->foreignId('coin_id')->constrained('coins')->cascadeOnDelete();
             $table->integer('coin');
             $table->string('comment');
             $table->timestamps();

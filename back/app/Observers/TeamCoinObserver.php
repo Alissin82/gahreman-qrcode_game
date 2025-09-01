@@ -9,7 +9,7 @@ class TeamCoinObserver
 {
     public function saving(TeamCoin $teamCoin): void
     {
-        Team::where('id', $teamCoin->id)
+        Team::where('id', $teamCoin->team_id)
             ->update([
                 'coin' => \DB::raw("coin + $teamCoin->coin"),
             ]);
