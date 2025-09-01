@@ -58,7 +58,7 @@ class ActionController extends Controller
         $action = Action::findOrFail($action_id);
 
         if ($action->region->locked)
-            return ApiResponse::fail(new ActionResource($action), 'LOCKED', 'عملیات رزرو شده است');
+            return ApiResponse::fail('عملیات رزرو شده است', code:'LOCKED' );
 
         $actionTeam = ActionTeam::where('team_id', $team->id)->where('action_id', $action->id)->first();
 

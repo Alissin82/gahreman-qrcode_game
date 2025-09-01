@@ -37,13 +37,23 @@ class ActionResource extends Resource
                 ->types([
                     MorphToSelect\Type::make(MCQ::class)
                         ->label('سوال چند گزینه ای')
-                        ->getOptionLabelFromRecordUsing(fn(MCQ $record): string => "{$record->question}"),
-//                        ->modifyOptionsQueryUsing(fn(Builder  $query) => $query->whereDoesntHave('task')),
+                        ->getOptionLabelFromRecordUsing(fn(MCQ $record): string => "{$record->question}")
+                        ->modifyOptionsQueryUsing(fn(Builder $query, $state) =>
+                        $query->where(function ($q) use ($state) {
+                            $q->whereDoesntHave('task')
+                                ->orWhere('id', $state); // keep selected option
+                        })
+                        ),
 
                     MorphToSelect\Type::make(FileUpload::class)
                         ->label('آپلود فایل')
                         ->titleAttribute('description')
-//                        ->modifyOptionsQueryUsing(fn(Builder $query) => $query->whereDoesntHave('task')),
+                        ->modifyOptionsQueryUsing(fn(Builder $query, $state) =>
+                        $query->where(function ($q) use ($state) {
+                            $q->whereDoesntHave('task')
+                                ->orWhere('id', $state); // keep selected option
+                        })
+                        ),
                 ])
                 ->label('نوع وظیفه')
                 ->columnSpanFull()
