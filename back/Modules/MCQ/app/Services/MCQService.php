@@ -6,6 +6,7 @@ use App\Models\ScoreTeam;
 use App\Models\Team;
 use Modules\MCQ\Models\MCQ;
 use Modules\MCQ\Models\MCQTeam;
+use Modules\Task\Exceptions\TaskAlreadyDoneException;
 use Modules\Task\Models\Task;
 
 class MCQService
@@ -14,6 +15,12 @@ class MCQService
     {
         $answer = $data['answer'];
         $task = $MCQ->task;
+
+        if ($team->tasks()->where('tasks.id', $task->id)->exists()) {
+            throw new TaskAlreadyDoneException();
+        }
+
+        \DB::beginTransaction();
         $team->tasks()->attach($task->id);
 
         if ($answer == $MCQ->answer) {
@@ -25,10 +32,12 @@ class MCQService
             ]);
         }
 
-        return MCQTeam::create([
+        $mcqTeam = MCQTeam::create([
             'team_id' => $team->id,
             'm_c_q_id' => $MCQ->id,
             'answer' => $answer,
         ]);
+        \DB::commit();
+        return $mcqTeam;
     }
 }

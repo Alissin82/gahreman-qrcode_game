@@ -57,7 +57,6 @@ class ActionController extends Controller
         ]);
     }
 
-    /** @noinspection PhpUnusedParameterInspection */
     public function start(Request $request, $action_id)
     {
         $team = Auth::guard('team')->user();
@@ -133,7 +132,7 @@ class ActionController extends Controller
             $task->done_by_team = $task->teams->where('id', $team->id)->first();
             $task->locked_for_team = $task->order > (($teamLatestTask?->order ?? -1) + 1);
         });
-        $teamCompletedTasks = $team?->tasks->count();
+        $teamCompletedTasks = $team->tasks()->where('action_id', $action_id)->count();
 
         return ApiResponse::success([
             'team_completed_task_count' => $teamCompletedTasks,
