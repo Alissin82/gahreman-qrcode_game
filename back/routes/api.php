@@ -40,8 +40,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::controller(App\Http\Controllers\Api\GameController::class)->prefix('games')->name('games.')->group(function () {
         Route::get('/', 'index');
+        Route::get('/score', 'score');
         Route::get('/{game}', 'show');
         Route::post('/{game}', 'exchange');
-        Route::get('/score', 'score');
     });
 });
