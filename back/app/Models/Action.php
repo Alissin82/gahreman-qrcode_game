@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Modules\Task\Models\Task;
 use Spatie\MediaLibrary\HasMedia;
@@ -66,7 +67,7 @@ class Action extends Model implements HasMedia
 
     public function teams(): BelongsToMany
     {
-        return $this->belongsToMany(Team::class, 'action_team');
+        return $this->belongsToMany(Team::class, 'action_team')->using(ActionTeam::class);
     }
 
     public function tasks(): HasMany
@@ -77,6 +78,11 @@ class Action extends Model implements HasMedia
     public function actionTeams(): HasMany
     {
         return $this->hasMany(ActionTeam::class);
+    }
+
+    public function actionTeamFor(?int $teamId): ActionTeam|null
+    {
+        return $this->actionTeams->where('team_id', $teamId)->first();
     }
 
     protected function estimatedTime(): Attribute

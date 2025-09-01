@@ -7,7 +7,7 @@ use Modules\FileUpload\Http\Requests\AnswerFileUploadRequest;
 use Modules\FileUpload\Models\FileUpload;
 use Modules\FileUpload\Services\FileUploadService;
 use Modules\Support\Responses\ApiResponse;
-use Modules\Task\Models\Task;
+use Modules\Task\Exceptions\TaskAlreadyDoneException;
 
 class FileUploadController extends Controller
 {
@@ -22,8 +22,13 @@ class FileUploadController extends Controller
         $team = $request->user('team');
         $data = $request->validated();
 
-        $fileUploadTeam = $this->fileUploadService->answer($team, $fileUpload, $data);
+        try {
+            $fileUploadTeam = $this->fileUploadService->answer($team, $fileUpload, $data);
+            return ApiResponse::success($fileUploadTeam);
+        } catch (TaskAlreadyDoneException $e) {
+            return ApiResponse::fail('Task already done');
 
-        return ApiResponse::success($fileUploadTeam);
+        }
+
     }
 }

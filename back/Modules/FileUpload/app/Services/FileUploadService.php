@@ -6,13 +6,23 @@ use App\Models\ScoreTeam;
 use App\Models\Team;
 use Modules\FileUpload\Models\FileUpload;
 use Modules\FileUpload\Models\FileUploadTeam;
+use Modules\Task\Exceptions\TaskAlreadyDoneException;
 use Modules\Task\Models\Task;
 
 class FileUploadService
 {
-    public function answer(Team $team, FileUpload $fileUpload, array $data): FileUpload {
+    /**
+     * @throws TaskAlreadyDoneException
+     */
+    public function answer(Team $team, FileUpload $fileUpload, array $data): FileUploadTeam {
         $file = $data['file'];
         $task = $fileUpload->task;
+
+        if ($team->tasks()->where('tasks.id', $task->id)->exists()) {
+            throw new TaskAlreadyDoneException();
+        }
+
+        \DB::beginTransaction();
         $team->tasks()->attach($task->id);
 
         $fileUploadTeam = FileUploadTeam::create([
@@ -26,8 +36,9 @@ class FileUploadService
             'scorable_id' => $task->id,
             'scorable_type' => Task::class,
         ]);
-
         $fileUploadTeam->addMedia($file);
+        \DB::commit();
+
         return $fileUploadTeam;
     }
 }

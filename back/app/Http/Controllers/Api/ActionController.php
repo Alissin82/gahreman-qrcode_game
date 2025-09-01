@@ -9,6 +9,8 @@ use App\Models\Action;
 use App\Models\ActionTeam;
 use App\Models\Region;
 use App\Models\ScoreTeam;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Modules\Support\Responses\ApiResponse;
@@ -20,11 +22,8 @@ class ActionController extends Controller
     {
         $team = Auth::guard('team')->user();
 
-        $data = Action::with(['region'])
-            ->withCount(['actionTeams' => function ($query) use ($team) {
-                $query->where('team_id', $team->id);
-            }])
-            ->get();
+        $data = Action::with(['region', 'actionTeams.team', 'actionTeams.team.tasks'])->get();
+
 
         $data->loadCount('tasks');
 
@@ -88,13 +87,10 @@ class ActionController extends Controller
     }
 
     /** @noinspection PhpUnusedParameterInspection */
-    public function end(Request $request, $action_id)
+    public function end(Request $request, Action $action)
     {
         $team = Auth::guard('team')->user();
 
-        $action = Action::findOrFail($action_id);
-
-        /** @noinspection PhpPossiblePolymorphicInvocationInspection */
         $actionTeam = ActionTeam::where('team_id', $team->id)->where('action_id', $action->id)->first();
 
         if (!$actionTeam) {

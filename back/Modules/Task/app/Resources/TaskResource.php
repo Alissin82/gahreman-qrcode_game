@@ -20,6 +20,7 @@ class TaskResource extends JsonResource
         return [
             'id' => $this->id,
             'action_tasks_count' => $this->action->tasks_count,
+            'action_id' => $this->action_id,
             'taskable' => $this->taskable,
             'type' => $this->type,
             'done_by_team' => $this->when(!is_null($this->done_by_team), $this->done_by_team),

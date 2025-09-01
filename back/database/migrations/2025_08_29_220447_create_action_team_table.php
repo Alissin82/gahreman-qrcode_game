@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('action_id')->constrained('actions')->cascadeOnDelete();
             $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->enum('status', ActionStatus::array())->index();
+            $table->unique(['action_id', 'team_id']);
             $table->timestamps();
         });
     }
