@@ -80,4 +80,9 @@ class Team extends Model implements AuthenticatableContract
     {
         return $this->belongsToMany(Task::class, 'task_team');
     }
+
+    public function scoreTeams(): HasMany
+    {
+        return $this->hasMany(ScoreTeam::class, 'team_id');
+    }
 }

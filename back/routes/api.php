@@ -17,6 +17,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/actions/{action}/upload', 'upload');
     });
 
+
+    // leaderboard
+    Route::controller(App\Http\Controllers\Api\LeaderboardController::class)->prefix('leaderboard')->name('leaderboard.')->group(function () {
+        Route::get('/', 'index');
+    });
+
     Route::controller(App\Http\Controllers\Api\ScoreController::class)->prefix('scores')->name('scores.')->group(function () {
         Route::get('/', 'index');
     });
