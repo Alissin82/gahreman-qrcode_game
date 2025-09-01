@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             TasksSeeder::class,
             CoinSeeder::class,
             ScoreCardSeeder::class,
+            GameSeeder::class,
         ]);
     }
 }
