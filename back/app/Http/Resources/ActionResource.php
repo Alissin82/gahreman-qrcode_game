@@ -30,8 +30,8 @@ class ActionResource extends JsonResource
             'region_id' => $this->region_id,
             'action_team_for' => $this->when($this->relationLoaded('actionTeams') && $team && !is_null($this->actionTeamFor($team->id)), [
                 'status' => $this->actionTeamFor($team->id)?->status,
-                'status_label' => $this->actionTeamFor($team->id)?->status->la,
-                'completed_task_count' => $this->actionTeamFor($team->id)?->team?->tasks->count(),
+                'status_label' => $this->actionTeamFor($team->id)?->status->getLabel(),
+                'completed_task_count' => $this->actionTeamFor($team->id)?->team?->tasks->where('action_id', $this->id)->count(),
             ]),
             'region' => new RegionResource($this->whenLoaded('region')),
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),

@@ -14,11 +14,6 @@ class MediaController extends Controller
     {
         $disk = $media->disk;
 
-        if ($disk === 's3') {
-            return response()->json([
-                'url' => $media->getTemporaryUrl(now()->addMinutes(5))
-            ]);
-        }
 
         return response()->download($media->getPath(), $media->file_name, [
             'Content-Type' => $media->mime_type,

@@ -22,7 +22,7 @@ class ActionController extends Controller
     {
         $team = Auth::guard('team')->user();
 
-        $data = Action::with(['region', 'actionTeams.team', 'actionTeams.team.tasks'])->get();
+        $data = Action::with(['region', 'actionTeams.team', 'actionTeams.team.tasks', 'icon'])->get();
 
 
         $data->loadCount('tasks');
@@ -63,6 +63,9 @@ class ActionController extends Controller
         $team = Auth::guard('team')->user();
 
         $action = Action::findOrFail($action_id);
+
+        if ($action->region->locked)
+            return ApiResponse::fail(new ActionResource($action), 'LOCKED', 'عملیات رزرو شده است');
 
         $actionTeam = ActionTeam::where('team_id', $team->id)->where('action_id', $action->id)->first();
 

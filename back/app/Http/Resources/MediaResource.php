@@ -18,9 +18,12 @@ class MediaResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $url = $this->disk == 's3' ?
+            $this->getTemporaryUrl(now()->addMinutes(20))
+            :route('api.media.download', $this->id);
         return [
             'id' => $this->id,
-            'download_url' => route('api.media.download', $this->id),
+            'download_url' => $url,
             'uuid' => $this->uuid,
             'collection_name' => $this->collection_name,
             'name' => $this->name,
