@@ -10,6 +10,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CoinResource extends Resource
 {
@@ -94,6 +95,44 @@ class CoinResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                Tables\Actions\Action::make('download_all_qr')
+                    ->label('دانلود همه QR ها (PDF)')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->action(function () {
+                        $coins = Coin::all()->map(function ($coin) {
+                            $payload = [
+                                'type' => 'coin',
+                                'id' => $coin->id,
+                                'amount' => $coin->coin,
+                            ];
+
+                            $json = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+                            $png = QrCode::format('png')
+                                ->encoding('UTF-8')
+                                ->size(100)
+                                ->margin(2)
+                                ->generate($json);
+
+                            return [
+                                'name' => $coin->name,
+                                'value' => $coin->coin,
+                                'icon' => 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('images/coin.png'))),
+                                'src'  => 'data:image/png;base64,' . base64_encode($png),
+                            ];
+                        });
+
+                        $pdf = PDF::loadView('pdf.qr-coins', [
+                            'coins' => $coins
+                        ]);
+
+                        return response()->streamDownload(
+                            fn () => print($pdf->output()),
+                            'coins.pdf'
+                        );
+                    }),
             ]);
     }
 
