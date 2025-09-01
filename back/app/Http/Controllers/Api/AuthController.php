@@ -11,6 +11,9 @@ use Modules\Support\Responses\ApiResponse;
 
 class AuthController extends Controller
 {
+    /**
+     * @unauthenticated
+     */
     public function login(LoginRequest $request): JsonResponse
     {
         $team = Team::where('hash', $request->hash)->first();

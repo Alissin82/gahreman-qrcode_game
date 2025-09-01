@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class NotifyTeam extends Model
+class NotifyTeam extends Pivot
 {
+    protected $table = 'notify_teams';
+
     protected $fillable =  [
         'notify_id',
         'team_id'
     ];
-    public function team()
+
+    public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class, 'team_id');
     }

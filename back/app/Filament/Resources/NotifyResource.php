@@ -3,17 +3,16 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\NotifyResource\Pages;
-use App\Filament\Resources\NotifyResource\RelationManagers;
 use App\Jobs\SendNotifyJob;
 use App\Models\Notify;
+use App\Models\Team;
 use Carbon\Carbon;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class NotifyResource extends Resource
 {
@@ -41,20 +40,27 @@ class NotifyResource extends Resource
                 Forms\Components\Toggle::make('app')
                     ->required(),
 
-                Forms\Components\Repeater::make('teams')
+                Forms\Components\Repeater::make('notifyTeams')
                     ->label('تیم ها')
-                    ->relationship('notify_teams')
+                    ->relationship()
                     ->schema([
                         Forms\Components\Select::make('team_id')
-                            ->required()
-                            ->label('شناسه تیم')
+                            ->label('تیم')
                             ->relationship('team', 'name')
-                            ->preload()
-                            ->disableOptionsWhenSelectedInSiblingRepeaterItems()
-                            ->searchable(),
+                            ->required()
+                            ->searchable()
+                            ->preload(),
                     ])
-                    ->unique()
-                    ->default([]),
+                    ->default([])
+                    ->columns(1)
+                    ->hintAction(
+                        Action::make('selectAllTeams')
+                            ->label('انتخاب همه تیم‌ها')
+                            ->action(function ($set) {
+                                $teams = Team::all()->pluck('id')->map(fn ($id) => ['team_id' => $id])->toArray();
+                                $set('notifyTeams', $teams);
+                            })
+                    ),
                 Forms\Components\DateTimePicker::make('release')
                     ->default(now())
                     ->jalali()
@@ -114,13 +120,10 @@ class NotifyResource extends Resource
     }
     public static function afterCreate($record): void
     {
-        SendNotifyJob::dispatch($record)->delay($record->release);
+        if ($record->sms)
+            SendNotifyJob::dispatch($record)->delay($record->release);
     }
 
-    public static function afterSave($record): void
-    {
-        SendNotifyJob::dispatch($record)->delay($record->release);
-    }
     public static function getRelations(): array
     {
         return [

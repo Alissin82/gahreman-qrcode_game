@@ -85,4 +85,10 @@ class Team extends Model implements AuthenticatableContract
     {
         return $this->hasMany(ScoreTeam::class, 'team_id');
     }
+
+    public function notifies(): BelongsToMany
+    {
+        return $this->belongsToMany(Notify::class, 'notify_teams')
+            ->using(NotifyTeam::class);
+    }
 }

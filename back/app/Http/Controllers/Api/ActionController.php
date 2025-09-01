@@ -120,7 +120,7 @@ class ActionController extends Controller
     public function show($action_id)
     {
         $team = Auth::guard('team')->user();
-        $teamLatestTask = $team->tasks()->orderBy('order')->first();
+        $teamLatestTask = $team->tasks()->whereActionId($action_id)->orderBy('order')->first();
         $action = Action::with(['region', 'tasks', 'icon', 'attachmentBoy', 'attachmentGirl', 'tasks.teams'])->findOrFail($action_id);
         $action->tasks->map(function (Task $task) use ($teamLatestTask, $team) {
             $task->done_by_team = $task->teams->where('id', $team->id)->first();
