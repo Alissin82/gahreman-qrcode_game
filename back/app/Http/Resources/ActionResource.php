@@ -7,6 +7,7 @@ use App\Models\ActionTeam;
 use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 use Modules\Task\Resources\TaskResource;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -23,7 +24,8 @@ class ActionResource extends JsonResource
 
     public function toArray(Request $request): array
     {
-        $team = \Auth::guard('team')->user() instanceof Team ? \Auth::guard('team')->user() : null;
+        $team = Auth::guard('team')->user() instanceof Team ? Auth::guard('team')->user() : null;
+
         return [
             'id' => $this->id,
             'name' => $this->name,

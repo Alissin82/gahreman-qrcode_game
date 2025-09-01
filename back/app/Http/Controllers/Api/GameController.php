@@ -34,7 +34,7 @@ class GameController extends Controller
         $team = Auth::guard('team')->user();
 
         $request->validate([
-            'score' => ['required', 'number', 'max:1000'],
+            'score' => ['required', 'numeric', 'max:1000'],
         ]);
 
         if ($game->teams()->where('team_id', $team->id)->exists()) {
