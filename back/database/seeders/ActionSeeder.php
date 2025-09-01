@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUndefinedMethodInspection */
 
 namespace Database\Seeders;
 
@@ -34,15 +34,29 @@ class ActionSeeder extends Seeder
             'region_id',
         ];
 
-        foreach (self::$actions as $action) {
-            $action = array_combine($header, $action);
+        foreach (self::$actions as $row) {
+            $row = array_combine($header, $row);
 
-            Action::create([
-                'id' => $action['id'],
-                'name' => $action['name'],
-                'score' => $action['score'],
-                'region_id' => $action['region_id'],
+            $id = $row['id'];
+
+            $action = Action::create([
+                'id' => $id,
+                'name' => $row['name'],
+                'score' => $row['score'],
+                'region_id' => $row['region_id'],
             ]);
+
+            $action->addMedia(public_path("action-icons/actionIcon$id.png"))
+                ->preservingOriginal()
+                ->toMediaCollection('icon');
+
+            $action->addMedia(public_path("action-documents/boys/actionDocumentBoy$id.pdf"))
+                ->preservingOriginal()
+                ->toMediaCollection('attachment_boy');
+
+            $action->addMedia(public_path("action-documents/girls/actionDocumentGirl$id.pdf"))
+                ->preservingOriginal()
+                ->toMediaCollection('attachment_girl');
         }
     }
 }
