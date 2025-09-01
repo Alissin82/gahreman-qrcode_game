@@ -57,7 +57,7 @@ class Team extends Model implements AuthenticatableContract
 
     public function actions(): BelongsToMany
     {
-        return $this->belongsToMany(Action::class, 'action_team')->using(ActionTeam::class);
+        return $this->belongsToMany(Action::class, 'action_team')->using(ActionTeam::class)->withTimestamps();
     }
 
     public function coins(): BelongsToMany
