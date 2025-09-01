@@ -34,6 +34,7 @@ class ActionResource extends JsonResource
                 'status' => $this->actionTeamFor($team->id)?->status,
                 'status_label' => $this->actionTeamFor($team->id)?->status->getLabel(),
                 'completed_task_count' => $this->actionTeamFor($team->id)?->team?->tasks->where('action_id', $this->id)->count(),
+                'time_end_in' => $this->actionTeamFor($team->id)->created_at->addMinutes($this->estimated_time),
             ]),
             'region' => new RegionResource($this->whenLoaded('region')),
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
