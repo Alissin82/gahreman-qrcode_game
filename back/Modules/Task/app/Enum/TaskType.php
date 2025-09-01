@@ -15,7 +15,7 @@ enum TaskType: string implements HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::MCQ => 'سوال چنذ گزینه ای',
+            self::MCQ => 'سوال چند گزینه ای',
             self::UploadFile => 'آپلود فایل',
         };
     }

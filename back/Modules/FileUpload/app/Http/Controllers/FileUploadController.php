@@ -26,8 +26,7 @@ class FileUploadController extends Controller
             $fileUploadTeam = $this->fileUploadService->answer($team, $fileUpload, $data);
             return ApiResponse::success($fileUploadTeam);
         } catch (TaskAlreadyDoneException $e) {
-            return ApiResponse::fail('Task already done');
-
+            return ApiResponse::fail('قبلا این وظیفه را انجام داده اید.');
         }
 
     }
