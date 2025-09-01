@@ -12,6 +12,8 @@ class MCQ extends Model
 
     protected $fillable = ['question', 'answer', 'options'];
 
+    protected $hidden = ['answer'];
+
     protected function casts(): array
     {
         return [

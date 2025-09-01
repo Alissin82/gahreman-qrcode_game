@@ -24,7 +24,7 @@ class MCQController extends Controller
         $data = $request->validated();
 
         $mcqTeam = $this->mcqService->answer($team, $task, $mcq, $data);
-
-        return ApiResponse::success($mcqTeam);
+        $code = $mcqTeam->answer == $mcq->answer ? "CORRECT" : "INCORRECT";
+        return ApiResponse::success($mcqTeam, $code);
     }
 }

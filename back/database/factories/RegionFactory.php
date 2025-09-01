@@ -17,7 +17,11 @@ class RegionFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->word(),
+            'x' => $this->faker->randomFloat(2,0,100),
+            'y' => $this->faker->randomFloat(2,0,100),
+            'lockable' => $this->faker->boolean(),
+            'locked' => $this->faker->boolean(),
         ];
     }
 }

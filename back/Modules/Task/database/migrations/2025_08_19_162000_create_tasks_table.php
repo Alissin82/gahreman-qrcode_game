@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mission_id')->constrained('missions')->cascadeOnDelete();
+            $table->foreignId('action_id')->constrained()->cascadeOnDelete();
             $table->morphs('taskable');
             $table->enum('type', TaskType::array());
             $table->unsignedInteger('duration')->nullable();

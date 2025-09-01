@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Support\Facades\Auth;
+use Modules\Task\Models\Task;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -54,38 +55,6 @@ class Action extends Model implements HasMedia
             ->where('collection_name', 'icon');
     }
 
-    public function getMetaAttribute(): array
-    {
-        $team = Auth::guard('team')->user();
-
-        if ($team instanceof Team) {
-            $actionMissionIds = $this->missions()->pluck('missions.id')->toArray();
-            $teamMissionIds = $team->missions()->pluck('missions.id')->toArray();
-
-            $completedCount = count(array_intersect($actionMissionIds, $teamMissionIds));
-
-            return [
-                'total' => count($actionMissionIds),
-                'completed' => $completedCount,
-            ];
-        } else {
-            return [
-                'total' => 0,
-                'completed' => 0,
-            ];
-        }
-    }
-
-    public function getEstimatedTimeAttribute(): int
-    {
-        return $this->missions()->withSum('tasks', 'duration')->get()->sum('tasks_sum_duration') ?? 0;
-    }
-
-    public function missions(): HasMany
-    {
-        return $this->hasMany(Mission::class);
-    }
-
     public function dependency(): HasMany
     {
         return $this->hasMany(ActionDependency::class);
@@ -101,8 +70,20 @@ class Action extends Model implements HasMedia
         return $this->belongsToMany(Team::class, 'action_team');
     }
 
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Task::class);
+    }
+
     public function actionTeams(): HasMany
     {
         return $this->hasMany(ActionTeam::class);
+    }
+
+    protected function estimatedTime(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->tasks()->sum('duration'),
+        );
     }
 }

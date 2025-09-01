@@ -7,13 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ActionResource;
 use App\Models\Action;
 use App\Models\ActionTeam;
-use App\Models\Mission;
 use App\Models\Region;
 use App\Models\ScoreTeam;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use Modules\Support\Responses\ApiResponse;
+use Modules\Task\Models\Task;
 
 class ActionController extends Controller
 {
@@ -21,14 +20,14 @@ class ActionController extends Controller
     {
         $team = Auth::guard('team')->user();
 
-        $data = Action::with([
-            'missions',
-            'region',
-            'actionTeams' => function (HasMany $builder) use ($team) {
-                if ($team)
-                    $builder->whereTeamId($team->id);
-            }
-        ])->get();
+        $data = Action::with(['region'])
+            ->withCount(['actionTeams' => function ($query) use ($team) {
+                $query->where('team_id', $team->id);
+            }])
+            ->get();
+
+        $data->loadCount('tasks');
+
 
         return ApiResponse::success([
             'actions' => ActionResource::collection($data),
@@ -45,14 +44,12 @@ class ActionController extends Controller
                         ->withCount('actions')
                         ->having('actions_count', '>', 0)
                         ->get()
-                        ->filter(function (Region $region) {
-                            return $region->actions->every(function (Action $action) {
-                                $meta = $action->meta;
-                                return $meta['total'] === $meta['completed'];
-                            });
-                        })->values()
+//                        ->filter(function (Region $region) {
+//                            return $region->actions->every(function (Action $action) {
+//                                return $meta['total'] === $meta['completed'];
+//                            });
+//                        })->values()
                         ->map(function (Region $region) {
-                            /** @noinspection PhpUndefinedFieldInspection */
                             $region->completed = true;
                             return $region;
                         })->count(),
@@ -68,7 +65,6 @@ class ActionController extends Controller
 
         $action = Action::findOrFail($action_id);
 
-        /** @noinspection PhpPossiblePolymorphicInvocationInspection */
         $actionTeam = ActionTeam::where('team_id', $team->id)->where('action_id', $action->id)->first();
 
         if (!$actionTeam) {
@@ -122,25 +118,26 @@ class ActionController extends Controller
             $action->region->save();
         }
 
-        /** @noinspection PhpPossiblePolymorphicInvocationInspection */
         $team->actions()->updateExistingPivot($action->id, [
             'status' => ActionStatus::Completed
         ]);
 
-        $team->missions()->sync(Mission::where('action_id', $action_id)->pluck('id'));
         return ApiResponse::success(new ActionResource($action), 'JOINED', 'عملیات با موفقیت تکمیل شد');
     }
 
     public function show($action_id)
     {
         $team = Auth::guard('team')->user();
-        $action = Action::with(['region', 'missions', 'missions.tasks', 'icon', 'attachment'])->findOrFail($action_id);
-        $teamCompletedMissions = $team?->missions()?->whereHas('action', function ($query) use ($action) {
-            $query->where('action_id', $action->id);
-        })->count();
+        $teamLatestTask = $team->tasks()->orderBy('order')->first();
+        $action = Action::with(['region', 'tasks', 'icon', 'attachment','tasks.teams'])->findOrFail($action_id);
+        $action->tasks->map(function (Task $task) use ($teamLatestTask, $team) {
+            $task->done_by_team = $task->teams->where('id', $team->id)->first();
+            $task->locked_for_team = $task->order > ($teamLatestTask->order + 1);
+        });
+        $teamCompletedTasks = $team?->tasks->count();
 
         return ApiResponse::success([
-            'completed_mission_count' => $teamCompletedMissions,
+            'team_completed_task_count' => $teamCompletedTasks,
             ...(new ActionResource($action))->toArray(request())
         ]);
     }

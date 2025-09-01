@@ -23,11 +23,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'hash' => [
-                'required',
-                'string',
-                'exists:teams,hash',
-            ],
+            'hash' => ['required','string','exists:teams,hash',],
         ];
     }
 }
