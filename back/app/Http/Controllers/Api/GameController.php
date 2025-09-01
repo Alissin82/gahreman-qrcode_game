@@ -10,6 +10,7 @@ use App\Http\Resources\GameResource;
 use App\Models\ScoreTeam;
 use Illuminate\Support\Facades\Auth;
 use App\Models\GameTeam;
+use App\Models\ScoreCard;
 
 class GameController extends Controller
 {
