@@ -4,3 +4,5 @@ back/.env
 back/.env.production
 back/public/script.php
 back/.ftpquota
+back/public/script_cron.php
+back/public/script_migrate.php
