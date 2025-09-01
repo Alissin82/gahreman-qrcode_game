@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Observers\ActionObserver;
+use App\Models\Action;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
@@ -32,5 +34,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('viewLogViewer', static function (?User $user) {
             return app()->isLocal() || (bool) $user;
         });
+
+        Action::observe(ActionObserver::class);
     }
 }

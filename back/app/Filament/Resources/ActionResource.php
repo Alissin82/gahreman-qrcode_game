@@ -44,12 +44,6 @@ class ActionResource extends Resource
                 ->columnSpanFull()
                 ->required(),
 
-            Forms\Components\TextInput::make('order')
-                ->label('ترتیب')
-                ->numeric()
-                ->default(0)
-                ->required(),
-
             Forms\Components\TextInput::make('score')
                 ->label('امتیاز')
                 ->numeric()
@@ -166,7 +160,8 @@ class ActionResource extends Resource
 
                         $ActionPayload = [
                             'type' => 'action_end',
-                            'id' => $record->id,];
+                            'id' => $record->id,
+                        ];
 
                         $json = json_encode($ActionPayload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
                         $png = QrCode::format('png')
