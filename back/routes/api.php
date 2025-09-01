@@ -47,6 +47,6 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::controller(TeamController::class)->group(function () {
-        Route::put('/team', 'update');
+        Route::put('/teams', 'update');
     });
 });
