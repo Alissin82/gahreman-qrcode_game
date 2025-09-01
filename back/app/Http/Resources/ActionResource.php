@@ -37,7 +37,8 @@ class ActionResource extends JsonResource
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
             'tasks_count' => $this->tasks_count,
             'icon' => new MediaResource($this->whenLoaded('icon')),
-            'attachment' => new MediaResource($this->whenLoaded('attachment')),
+            'attachment_boy' => new MediaResource($this->whenLoaded('attachmentBoy')),
+            'attachment_girl' => new MediaResource($this->whenLoaded('attachmentGirl')),
             'created_at' => $this->created_at,
             'estimated_time' => $this->estimated_time,
         ];

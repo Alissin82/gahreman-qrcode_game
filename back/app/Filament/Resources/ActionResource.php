@@ -115,8 +115,9 @@ class ActionResource extends Resource
                     ])->default([])
                     ->reorderable(),
 
-                FileInput::make($form, 'attachment')->required(),
-                FileInput::make($form, 'icon')->required(),
+                FileInput::make($form, 'attachment_boy')->required()->label("فایل راهنما پسر"),
+                FileInput::make($form, 'attachment_girl')->required()->label("فایل راهنما دختر"),
+                FileInput::make($form, 'icon')->required()->label("آیکون"),
             ])->columns(1);
     }
 
