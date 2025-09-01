@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'ippanel' => [
+        'base_url' => env('IPPANEL_BASE_URL'),
+        'number' => env('IPPANEL_NUMBER'),
+        'token' => env('IPPANEL_TOKEN'),
+    ]
+
 ];
