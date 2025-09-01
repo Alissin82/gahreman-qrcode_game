@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Notify extends Model
 {
@@ -18,7 +20,13 @@ class Notify extends Model
         'sms' => 'boolean',
         'app' => 'boolean',
     ];
-    public function notify_teams()
+
+    public function teams(): BelongsToMany
+    {
+        return $this->belongsToMany(Team::class)->using(NotifyTeam::class);
+    }
+
+    public function notifyTeams(): HasMany
     {
         return $this->hasMany(NotifyTeam::class);
     }

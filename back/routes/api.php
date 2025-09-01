@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NotifyController;
 use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -48,5 +49,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(TeamController::class)->group(function () {
         Route::put('/teams', 'update');
+    });
+
+    Route::controller(NotifyController::class)->prefix('notify')->name('notify.')->group(function () {
+        Route::get('/', 'teamNotifications');
     });
 });

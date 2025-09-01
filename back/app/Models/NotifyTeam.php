@@ -11,7 +11,7 @@ class NotifyTeam extends Model
         'notify_id',
         'team_id'
     ];
-    public function team()
+    public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class, 'team_id');
     }
