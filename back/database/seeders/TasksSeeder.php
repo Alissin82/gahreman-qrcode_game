@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Mission;
 use Illuminate\Database\Seeder;
 use Modules\Task\Enum\TaskType;
 use Modules\Task\Models\Task;
@@ -29,46 +28,40 @@ class TasksSeeder extends Seeder
             'score'
         ];
 
-        foreach (self::$tasks as $task) {
-            if ($task[0] === null) {
+        $order = 1;
+        foreach (self::$tasks as $row) {
+            if ($row[0] === null) {
                 continue;
             }
 
-            $task = array_combine($header, $task);
-
-            // Find or create mission for this action
-            $mission = Mission::firstOrCreate(
-                ['action_id' => $task['action_id']],
-                [
-                    'title' => 'Mission for Action ' . $task['action_id'],
-                    'score' => 0
-                ]
-            );
+            $row = array_combine($header, $row);
 
             // Create MCQ model first
             $mcq = MCQ::create([
-                'question' => $task['question'],
-                'answer' => $task['answer'],
+                'question' => $row['question'],
+                'answer' => $row['answer'],
                 'options' => [
-                    'o1' => $task['o1'],
-                    'o2' => $task['o2'],
-                    'o3' => $task['o3'],
-                    'o4' => $task['o4'],
+                    'o1' => $row['o1'],
+                    'o2' => $row['o2'],
+                    'o3' => $row['o3'],
+                    'o4' => $row['o4'],
                 ]
             ]);
 
             // Create Task with proper polymorphic relationship
             Task::create([
-                'id' => $task['id'],
-                'mission_id' => $mission->id,
+                'id' => $row['id'],
+                'action_id' => $row['action_id'],
                 'taskable_type' => MCQ::class,
                 'taskable_id' => $mcq->id,
                 'type' => TaskType::MCQ->value,
-                'score' => $task['score'],
-                'duration' => 1,
-                'order' => 0,
+                'score' => $row['score'],
+                'duration' => 1, // minute
+                'order' => $order,
                 'need_review' => false
             ]);
+
+            $order++;
         }
     }
 }

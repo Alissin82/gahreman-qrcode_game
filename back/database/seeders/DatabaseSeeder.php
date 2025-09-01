@@ -19,10 +19,12 @@ class DatabaseSeeder extends Seeder
             '--panel' => 'admin',
         ]);
 
-        //        $sheets = Excel::toCollection(new OldDataImport(), public_path('excel/data.xlsx'));
-        //        RegionSeeder::$regions = $sheets[0]->toArray();
-        //        ActionSeeder::$actions = $sheets[1]->toArray();
-        //        TasksSeeder::$tasks = $sheets[2]->toArray();
+        $sheets = Excel::toCollection(new OldDataImport(), public_path('excel/data.xlsx'));
+        RegionSeeder::$regions = $sheets[0]->toArray();
+        ActionSeeder::$actions = $sheets[1]->toArray();
+        TasksSeeder::$tasks = $sheets[2]->toArray();
+        CoinSeeder::$coins = $sheets[3]->toArray();
+        ScoreCardSeeder::$scoreCards = $sheets[4]->toArray();
 
         $this->call([
             AdminUserSeeder::class,
@@ -30,6 +32,8 @@ class DatabaseSeeder extends Seeder
             RegionSeeder::class,
             ActionSeeder::class,
             TasksSeeder::class,
+            CoinSeeder::class,
+            ScoreCardSeeder::class,
         ]);
     }
 }

@@ -32,10 +32,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', 'index');
         Route::post('/{scoreCard}', 'exchange');
     });
-    Route::controller(App\Http\Controllers\Api\MissionController::class)->prefix('missions')->name('missions.')->group(function () {
-        Route::get('/{mission}', 'show');
-        Route::post('/{mission}', 'toggleComplete');
-    });
     Route::controller(App\Http\Controllers\Api\GameController::class)->prefix('games')->name('games.')->group(function () {
         Route::get('/', 'index');
         Route::get('/{game}', 'exchange');

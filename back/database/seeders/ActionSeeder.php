@@ -3,8 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Action;
-use App\Models\Mission;
-use App\Models\Region;
 use Illuminate\Database\Seeder;
 
 class ActionSeeder extends Seeder
@@ -30,25 +28,21 @@ class ActionSeeder extends Seeder
         array_shift(self::$actions);
 
         $header = [
+            'id',
             'name',
             'score',
+            'region_id',
         ];
 
         foreach (self::$actions as $action) {
             $action = array_combine($header, $action);
 
-            // if ($action['lock']) {
-            //     Region::find($action['region_id'])->update([
-            //         'lockable' => true,
-            //     ]);
-            // }
-
             Action::create([
+                'id' => $action['id'],
                 'name' => $action['name'],
                 'score' => $action['score'],
-                'region_id' => Region::all()->random()->id,
+                'region_id' => $action['region_id'],
             ]);
-
         }
     }
 }
