@@ -62,7 +62,7 @@ class GameController extends Controller
 
         return ApiResponse::success([
             'total_score' => ScoreTeam::where('team_id', $team->id)->sum('score'),
-            'incoming_score' => ScoreTeam::where('team_id', $team->id)->whereIn('scorable_type', [Game::class, ScoreCard::class])->sum('score'),
+            'incoming_score' => ScoreTeam::where('team_id', $team->id)->whereIn('scorable_type', [Game::class])->sum('score'),
         ]);
     }
 }
