@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 
@@ -43,5 +44,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/score', 'score');
         Route::get('/{game}', 'show');
         Route::post('/{game}', 'exchange');
+    });
+
+    Route::controller(TeamController::class)->group(function () {
+        Route::put('/team', 'update');
     });
 });
