@@ -21,6 +21,7 @@
         "mokhosh/filament-jalali": "^4.10",
         "morilog/jalali": "^3.4",
         "nwidart/laravel-modules": "^12.0",
+        "opcodesio/log-viewer": "^3.19",
         "php-open-source-saver/jwt-auth": "^2.8",
         "phpoffice/phpspreadsheet": "^1.29",
         "simplesoftwareio/simple-qrcode": "^2.0",
