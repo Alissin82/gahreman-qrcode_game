@@ -19,10 +19,6 @@ class Team extends Model implements AuthenticatableContract
 {
     use Authenticatable, HasApiTokens;
 
-    protected $appends = [
-        'total_mission_score'
-    ];
-
     protected $fillable = [
         'name',
         'color',
@@ -59,41 +55,14 @@ class Team extends Model implements AuthenticatableContract
         return $this->hasMany(TeamUsers::class, 'team_id');
     }
 
-    public function scores(): HasMany
-    {
-        return $this->hasMany(ScoreMission::class, 'team_id');
-    }
-
-    /**
-     * @noinspection PhpUnused
-     * @noinspection PhpParamsInspection
-     */
-    public function getTotalMissionScoreAttribute(): float|int
-    {
-        return $this->scores()
-            ->with('mission')
-            ->get()
-            ->sum(fn($score) => $score->mission ? $score->mission->score : 0);
-    }
-
     public function actions(): BelongsToMany
     {
         return $this->belongsToMany(Action::class, 'action_team')->using(ActionTeam::class);
     }
 
-    public function missions(): BelongsToMany
-    {
-        return $this->belongsToMany(Mission::class, 'mission_team');
-    }
-
     public function coins(): BelongsToMany
     {
         return $this->belongsToMany(Coin::class, 'coin_team');
-    }
-
-    public function scoreCards(): BelongsToMany
-    {
-        return $this->belongsToMany(ScoreCard::class, 'score_card_team');
     }
 
     public function MCQs(): BelongsToMany

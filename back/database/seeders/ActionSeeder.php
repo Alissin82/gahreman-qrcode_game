@@ -43,17 +43,12 @@ class ActionSeeder extends Seeder
             //     ]);
             // }
 
-            $action = Action::create([
+            Action::create([
                 'name' => $action['name'],
                 'score' => $action['score'],
-                // 'region_id' => $action['region_id'],
+                'region_id' => Region::all()->random()->id,
             ]);
 
-            Mission::create([
-                'title' => $action['name'],
-                'score' => $action['score'],
-                'action_id' => $action->id,
-            ]);
         }
     }
 }

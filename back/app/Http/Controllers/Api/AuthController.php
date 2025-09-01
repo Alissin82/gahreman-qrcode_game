@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\ScoreTeam;
 use App\Models\Team;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Response\ApiResponse;
+use Modules\Support\Responses\ApiResponse;
 
 class AuthController extends Controller
 {
@@ -31,7 +32,8 @@ class AuthController extends Controller
 
     public function me(Request $request): JsonResponse
     {
-        return ApiResponse::success($request->user('team'));
+        $team = $request->user('team');
+        return ApiResponse::success($team);
     }
 
     public function logout(Request $request): JsonResponse
