@@ -9,6 +9,7 @@ use App\Models\Action;
 use App\Models\ActionTeam;
 use App\Models\Region;
 use App\Models\ScoreTeam;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
@@ -39,19 +40,12 @@ class ActionController extends Controller
                 ],
                 'regions' => [
                     'total' => Region::count(),
-                    'completed' => Region::with('actions')
-                        ->withCount('actions')
-                        ->having('actions_count', '>', 0)
-                        ->get()
-//                        ->filter(function (Region $region) {
-//                            return $region->actions->every(function (Action $action) {
-//                                return $meta['total'] === $meta['completed'];
-//                            });
-//                        })->values()
-                        ->map(function (Region $region) {
-                            $region->completed = true;
-                            return $region;
-                        })->count(),
+                    'completed' => Region::whereHas('actions', function (Builder $actionQuery) use ($team) {
+                        $actionQuery->whereHas('actionTeams', function (Builder $teamQuery) use ($team) {
+                            $teamQuery->where('team_id', $team->id)
+                                ->whereStatus(ActionStatus::Completed);
+                        });
+                    })->count(),
                 ],
             ],
         ]);
