@@ -17,6 +17,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/actions/{action}/upload', 'upload');
     });
 
+
+    // leaderboard
+    Route::controller(App\Http\Controllers\Api\LeaderboardController::class)->prefix('leaderboard')->name('leaderboard.')->group(function () {
+        Route::get('/', 'index');
+    });
+
     Route::controller(App\Http\Controllers\Api\ActionController::class)->group(function () {
         Route::get('/actions', 'index');
         Route::post('/actions/{action}/start', 'start');
@@ -34,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::controller(App\Http\Controllers\Api\GameController::class)->prefix('games')->name('games.')->group(function () {
         Route::get('/', 'index');
+        Route::get('/score', 'score');
         Route::get('/{game}', 'show');
         Route::post('/{game}', 'exchange');
     });

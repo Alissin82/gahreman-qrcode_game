@@ -10,6 +10,7 @@ use App\Http\Resources\GameResource;
 use App\Models\ScoreTeam;
 use Illuminate\Support\Facades\Auth;
 use App\Models\GameTeam;
+use App\Models\ScoreCard;
 
 class GameController extends Controller
 {
@@ -34,7 +35,7 @@ class GameController extends Controller
         $team = Auth::guard('team')->user();
 
         $request->validate([
-            'score' => ['required', 'number', 'max:1000'],
+            'score' => ['required', 'numeric', 'max:1000'],
         ]);
 
         if ($game->teams()->where('team_id', $team->id)->exists()) {
@@ -53,5 +54,15 @@ class GameController extends Controller
         $game->teams()->attach($team);
 
         return ApiResponse::success('با موفقیت امتیاز شما اضافه شد');
+    }
+
+    public function score()
+    {
+        $team = Auth::guard('team')->user();
+
+        return ApiResponse::success([
+            'total_score' => ScoreTeam::where('team_id', $team->id)->sum('score'),
+            'incoming_score' => ScoreTeam::where('team_id', $team->id)->whereIn('scorable_type', [Game::class])->sum('score'),
+        ]);
     }
 }

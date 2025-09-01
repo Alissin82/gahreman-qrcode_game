@@ -11,7 +11,7 @@ class GameSeeder extends Seeder
     public array $games = [
         ['name' => 'Bomb', 'title' => 'بمب'],
         ['name' => 'FireFighter', 'title' => 'آتش نشان'],
-        ['name' => 'SaviorGame', 'title' => 'نجات دهنده'],
+        ['name' => 'SaviourGame', 'title' => 'نجات دهنده'],
     ];
 
     public function run(): void
