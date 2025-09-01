@@ -14,7 +14,7 @@ class LeaderboardController extends Controller
 {
     public function index()
     {
-        $teams = Team::withCount('scoreTeams')->orderBy('score_teams_count', 'desc')->get();
+        $teams = Team::withCount('scoreTeams')->orderBy('score_teams_count', 'desc')->limit(10)->get();
 
         return ApiResponse::success([
             'teams' => TeamResource::collection($teams),
