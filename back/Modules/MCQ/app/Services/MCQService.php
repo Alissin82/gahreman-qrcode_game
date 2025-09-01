@@ -10,10 +10,10 @@ use Modules\Task\Models\Task;
 
 class MCQService
 {
-    public function answer(Team $team, Task $task, MCQ $MCQ , array $data): MCQTeam
+    public function answer(Team $team, MCQ $MCQ , array $data): MCQTeam
     {
         $answer = $data['answer'];
-
+        $task = $MCQ->task;
         $team->tasks()->attach($task->id);
 
         if ($answer == $MCQ->answer) {

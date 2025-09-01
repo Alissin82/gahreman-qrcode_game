@@ -5,6 +5,6 @@ use Modules\FileUpload\Http\Controllers\FileUploadController;
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(FileUploadController::class)->group(function () {
-        Route::post('tasks/{task}/file-upload/{fileUpload}', 'answer');
+        Route::post('/file-upload/{fileUpload}', 'answer');
     });
 });

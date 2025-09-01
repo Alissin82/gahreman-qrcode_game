@@ -18,12 +18,12 @@ class MCQController extends Controller
     {
     }
 
-    public function answer(AnswerMCQRequest $request, Task $task, MCQ $mcq)
+    public function answer(AnswerMCQRequest $request, MCQ $mcq)
     {
         $team = $request->user('team');
         $data = $request->validated();
 
-        $mcqTeam = $this->mcqService->answer($team, $task, $mcq, $data);
+        $mcqTeam = $this->mcqService->answer($team, $mcq, $data);
         $code = $mcqTeam->answer == $mcq->answer ? "CORRECT" : "INCORRECT";
         return ApiResponse::success($mcqTeam, $code);
     }

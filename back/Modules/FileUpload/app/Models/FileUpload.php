@@ -3,7 +3,7 @@
 namespace Modules\FileUpload\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Modules\Task\Models\Task;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -14,8 +14,8 @@ class FileUpload extends Model implements HasMedia
 
     protected $fillable = ['description'];
 
-    public function tasks(): MorphMany
+    public function task(): MorphOne
     {
-        return $this->morphMany(Task::class, 'taskable');
+        return $this->morphOne(Task::class, 'taskable');
     }
 }

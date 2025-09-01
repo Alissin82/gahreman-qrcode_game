@@ -5,7 +5,7 @@ use Modules\MCQ\Http\Controllers\MCQController;
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(MCQController::class)->name('mcq.')->group(function () {
-        Route::post('tasks/{task}/mcq/{mcq}', 'answer');
+        Route::post('/mcq/{mcq}', 'answer');
     });
 
 });

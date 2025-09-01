@@ -68,19 +68,6 @@ class ActionResource extends Resource
                 ->default(false),
         ];
 
-        $missions = [
-            Forms\Components\TextInput::make('title')
-                ->label('عنوان')
-                ->required(),
-
-            Forms\Components\Repeater::make('tasks')
-                ->label('وظیفه‌ها')
-                ->relationship('tasks')
-                ->schema($tasks)
-                ->reorderable()
-                ->minItems(1),
-        ];
-
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
@@ -107,10 +94,10 @@ class ActionResource extends Resource
                     ->searchable()
                     ->preload(),
 
-                Forms\Components\Repeater::make('missions')
-                    ->label('ماموریت‌ها')
-                    ->relationship('missions')
-                    ->schema($missions)
+                Forms\Components\Repeater::make('tasks')
+                    ->label('وظیفه‌ها')
+                    ->relationship('tasks')
+                    ->schema($tasks)
                     ->reorderable()
                     ->minItems(1),
 

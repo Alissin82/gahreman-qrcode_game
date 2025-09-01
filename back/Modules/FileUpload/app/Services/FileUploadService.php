@@ -10,9 +10,9 @@ use Modules\Task\Models\Task;
 
 class FileUploadService
 {
-    public function answer(Team $team, Task $task, FileUpload $fileUpload, array $data): FileUpload {
+    public function answer(Team $team, FileUpload $fileUpload, array $data): FileUpload {
         $file = $data['file'];
-
+        $task = $fileUpload->task;
         $team->tasks()->attach($task->id);
 
         $fileUploadTeam = FileUploadTeam::create([

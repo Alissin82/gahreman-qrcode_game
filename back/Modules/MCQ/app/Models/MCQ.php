@@ -4,6 +4,7 @@ namespace Modules\MCQ\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Modules\Task\Models\Task;
 
 class MCQ extends Model
@@ -21,8 +22,8 @@ class MCQ extends Model
         ];
     }
 
-    public function tasks(): MorphMany
+    public function task(): MorphOne
     {
-        return $this->morphMany(Task::class, 'taskable');
+        return $this->morphOne(Task::class, 'taskable');
     }
 }

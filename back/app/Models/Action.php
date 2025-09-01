@@ -29,7 +29,6 @@ class Action extends Model implements HasMedia
     ];
 
     protected $appends = [
-        'meta',
         'estimated_time'
     ];
 

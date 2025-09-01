@@ -17,12 +17,12 @@ class FileUploadController extends Controller
     {
     }
 
-    public function answer(AnswerFileUploadRequest $request, Task $task, FileUpload $fileUpload)
+    public function answer(AnswerFileUploadRequest $request, FileUpload $fileUpload)
     {
         $team = $request->user('team');
         $data = $request->validated();
 
-        $fileUploadTeam = $this->fileUploadService->answer($team, $task, $fileUpload, $data);
+        $fileUploadTeam = $this->fileUploadService->answer($team, $fileUpload, $data);
 
         return ApiResponse::success($fileUploadTeam);
     }

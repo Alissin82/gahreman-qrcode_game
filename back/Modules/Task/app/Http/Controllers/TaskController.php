@@ -14,6 +14,7 @@ class TaskController extends Controller
     public function show(Task $task): JsonResponse
     {
         $task->load('taskable');
+        $task->action->loadCount('tasks');
 
         return ApiResponse::success(new TaskResource($task));
     }

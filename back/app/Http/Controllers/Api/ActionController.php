@@ -132,7 +132,7 @@ class ActionController extends Controller
         $action = Action::with(['region', 'tasks', 'icon', 'attachment','tasks.teams'])->findOrFail($action_id);
         $action->tasks->map(function (Task $task) use ($teamLatestTask, $team) {
             $task->done_by_team = $task->teams->where('id', $team->id)->first();
-            $task->locked_for_team = $task->order > ($teamLatestTask->order + 1);
+            $task->locked_for_team = $task->order > (($teamLatestTask?->order ?? -1) + 1);
         });
         $teamCompletedTasks = $team?->tasks->count();
 
