@@ -24,6 +24,11 @@ class GameController extends Controller
         return ApiResponse::success(GameResource::collection($data));
     }
 
+    public function show(Game $game)
+    {
+        return ApiResponse::success(GameResource::make($game));
+    }
+
     public function exchange(Request $request, Game $game)
     {
         $team = Auth::guard('team')->user();
