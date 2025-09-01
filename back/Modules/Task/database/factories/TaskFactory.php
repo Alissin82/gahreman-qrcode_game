@@ -2,7 +2,7 @@
 
 namespace Modules\Task\Database\Factories;
 
-use App\Models\Mission;
+use App\Models\Action;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TaskFactory extends Factory
@@ -18,7 +18,7 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
-            'mission_id' => Mission::factory(),
+            'action_id' => Action::inRandomOrder()->first()->id,
             'name' => $this->faker->name(),
             'description' => $this->faker->text(),
             'order' => $this->faker->randomDigit(),

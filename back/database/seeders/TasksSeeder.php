@@ -51,7 +51,7 @@ class TasksSeeder extends Seeder
             // Create Task with proper polymorphic relationship
             Task::create([
                 'id' => $row['id'],
-                'mission_id' => $row['action_id'], // Exceptionally mission_id is same as action_id
+                'action_id' => $row['action_id'],
                 'taskable_type' => MCQ::class,
                 'taskable_id' => $mcq->id,
                 'type' => TaskType::MCQ->value,

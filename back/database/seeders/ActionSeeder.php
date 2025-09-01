@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Action;
-use App\Models\Mission;
 use Illuminate\Database\Seeder;
 
 class ActionSeeder extends Seeder
@@ -43,13 +42,6 @@ class ActionSeeder extends Seeder
                 'name' => $action['name'],
                 'score' => $action['score'],
                 'region_id' => $action['region_id'],
-            ]);
-
-            Mission::create([
-                'id' => $action['id'],
-                'title' => $action['name'],
-                'score' => $action['score'],
-                'action_id' => $action['id'],
             ]);
         }
     }
