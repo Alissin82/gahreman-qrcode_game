@@ -18,7 +18,7 @@ class GameResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'title' => $this->title,
-            'base_url' => 'https://s3.game.silitonix.ir/public/',
+            'base_url' => 'https://s3.game.silitonix.ir/games/',
         ];
     }
 }

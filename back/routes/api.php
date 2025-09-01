@@ -34,6 +34,6 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::controller(App\Http\Controllers\Api\GameController::class)->prefix('games')->name('games.')->group(function () {
         Route::get('/', 'index');
-        Route::get('/{game}', 'exchange');
+        Route::post('/{game}', 'exchange');
     });
 });
