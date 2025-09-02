@@ -13,8 +13,6 @@ class TeamController extends Controller
         $data = $request->validated();
         $team = $request->user('team');
         $team->update($data);
-        $team->save();
-        $team->refresh();
         return ApiResponse::success(new TeamResource($team));
     }
 }
