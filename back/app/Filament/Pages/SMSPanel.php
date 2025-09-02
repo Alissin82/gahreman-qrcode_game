@@ -27,6 +27,11 @@ class SMSPanel extends Page
     protected static ?int $navigationSort = 1;
     
     public ?array $data = [];
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->can('page_SMSPanel') ?? false;
+    }
     
     public static function getNavigationGroup(): ?string
     {
