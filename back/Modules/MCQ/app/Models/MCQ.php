@@ -12,17 +12,15 @@ class MCQ extends Model
 
     protected $fillable = ['question', 'answer', 'options'];
 
-    protected $hidden = ['answer'];
+    public function task(): MorphOne
+    {
+        return $this->morphOne(Task::class, 'taskable');
+    }
 
     protected function casts(): array
     {
         return [
             'options' => 'array'
         ];
-    }
-
-    public function task(): MorphOne
-    {
-        return $this->morphOne(Task::class, 'taskable');
     }
 }
