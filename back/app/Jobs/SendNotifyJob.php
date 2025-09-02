@@ -33,20 +33,21 @@ class SendNotifyJob implements ShouldQueue
     {
         $smsToken = config('services.ippanel.token');
 
-            $selectedTeams = Team::whereIn('id', $data['teams'] ?? [])->get();
-            $phoneNumbers = $selectedTeams->pluck('phone')->filter()->toArray();
+        $selectedTeams = Team::whereIn('id', $data['teams'] ?? [])->get();
+        $phoneNumbers = $selectedTeams->pluck('phone')->filter()->toArray();
 
+        if (count($phoneNumbers) <= 0)
+            return;
+        $smsData = [
+            'sending_type' => 'webservice',
+            'from_number' => config('services.ippanel.number'),
+            'message' => $content,
+            'params' => [
+                'recipients' => $phoneNumbers
+            ]
+        ];
 
-            $smsData = [
-                'sending_type' => 'webservice',
-                'from_number' => config('services.ippanel.number'),
-                'message' => $content,
-                'params' => [
-                    'recipients' => $phoneNumbers
-                ]
-            ];
-
-            $this->sendSmsToIPPanel($smsToken, $smsData);
+        $this->sendSmsToIPPanel($smsToken, $smsData);
     }
 
     private function sendSmsToIPPanel(string $token, array $data): ?array

@@ -27,7 +27,8 @@ class Team extends Model implements AuthenticatableContract
         'score',
         'coin',
         'phone',
-        'start'
+        'start',
+        'gender'
     ];
 
     protected $casts = [

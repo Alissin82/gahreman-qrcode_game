@@ -56,7 +56,6 @@ class TasksSeeder extends Seeder
                 'type' => TaskType::MCQ->value,
                 'score' => $row['score'],
                 'duration' => 1, // minute
-                'order' => $order,
                 'need_review' => false
             ]);
 

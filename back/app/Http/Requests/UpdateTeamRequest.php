@@ -22,7 +22,7 @@ class UpdateTeamRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'gender' => ['required', 'boolean:'],
+            'gender' => ['required', 'boolean'],
             'color' => ['required', 'string'],
             'name' => ['required', 'string']
         ];
