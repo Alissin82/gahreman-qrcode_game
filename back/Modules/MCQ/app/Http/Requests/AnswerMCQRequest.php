@@ -12,7 +12,7 @@ class AnswerMCQRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'answer' => ['required', 'string'],
+            'answer' => ['required'],
         ];
     }
 
