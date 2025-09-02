@@ -41,10 +41,22 @@ class TasksSeeder extends Seeder
                 'question' => $row['question'],
                 'answer' => $row['answer'],
                 'options' => [
-                    'o1' => $row['o1'],
-                    'o2' => $row['o2'],
-                    'o3' => $row['o3'],
-                    'o4' => $row['o4'],
+                    [
+                        'value' => 0,
+                        'label' => $row['o1'],
+                    ],
+                    [
+                        'value' => 1,
+                        'label' => $row['o2'],
+                    ],
+                    [
+                        'value' => 2,
+                        'label' => $row['o3'],
+                    ],
+                    [
+                        'value' => 3,
+                        'label' => $row['o4'],
+                    ],
                 ]
             ]);
 
