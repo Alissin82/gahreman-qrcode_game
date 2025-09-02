@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Action;
 use Illuminate\Database\Seeder;
 use Modules\FileUpload\Models\FileUpload;
 use Modules\Task\Enum\TaskType;
@@ -69,20 +70,23 @@ class TasksSeeder extends Seeder
                 'duration' => 10, // minute
                 'need_review' => false
             ]);
+        }
 
-            $fileUpload = FileUpload::create([
+        Action::get()->each(function (Action $action) {
+            FileUpload::create([
                 'description' => "فایل مورد نظر خود در رابطه با عملیات را آپلود کنید",
             ]);
+            $fileUpload = FileUpload::latest()->firstOrFail();
 
             Task::create([
-                'action_id' => $row['action_id'],
+                'action_id' => $action->id,
                 'taskable_type' => FileUpload::class,
                 'taskable_id' => $fileUpload->id,
                 'type' => TaskType::UploadFile->value,
-                'score' => $row['score'],
+                'score' => $action->score,
                 'duration' => 10,
                 'need_review' => false
             ]);
-        }
+        });
     }
 }
