@@ -7,20 +7,7 @@ use Illuminate\Database\Seeder;
 
 class ActionSeeder extends Seeder
 {
-    static array $actions = [
-        [
-            'name' => 'Action 1',
-            'score' => 10,
-        ],
-        [
-            'name' => 'Action 2',
-            'score' => 20,
-        ],
-        [
-            'name' => 'Action 3',
-            'score' => 30,
-        ],
-    ];
+    static array $actions = [];
 
     public function run(): void
     {
