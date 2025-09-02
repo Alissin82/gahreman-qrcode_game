@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Modules\FileUpload\Models\FileUpload;
 use Modules\Task\Enum\TaskType;
 use Modules\Task\Models\Task;
 use Modules\MCQ\Models\MCQ;
@@ -28,7 +29,6 @@ class TasksSeeder extends Seeder
             'score'
         ];
 
-        $order = 1;
         foreach (self::$tasks as $row) {
             if ($row[0] === null) {
                 continue;
@@ -60,18 +60,29 @@ class TasksSeeder extends Seeder
                 ]
             ]);
 
-            // Create Task with proper polymorphic relationship
             Task::create([
                 'action_id' => $row['action_id'],
                 'taskable_type' => MCQ::class,
                 'taskable_id' => $mcq->id,
                 'type' => TaskType::MCQ->value,
                 'score' => $row['score'],
-                'duration' => 1, // minute
+                'duration' => 10, // minute
                 'need_review' => false
             ]);
 
-            $order++;
+            $fileUpload = FileUpload::create([
+                'description' => "فایل مورد نظر خود در رابطه با عملیات را آپلود کنید",
+            ]);
+
+            Task::create([
+                'action_id' => $row['action_id'],
+                'taskable_type' => FileUpload::class,
+                'taskable_id' => $fileUpload->id,
+                'type' => TaskType::UploadFile->value,
+                'score' => $row['score'],
+                'duration' => 10,
+                'need_review' => false
+            ]);
         }
     }
 }
