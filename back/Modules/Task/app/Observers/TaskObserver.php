@@ -10,16 +10,21 @@ use Modules\Task\Models\Task;
 
 class TaskObserver
 {
-    public function saving(Task $task): void
+    public function creating(Task $task): void
     {
         $type = match ($task->taskable_type) {
             MCQ::class => TaskType::MCQ,
             FileUpload::class => TaskType::UploadFile
         };
+
         $task->type = $type;
-        $hasOrder = Task::whereActionId($task->action_id)->exists();
-        if ($hasOrder) {
+
+        if (Task::whereActionId($task->action_id)->exists()) {
             $task->order = Task::whereActionId($task->action_id)->max('order') + 1;
-        } else $task->order = 0;
+        }
+        else
+        {
+            $task->order = 0;
+        }
     }
 }
