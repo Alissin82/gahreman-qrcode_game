@@ -73,12 +73,12 @@ class SMSPanel extends Page
         
         $this->form->validate();
         
-        $smsToken = env('SMS_TOKEN');
+        $smsToken = config('sms.token');
         
-        if (empty($smsToken)) {
+        if (!$smsToken) {
             Notification::make()
                 ->title('خطا در تنظیمات')
-                ->body('SMS_TOKEN در فایل .env تنظیم نشده است')
+                ->body('SMS_TOKEN تنظیم نشده است')
                 ->danger()
                 ->send();
             return;
