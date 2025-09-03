@@ -22,6 +22,7 @@ class TeamResource extends Resource
     protected static ?string $modelLabel = 'تیم';
 
     protected static ?string $navigationGroup = 'تیم';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -30,11 +31,18 @@ class TeamResource extends Resource
                     ->label('عکس پروفایل')
                     ->avatar()
                     ->directory('profiles'),
-                Forms\Components\TextInput::make('name')->label('نام')
+
+                Forms\Components\TextInput::make('name')
+                    ->label('نام')
                     ->required(),
-                Forms\Components\TextInput::make('bio')->label('شعار')
+
+                Forms\Components\TextInput::make('bio')
+                    ->label('شعار')
                     ->required(),
-                Forms\Components\ColorPicker::make('color')->label('رنگ')->default('#ff0000'),
+
+                Forms\Components\ColorPicker::make('color')
+                    ->label('رنگ')
+                    ->default('#ff0000'),
 
                 Forms\Components\Select::make('gender')
                     ->label('جنسیت')
@@ -45,54 +53,98 @@ class TeamResource extends Resource
                     ->required(),
 
                 Forms\Components\DateTimePicker::make('start')
+                    ->label('تاریخ شروع')
+                    ->required()
                     ->default(now())
                     ->jalali()
-                    ->seconds(false)
-                    ->label('تاریخ شروع')
+                    ->seconds(false),
+
+                Forms\Components\TextInput::make('phone')
+                    ->label('شماره تلفن')
+                    ->tel()
                     ->required(),
-                Forms\Components\TextInput::make('phone')->label('شماره تلفن')->tel()->required(),
-                Forms\Components\TextInput::make('score')->label('امتیاز')
-                    ->required()
+
+                Forms\Components\TextInput::make('score')
+                    ->label('امتیاز')
                     ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('coin')->label('سکه')
-                    ->required()
+                    ->default(0)
+                    ->required(),
+
+                Forms\Components\TextInput::make('coin')
+                    ->label('سکه')
                     ->numeric()
-                    ->default(0),
-            ])->columns(1);
+                    ->default(0)
+                    ->required(),
+            ])
+            ->columns(1);
     }
 
+    /**
+     * @throws \Exception
+     */
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->label('نام')
+                Tables\Columns\TextColumn::make('name')
+                    ->label('نام')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('color')->label('رنگ')
+
+                Tables\Columns\TextColumn::make('color')
+                    ->label('رنگ')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('score')->label('امتیاز')
+
+                Tables\Columns\TextColumn::make('score')
+                    ->label('امتیاز')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('coin')->label('سکه')
+
+                Tables\Columns\TextColumn::make('coin')
+                    ->label('سکه')
                     ->numeric()
                     ->sortable(),
+
                 ViewColumn::make('hash_qr')
                     ->label('QR Code')
                     ->view('filament.tables.columns.qr-code'),
-                Tables\Columns\TextColumn::make('total_mission_score')->label('مجموع امتیازات توکن‌ها')
+
+                Tables\Columns\TextColumn::make('total_mission_score')
+                    ->label('مجموع امتیازات توکن‌ها')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')->label('تاریخ ایجاد')
-                    ->dateTime()
+
+                Tables\Columns\TextColumn::make('start')
+                    ->label('تاریخ شروع')
+                    ->jalaliDateTime()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('تاریخ ایجاد')
+                    ->jalaliDateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')->label('بروزرسانی شده در')
-                    ->dateTime()
+
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('بروزرسانی شده در')
+                    ->jalaliDateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('start')
+                    ->form([
+                        Forms\Components\DatePicker::make('from')
+                            ->label('از تاریخ')
+                            ->jalali(),
+                        Forms\Components\DatePicker::make('until')
+                            ->label('تا تاریخ')
+                            ->jalali(),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when($data['from'], fn($q) => $q->whereDate('start', '>=', $data['from']))
+                            ->when($data['until'], fn($q) => $q->whereDate('start', '<=', $data['until']));
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -107,9 +159,7 @@ class TeamResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
