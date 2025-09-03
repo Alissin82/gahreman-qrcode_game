@@ -14,12 +14,8 @@ class LeaderboardController extends Controller
 {
     public function index()
     {
-        $teams = Team::withCount([
-            'scoreTeams',
-            'coins'
-        ])
-            ->orderBy('score_teams_count', 'desc')
-            ->orderBy('coins_count', 'desc')
+        $teams = Team::orderBy('score', 'desc')
+            ->orderBy('coin', 'desc')
             ->limit(10)->get();
 
         return ApiResponse::success([
