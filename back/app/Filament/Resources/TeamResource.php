@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TeamResource\Pages;
+use App\Filament\Resources\TeamResource\RelationManagers\TeamUsersRelationManager;
 use App\Models\Team;
 use Exception;
 use Filament\Forms;
@@ -160,7 +161,9 @@ class TeamResource extends Resource
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            TeamUsersRelationManager::class
+        ];
     }
 
     public static function getPages(): array
