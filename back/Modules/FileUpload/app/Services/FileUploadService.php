@@ -16,11 +16,9 @@ class FileUploadService
     /**
      * @throws TaskAlreadyDoneException|Throwable
      */
-    public function answer(Team $team, int $fileUploadId, array $data): FileUploadTeam {
+    public function answer(Team $team, FileUpload $fileUpload, array $data): FileUploadTeam {
         $file = $data['file'];
-
-        $fileUpload = FileUpload::with('task')->findOrFail($fileUploadId);
-
+        
         $task = $fileUpload->task;
 
         if ($team->tasks()->where('tasks.id', $task->id)->exists()) {
