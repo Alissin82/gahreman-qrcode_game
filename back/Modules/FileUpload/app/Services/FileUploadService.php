@@ -9,6 +9,7 @@ use Modules\FileUpload\Models\FileUpload;
 use Modules\FileUpload\Models\FileUploadTeam;
 use Modules\Task\Exceptions\TaskAlreadyDoneException;
 use Modules\Task\Models\Task;
+use Modules\Task\Models\TaskTeam;
 use Throwable;
 
 class FileUploadService
@@ -18,7 +19,7 @@ class FileUploadService
      */
     public function answer(Team $team, FileUpload $fileUpload, array $data): FileUploadTeam {
         $file = $data['file'];
-        
+
         $task = $fileUpload->task;
 
         if ($team->tasks()->where('tasks.id', $task->id)->exists()) {
@@ -26,7 +27,11 @@ class FileUploadService
         }
 
         DB::beginTransaction();
-        $team->tasks()->attach($task->id);
+
+        TaskTeam::create([
+            'task_id' => $task->id,
+            'team_id' => $team->id,
+        ]);
 
         $fileUploadTeam = FileUploadTeam::create([
             'team_id' => $team->id,
