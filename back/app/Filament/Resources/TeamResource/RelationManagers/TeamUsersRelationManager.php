@@ -19,11 +19,14 @@ class TeamUsersRelationManager extends RelationManager
                 Forms\Components\TextInput::make('name')
                     ->label('نام')
                     ->required(),
+                Forms\Components\TextInput::make('family')
+                    ->label('نام خانوادگی')
+                    ->required(),
                 Forms\Components\TextInput::make('city')
-                    ->default('')
+                    ->default('اصفهان')
                     ->label('شهر'),
                 Forms\Components\TextInput::make('province')
-                    ->default('')
+                    ->default('اصفهان')
                     ->label('استان'),
             ]);
     }
@@ -34,6 +37,7 @@ class TeamUsersRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\TextColumn::make('family')->searchable(),
                 Tables\Columns\TextColumn::make('city')->searchable(),
                 Tables\Columns\TextColumn::make('province')->searchable(),
             ])
@@ -41,7 +45,7 @@ class TeamUsersRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
+                Tables\Actions\CreateAction::make()->label("افزودن دانش‌آموز")
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
