@@ -16,9 +16,11 @@ use Throwable;
 class FileUploadService
 {
     /**
-     * @throws TaskAlreadyDoneException|Throwable
+     * @throws TaskAlreadyDoneException
+     * @throws Throwable
      */
-    public function answer(Team $team, FileUpload $fileUpload, array $data): FileUploadTeam {
+    public function answer(Team $team, FileUpload $fileUpload, array $data): FileUploadTeam
+    {
         $file = $data['file'];
 
         $task = Task::where('taskable_type', FileUpload::class)
@@ -30,29 +32,29 @@ class FileUploadService
             throw new TaskAlreadyDoneException();
         }
 
-        DB::beginTransaction();
+        $fileUploadTeam = null;
 
-        TaskTeam::create([
-            'task_id' => $task->id,
-            'team_id' => $team->id,
-        ]);
+        DB::transaction(function () use ($team, $fileUpload, $file, $task, $data, &$fileUploadTeam) {
+            TaskTeam::create([
+                'task_id' => $task->id,
+                'team_id' => $team->id,
+            ]);
 
-        $fileUploadTeam = FileUploadTeam::create([
-            'team_id' => $team->id,
-            'file_upload_id' => $fileUpload->id,
-        ]);
+            $fileUploadTeam = FileUploadTeam::create([
+                'team_id' => $team->id,
+                'file_upload_id' => $fileUpload->id,
+            ]);
 
-        ScoreTeam::create([
-            'team_id' => $team->id,
-            'score' => $task->score,
-            'scorable_id' => $task->id,
-            'scorable_type' => Task::class,
-        ]);
+            ScoreTeam::create([
+                'team_id' => $team->id,
+                'score' => $task->score,
+                'scorable_id' => $task->id,
+                'scorable_type' => Task::class,
+            ]);
 
-        /** @noinspection PhpUndefinedMethodInspection */
-        $fileUploadTeam->addMedia($file);
-
-        DB::commit();
+            /** @noinspection PhpUndefinedMethodInspection */
+            $fileUploadTeam->addMedia($file);
+        });
 
         return $fileUploadTeam;
     }
