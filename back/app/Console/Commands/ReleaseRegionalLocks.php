@@ -31,7 +31,9 @@ class ReleaseRegionalLocks extends Command
     {
         Region::where('locked', true)->chunkById(100, function ($regions) {
             $regions->each(function ($region) {
-                $hasPending = ActionTeam::with('action')->where('region_id', $region->id)->where('status', ActionStatus::Pending)->get();
+                $hasPending = ActionTeam::whereHas('action', function ($query) use ($region) {
+                    $query->where('region_id', $region->id);
+                })->where('status', ActionStatus::Pending)->get();
 
                 if ($hasPending->isEmpty()) {
                     $region->locked = false;
