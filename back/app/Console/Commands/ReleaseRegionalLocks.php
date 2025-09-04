@@ -31,6 +31,8 @@ class ReleaseRegionalLocks extends Command
      */
     public function handle()
     {
+        Log::error('unlocking regions');
+
         Region::where('locked', true)->chunkById(100, function ($regions) {
             $regions->each(function ($region) {
                 $hasPending = ActionTeam::whereHas('action', function (Builder $query) use ($region) {
@@ -42,7 +44,6 @@ class ReleaseRegionalLocks extends Command
                     $region->save();
                     return;
                 }
-                Log::error('unlocking regions');
                 $hasPending->each(function (ActionTeam $actionTeam) use ($region) {
                     if (now()->gt($actionTeam->created_at->addMinutes($actionTeam->action->estimated_time))) {
                         $actionTeam->status = ActionStatus::Timeout;

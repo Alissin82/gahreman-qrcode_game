@@ -121,15 +121,6 @@ class NotifyResource extends Resource
             ]);
     }
 
-    public static function afterCreate($record): void
-    {
-        if ($record->sms) {
-            Log::error('dispatching notify job');
-            SendNotifyJob::dispatch($record);
-        }
-
-    }
-
     public static function getRelations(): array
     {
         return [
