@@ -6,7 +6,9 @@ use App\Enums\ActionStatus;
 use App\Models\ActionTeam;
 use App\Models\Region;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class ReleaseRegionalLocks extends Command
 {
@@ -31,7 +33,7 @@ class ReleaseRegionalLocks extends Command
     {
         Region::where('locked', true)->chunkById(100, function ($regions) {
             $regions->each(function ($region) {
-                $hasPending = ActionTeam::whereHas('action', function ($query) use ($region) {
+                $hasPending = ActionTeam::whereHas('action', function (Builder $query) use ($region) {
                     $query->where('region_id', $region->id);
                 })->where('status', ActionStatus::Pending)->get();
 
@@ -40,9 +42,9 @@ class ReleaseRegionalLocks extends Command
                     $region->save();
                     return;
                 }
-
+                Log::error('unlocking regions');
                 $hasPending->each(function (ActionTeam $actionTeam) use ($region) {
-                    if (now()->gt($actionTeam->created_at->addMinutes($actionTeam->action->duration))) {
+                    if (now()->gt($actionTeam->created_at->addMinutes($actionTeam->action->estimated_time))) {
                         $actionTeam->status = ActionStatus::Timeout;
                         $actionTeam->save();
 

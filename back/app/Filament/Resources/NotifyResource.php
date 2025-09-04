@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Log;
 
 class NotifyResource extends Resource
 {
@@ -25,6 +26,7 @@ class NotifyResource extends Resource
     protected static ?string $modelLabel = 'اعلان';
 
     protected static ?string $navigationGroup = 'عمومی';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -57,7 +59,7 @@ class NotifyResource extends Resource
                         Action::make('selectAllTeams')
                             ->label('انتخاب همه تیم‌ها')
                             ->action(function ($set) {
-                                $teams = Team::all()->pluck('id')->map(fn ($id) => ['team_id' => $id])->toArray();
+                                $teams = Team::all()->pluck('id')->map(fn($id) => ['team_id' => $id])->toArray();
                                 $set('notifyTeams', $teams);
                             })
                     ),
@@ -118,10 +120,14 @@ class NotifyResource extends Resource
                 ]),
             ]);
     }
+
     public static function afterCreate($record): void
     {
-        if ($record->sms)
-            SendNotifyJob::dispatch($record)->delay($record->release);
+        if ($record->sms) {
+            Log::error('dispatching notify job');
+            SendNotifyJob::dispatch($record);
+        }
+
     }
 
     public static function getRelations(): array
