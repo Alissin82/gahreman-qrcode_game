@@ -3,15 +3,15 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\RegionResource\Pages;
-use App\Filament\Resources\RegionResource\RelationManagers;
 use App\Models\Region;
 use Filament\Forms;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class RegionResource extends Resource
 {
@@ -24,17 +24,25 @@ class RegionResource extends Resource
     protected static ?string $modelLabel = 'منطقه';
 
     protected static ?string $navigationGroup = 'عمومی';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-
                 Forms\Components\TextInput::make('name')
                     ->label('نام')
                     ->required(),
-                Forms\Components\Toggle::make('lockable')
-                    ->label('قفل شونده')
-                    ->default(false),
+                Forms\Components\Grid::make(2)
+                    ->columnSpan(1)
+                    ->schema([
+                        Forms\Components\Toggle::make('lockable')
+                            ->label('قفل شونده')
+                            ->default(false),
+                        Forms\Components\Toggle::make('locked')
+                            ->label('قفل')
+                            ->default(false),
+                    ]),
+
                 Forms\Components\Grid::make(2)
                     ->schema([
                         Forms\Components\TextInput::make('x')
@@ -62,6 +70,13 @@ class RegionResource extends Resource
                 Tables\Columns\TextColumn::make('y')
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('locked')
+                    ->label('وضعیت')
+                    ->getStateUsing(fn($record) => $record->locked ? 'قفل' : 'باز'),
+
+                IconColumn::make('lockable')
+                    ->label('قفل شونده')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

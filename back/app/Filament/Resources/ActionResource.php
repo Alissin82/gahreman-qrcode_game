@@ -38,8 +38,7 @@ class ActionResource extends Resource
                     MorphToSelect\Type::make(MCQ::class)
                         ->label('سوال چند گزینه ای')
                         ->getOptionLabelFromRecordUsing(fn(MCQ $record): string => "{$record->question}")
-                        ->modifyOptionsQueryUsing(fn(Builder $query, $state) =>
-                        $query->where(function ($q) use ($state) {
+                        ->modifyOptionsQueryUsing(fn(Builder $query, $state) => $query->where(function ($q) use ($state) {
                             $q->whereDoesntHave('task')
                                 ->orWhere('id', $state); // keep selected option
                         })
@@ -48,8 +47,7 @@ class ActionResource extends Resource
                     MorphToSelect\Type::make(FileUpload::class)
                         ->label('آپلود فایل')
                         ->titleAttribute('description')
-                        ->modifyOptionsQueryUsing(fn(Builder $query, $state) =>
-                        $query->where(function ($q) use ($state) {
+                        ->modifyOptionsQueryUsing(fn(Builder $query, $state) => $query->where(function ($q) use ($state) {
                             $q->whereDoesntHave('task')
                                 ->orWhere('id', $state); // keep selected option
                         })
@@ -66,6 +64,12 @@ class ActionResource extends Resource
                 ->required(),
 
             Forms\Components\TextInput::make('duration')
+                ->label('مدت زمان')
+                ->numeric()
+                ->default(0)
+                ->required(),
+
+            Forms\Components\TextInput::make('order')
                 ->label('مدت زمان')
                 ->numeric()
                 ->default(0)

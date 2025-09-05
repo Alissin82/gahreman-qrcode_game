@@ -26,19 +26,20 @@ class SendNotifyJob implements ShouldQueue
     public function handle(): void
     {
         Log::error('handling notify job');
-        if ($this->notify->sms)
-            $this->sendSms($this->notify->content);
+        if ($this->notify->sms) {
+            $phones = $this->notify->teams->pluck('phone')->toArray();
+            $this->sendSms($this->notify->content, $phones);
+        }
+
     }
 
-    public function sendSms(string $content): void
+    public function sendSms(string $content, array $phoneNumbers): void
     {
         $smsToken = config('services.ippanel.token');
 
-        $selectedTeams = Team::whereIn('id', $data['teams'] ?? [])->get();
-        $phoneNumbers = $selectedTeams->pluck('phone')->filter()->toArray();
-
         if (count($phoneNumbers) <= 0)
             return;
+
         $smsData = [
             'sending_type' => 'webservice',
             'from_number' => config('services.ippanel.number'),
@@ -47,7 +48,7 @@ class SendNotifyJob implements ShouldQueue
                 'recipients' => $phoneNumbers
             ]
         ];
-
+        Log::error('sending sms');
         $this->sendSmsToIPPanel($smsToken, $smsData);
     }
 

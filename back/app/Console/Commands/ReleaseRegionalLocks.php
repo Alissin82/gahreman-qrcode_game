@@ -29,12 +29,11 @@ class ReleaseRegionalLocks extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
-        Log::error('unlocking regions');
-
         Region::where('locked', true)->chunkById(100, function ($regions) {
             $regions->each(function ($region) {
+
                 $hasPending = ActionTeam::whereHas('action', function (Builder $query) use ($region) {
                     $query->where('region_id', $region->id);
                 })->where('status', ActionStatus::Pending)->get();
