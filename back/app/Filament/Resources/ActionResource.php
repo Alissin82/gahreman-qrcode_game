@@ -6,6 +6,7 @@ use App\Filament\Resources\ActionResource\Pages;
 use App\Models\Action;
 use Filament\Forms;
 
+use Filament\Forms\Components\ViewField;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -56,25 +57,25 @@ class ActionResource extends Resource
                 ->label('نوع وظیفه')
                 ->columnSpanFull()
                 ->required(),
+            Forms\Components\Grid::make(3)->schema([
+                Forms\Components\TextInput::make('score')
+                    ->label('امتیاز')
+                    ->numeric()
+                    ->default(0)
+                    ->required(),
 
-            Forms\Components\TextInput::make('score')
-                ->label('امتیاز')
-                ->numeric()
-                ->default(0)
-                ->required(),
+                Forms\Components\TextInput::make('duration')
+                    ->label('مدت زمان')
+                    ->numeric()
+                    ->default(0)
+                    ->required(),
 
-            Forms\Components\TextInput::make('duration')
-                ->label('مدت زمان')
-                ->numeric()
-                ->default(0)
-                ->required(),
-
-            Forms\Components\TextInput::make('order')
-                ->label('مدت زمان')
-                ->numeric()
-                ->default(0)
-                ->required(),
-
+                Forms\Components\TextInput::make('order')
+                    ->label('ترتیب')
+                    ->numeric()
+                    ->hint('ترتیب عملیات به صورت خودکار پر میشود.')
+                    ->readOnly(),
+            ]),
 
             Forms\Components\Toggle::make('need_review')
                 ->label('نیاز به بازبینی')
