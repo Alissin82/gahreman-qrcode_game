@@ -18,7 +18,7 @@ class LeaderboardController extends Controller
             ->pluck('start');
 
         // last available date
-        $lastDate = Team::whereDate('start', '<=', now())->max('start');
+        $lastDate = Team::whereDate('start', '<', now())->max('start');
 
         if (!$lastDate) {
             return ApiResponse::success([
