@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Exports\TeamsExport;
 use App\Filament\Resources\TeamResource\Pages;
 use App\Filament\Resources\TeamResource\RelationManagers\TeamUsersRelationManager;
 use App\Models\Team;
@@ -12,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Table;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TeamResource extends Resource
 {
@@ -151,6 +153,14 @@ class TeamResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+            ])
+            ->headerActions([
+                Tables\Actions\Action::make('export')
+                    ->label('خروجی اکسل')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->action(function () {
+                        return Excel::download(new TeamsExport, 'teams.xlsx');
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
