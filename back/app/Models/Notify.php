@@ -23,7 +23,7 @@ class Notify extends Model
 
     public function teams(): BelongsToMany
     {
-        return $this->belongsToMany(Team::class)->using(NotifyTeam::class);
+        return $this->belongsToMany(Team::class, 'notify_teams')->using(NotifyTeam::class);
     }
 
     public function notifyTeams(): HasMany
