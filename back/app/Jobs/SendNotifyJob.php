@@ -23,7 +23,7 @@ class SendNotifyJob implements ShouldQueue
         $this->notify = $notify;
     }
 
-    public function handle()
+    public function handle(): void
     {
         Log::error('handling notify job');
         if ($this->notify->sms)
