@@ -9,7 +9,8 @@ class Game extends Model
 {
     protected $fillable = [
         'name',
-        'title'
+        'file_name',
+        'title',
     ];
 
     public function teams(): BelongsToMany

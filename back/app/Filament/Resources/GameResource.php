@@ -32,6 +32,10 @@ class GameResource extends Resource
                     ->label('نام انگلیسی')
                     ->columnSpanFull()
                     ->required(),
+                Forms\Components\TextInput::make('file_name')
+                    ->label('نام فایل')
+                    ->columnSpanFull()
+                    ->required(),
                 Forms\Components\TextInput::make('title')
                     ->label('عنوان')
                     ->columnSpanFull()
@@ -45,6 +49,8 @@ class GameResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('نام انگلیسی'),
+                Tables\Columns\TextColumn::make('file_name')
+                    ->label('نام فایل'),
                 Tables\Columns\TextColumn::make('title')
                     ->label('عنوان'),
             ])

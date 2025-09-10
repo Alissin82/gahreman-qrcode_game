@@ -17,6 +17,7 @@ class GameResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'file_name' => $this->file_name,
             'title' => $this->title,
             'base_url' => 'https://s3.game.silitonix.ir/games/',
         ];
