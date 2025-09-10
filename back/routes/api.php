@@ -13,6 +13,10 @@ Route::prefix('teams')->name('teams.')->group(function () {
     });
 });
 
+Route::controller(App\Http\Controllers\Api\ArGameController::class)->prefix('ar-games')->name('ar-games.')->group(function () {
+    Route::post('/{arGame}', 'exchange');
+});
+
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(App\Http\Controllers\Api\ActionTeamController::class)->group(function () {
