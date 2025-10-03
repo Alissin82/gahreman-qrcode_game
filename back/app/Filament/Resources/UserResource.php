@@ -10,8 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
@@ -29,17 +28,32 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')->label('نام')->required(),
-                Forms\Components\TextInput::make('phone')->label('شماره تلفن')->tel()->required(),
-                Forms\Components\TextInput::make('email')->label('ایمیل')->email(),
-                Forms\Components\DateTimePicker::make('email_verified_at')->label('تاریخ تایید ایمیل')->default(now())->visible(false),
-                Forms\Components\TextInput::make('age')->label('سن')->required()->numeric()->default(12),
-                Forms\Components\Select::make('gender')
-                    ->label('جنسیت')
-                    ->options([
-                        1 => 'پسر',
-                        0 => 'دختر',
-                    ])
-                    ->required(),
+                Forms\Components\TextInput::make('phone')->label('شماره تلفن')->regex('/^09[0-9]{9}$/')->unique(ignoreRecord: true)->required(),
+                Forms\Components\TextInput::make('email')->label('ایمیل')->email()->unique(ignoreRecord: true)->required(),
+                Forms\Components\Select::make('roles')
+                    ->label('نقش‌ها')
+                    ->multiple()
+                    ->relationship('roles', 'name')
+                    ->preload()
+                    ->searchable(),
+                Forms\Components\TextInput::make('password')
+                    ->label('رمز عبور')
+                    ->minLength(8)
+                    ->placeholder("********")
+                    ->password()
+                    ->hint('اگر قصد تغییر ندارید این فیلد را خالی بگذارید')
+                    ->dehydrateStateUsing(fn ($state) => !empty($state) ? Hash::make($state) : null)
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->confirmed()
+                    ->revealable(),
+                Forms\Components\TextInput::make('password_confirmation')
+                    ->label('تایید رمز عبور')
+                    ->placeholder("********")
+                    ->minLength(8)
+                    ->password()
+                    ->hint('رمز عبور را دوباره وارد کنید')
+                    ->revealable()
+                    ->dehydrated(false),
             ]);
     }
 
@@ -53,14 +67,6 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('age')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('gender')
-                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
